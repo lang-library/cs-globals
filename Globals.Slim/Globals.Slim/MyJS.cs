@@ -6,16 +6,16 @@ using System.Windows.Forms;
 
 namespace Globals;
 
-public class JavaScriptServer
+public class MyJS
 {
     protected Jint.Engine engine = JintScript.CreateEngine();
     protected List<Assembly> asmList = new List<Assembly>();
-    public JavaScriptServer()
+    public MyJS()
     {
     }
     public void Init(string[] asmSpecList = null, Assembly[] memAsmList = null)
     {
-        Console.Error.WriteLine($"[myjs] Initializing {typeof(JavaScriptServer).Assembly.Location}...");
+        Console.Error.WriteLine($"[myjs] Initializing {typeof(MyJS).Assembly.Location}...");
         asmList.Clear();
         if (memAsmList != null )
         {
@@ -64,7 +64,7 @@ public class JavaScriptServer
     {
         return engine.GetValue(name).ToObject();
     }
-    public dynamic? GetValueAsNode(string name)
+    public JSONNode GetValueAsNode(string name)
     {
         return Util.AsNode(GetValue(name));
     }
@@ -95,7 +95,7 @@ public class JavaScriptServer
         }
         return result;
     }
-    public dynamic? EvaluateAsNode(string script, params object[] vars)
+    public JSONNode EvaluateAsNode(string script, params object[] vars)
     {
         return Util.AsNode(Evaluate(script, vars));
     }
@@ -116,7 +116,7 @@ public class JavaScriptServer
         }
         return result;
     }
-    public dynamic? CallAsNode(string name, params object[] vars)
+    public JSONNode CallAsNode(string name, params object[] vars)
     {
         return Util.AsNode(Call(name, vars));
     }
