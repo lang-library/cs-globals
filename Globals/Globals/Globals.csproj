@@ -17,7 +17,7 @@
     <Title>Globals Library</Title>
     <PackageId>Globals</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/lang-library/cs-Globals</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/lang-library/cs-globals</PackageProjectUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
