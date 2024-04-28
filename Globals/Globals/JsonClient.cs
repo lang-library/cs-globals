@@ -5,19 +5,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Globals;
-public class JsonAPI
+public class JsonClient
 {
-    static Dictionary<int, JsonAPI> apiMap = new Dictionary<int, JsonAPI>();
+    static Dictionary<int, JsonClient> apiMap = new Dictionary<int, JsonClient>();
     IntPtr Handle = IntPtr.Zero;
     IntPtr CallPtr = IntPtr.Zero;
-    //IntPtr LastErrorPtr = IntPtr.Zero;
     delegate IntPtr proto_Call(IntPtr name, IntPtr args);
     delegate IntPtr proto_LastError();
-    public JsonAPI()
-    {
-        // for server
-    }
-    public JsonAPI(string dllSpec)
+    public JsonClient(string dllSpec)
     {
         string dllPath = Util.FindExePath(dllSpec);
         if (dllPath is null)
@@ -28,7 +23,7 @@ public class JsonAPI
         }
         this.LoadDll(dllPath);
     }
-    public JsonAPI(string dllSpec, string cwd)
+    public JsonClient(string dllSpec, string cwd)
     {
         string dllPath = Util.FindExePath(dllSpec, cwd);
         if (dllPath is null)
@@ -39,7 +34,7 @@ public class JsonAPI
         }
         this.LoadDll(dllPath);
     }
-    public JsonAPI(string dllSpec, Assembly assembly)
+    public JsonClient(string dllSpec, Assembly assembly)
     {
         string dllPath = Util.FindExePath(dllSpec, assembly);
         if (dllPath is null)
@@ -68,26 +63,7 @@ public class JsonAPI
             Util.Log("Call() not found");
             Environment.Exit(1);
         }
-        //this.LastErrorPtr = GetProcAddress(Handle, "LastError");
-#if false
-        if (this.LastErrorPtr == IntPtr.Zero)
-        {
-            Util.Log("LastError() not found");
-            Environment.Exit(1);
-        }
-#endif
     }
-#if false
-    public string LastError()
-    {
-        if (this.LastErrorPtr == IntPtr.Zero) return "";
-        proto_LastError pLastError = (proto_LastError)Marshal.GetDelegateForFunctionPointer(this.LastErrorPtr, typeof(proto_LastError));
-        IntPtr pResult = pLastError();
-        //if (pResult == IntPtr.Zero) return null;
-        string result = Util.UTF8AddrToString(pResult);
-        return result;
-    }
-#endif
     public string CallAsJson(dynamic name, dynamic args)
     {
         IntPtr pName = Util.StringToUTF8Addr(name);
@@ -99,13 +75,6 @@ public class JsonAPI
         result = result.Trim();
         Marshal.FreeHGlobal(pName);
         Marshal.FreeHGlobal(pArgsJson);
-#if false
-        string error = LastError();
-        if (error != "")
-        {
-            throw new Exception(error);
-        }
-#else
         if (result.StartsWith("\""))
         {
             string error = Util.FromJson<string>(result);
@@ -122,8 +91,6 @@ public class JsonAPI
             string error = $"Malformed result json: {result}";
             throw new Exception(error);
         }
-#endif
-        //return result;
     }
     public dynamic Call(dynamic name, dynamic args)
     {
@@ -135,56 +102,6 @@ public class JsonAPI
         return Util.AsNode(result);
     }
     static ThreadLocal<IntPtr> HandleCallPtr = new ThreadLocal<IntPtr>();
-    //static ThreadLocal<IntPtr> HandleLastErrorPtr = new ThreadLocal<IntPtr>();
-    public IntPtr HandleCall(Type apiType, IntPtr nameAddr, IntPtr inputAddr)
-    {
-        if (HandleCallPtr.Value != IntPtr.Zero)
-        {
-            Util.FreeHGlobal(HandleCallPtr.Value);
-            HandleCallPtr.Value = IntPtr.Zero;
-        }
-#if false
-        if (HandleLastErrorPtr.Value != IntPtr.Zero)
-        {
-            Util.FreeHGlobal(HandleLastErrorPtr.Value);
-            HandleLastErrorPtr.Value = IntPtr.Zero;
-        }
-#endif
-        var name = Util.UTF8AddrToString(nameAddr);
-        var input = Util.UTF8AddrToString(inputAddr);
-        //var args = Util.AsObject(Util.FromJsonAsNode(input));
-        var args = Util.FromJson(input);
-        MethodInfo mi = apiType.GetMethod(name);
-        dynamic result = null;
-        if (mi == null)
-        {
-            result = $"API not found: {name}";
-            //HandleLastErrorPtr.Value = Util.StringToUTF8Addr($"API not found: {name}");
-        }
-        else
-        {
-            try
-            {
-                result = mi.Invoke(null, new object[] { args });
-                //HandleLastErrorPtr.Value = Util.StringToUTF8Addr("");
-                result = new object[] { result };
-            }
-            catch (TargetInvocationException ex)
-            {
-                result = ex.InnerException.ToString().Replace("\r\n", "\n");
-                //HandleLastErrorPtr.Value = Util.StringToUTF8Addr(ex.InnerException.ToString());
-            }
-        }
-        string output = Util.ToJson(result);
-        HandleCallPtr.Value = Util.StringToUTF8Addr(output);
-        return HandleCallPtr.Value;
-    }
-#if false
-    public IntPtr HandleLastError()
-    {
-        return HandleLastErrorPtr.Value;
-    }
-#endif
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
     internal static extern IntPtr LoadLibraryW(string lpFileName);
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
