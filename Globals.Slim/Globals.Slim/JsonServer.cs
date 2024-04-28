@@ -7,12 +7,13 @@ using System.Threading;
 namespace Globals;
 public class JsonServer
 {
-    public JsonServer()
+    Type? apiType = null;
+    public JsonServer(Type apiType)
     {
-        // for server
+        this.apiType = apiType;
     }
     static ThreadLocal<IntPtr> HandleCallPtr = new ThreadLocal<IntPtr>();
-    public IntPtr HandleCall(Type apiType, IntPtr nameAddr, IntPtr inputAddr)
+    public IntPtr HandleCall(IntPtr nameAddr, IntPtr inputAddr)
     {
         if (HandleCallPtr.Value != IntPtr.Zero)
         {
@@ -22,7 +23,7 @@ public class JsonServer
         var name = Util.UTF8AddrToString(nameAddr);
         var input = Util.UTF8AddrToString(inputAddr);
         var args = Util.FromJson(input);
-        MethodInfo mi = apiType.GetMethod(name);
+        MethodInfo mi = this.apiType!.GetMethod(name);
         dynamic result = null;
         if (mi == null)
         {
