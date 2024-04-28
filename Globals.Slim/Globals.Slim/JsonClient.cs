@@ -7,7 +7,9 @@ using System.Threading;
 namespace Globals;
 public class JsonClient
 {
+#if false
     static Dictionary<int, JsonClient> apiMap = new Dictionary<int, JsonClient>();
+#endif
     IntPtr Handle = IntPtr.Zero;
     IntPtr CallPtr = IntPtr.Zero;
     delegate IntPtr proto_Call(IntPtr name, IntPtr args);
@@ -101,7 +103,9 @@ public class JsonClient
         var result = Call(name, args);
         return Util.AsNode(result);
     }
+#if false
     static ThreadLocal<IntPtr> HandleCallPtr = new ThreadLocal<IntPtr>();
+#endif
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
     internal static extern IntPtr LoadLibraryW(string lpFileName);
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
