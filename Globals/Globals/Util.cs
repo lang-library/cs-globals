@@ -22,8 +22,6 @@ namespace Globals;
 public class Util
 {
     public static bool DebugFlag = false;
-    //public static bool UseCppOut = false;
-    //public static System.Threading.Mutex ProcessMutex = new System.Threading.Mutex(false, "ProcessMutex");
     static Util()
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -592,8 +590,9 @@ public class Util
     private static JSONNode JSON5ToObject(ParserRuleContext x)
     {
         //Log(Util.FullNamex), "Util.FullNamex)");
-        string fullName = Util.FullName(x);
-        if (fullName.EndsWith(".JSON5Parser+Json5Context"))
+        //string fullName = Util.FullName(x);
+        //if (fullName.EndsWith(".JSON5Parser+Json5Context"))
+        if (x is JSON5Parser.Json5Context)
         {
             for (int i = 0; i < x.children.Count; i++)
             {
@@ -607,7 +606,8 @@ public class Util
 
             return JSON5ToObject((ParserRuleContext)x.children[0]);
         }
-        else if (fullName.EndsWith(".JSON5Parser+ValueContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+ValueContext"))
+        else if (x is JSON5Parser.ValueContext)
         {
             if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
             {
@@ -642,7 +642,8 @@ public class Util
 
             return JSON5ToObject((ParserRuleContext)x.children[0]);
         }
-        else if (fullName.EndsWith(".JSON5Parser+ArrContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+ArrContext"))
+        else if (x is JSON5Parser.ArrContext)
         {
             var result = new JSONArray();
             for (int i = 0; i < x.children.Count; i++)
@@ -656,7 +657,8 @@ public class Util
 
             return result;
         }
-        else if (fullName.EndsWith(".JSON5Parser+ObjContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+ObjContext"))
+        else if (x is JSON5Parser.ObjContext)
         {
             var result = new JSONObject();
             for (int i = 0; i < x.children.Count; i++)
@@ -671,7 +673,8 @@ public class Util
 
             return result;
         }
-        else if (fullName.EndsWith(".JSON5Parser+PairContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+PairContext"))
+        else if (x is JSON5Parser.PairContext)
         {
             var result = new JSONObject();
             for (int i = 0; i < x.children.Count; i++)
@@ -690,7 +693,8 @@ public class Util
 
             return result;
         }
-        else if (fullName.EndsWith(".JSON5Parser+KeyContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+KeyContext"))
+        else if (x is JSON5Parser.KeyContext)
         {
             //string t = JSON5Terminal(x.children[0])!;
             if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
@@ -717,13 +721,14 @@ public class Util
                 return "?";
             }
         }
-        else if (fullName.EndsWith(".JSON5Parser+NumberContext"))
+        //else if (fullName.EndsWith(".JSON5Parser+NumberContext"))
+        else if (x is JSON5Parser.NumberContext)
         {
             return JSON.Parse(JSON5Terminal(x.children[0]));
         }
         else
         {
-            throw new Exception($"Unexpected: {fullName}");
+            throw new Exception($"Unexpected: {Util.FullName(x)}");
         }
     }
 
