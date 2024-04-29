@@ -1,4 +1,5 @@
-﻿// https://github.com/zanders3/json
+﻿#if false
+// https://github.com/zanders3/json
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -204,3 +205,4 @@ public static class JSONWriter
         return member.Name;
     }
 }
+#endif

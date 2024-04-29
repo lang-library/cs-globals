@@ -79,12 +79,15 @@ public class JsonClient
         Marshal.FreeHGlobal(pArgsJson);
         if (result.StartsWith("\""))
         {
-            string error = Util.FromJson<string>(result);
+            //string error = Util.FromJson<string>(result);
+            string error = MyJson.FromString(result).Value;
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
-            object[] list = Util.FromJson<object[]>(result);
+            //object[] list = Util.FromJson<object[]>(result);
+            var array = MyJson.FromString(result).AsArray;
+            var list = ((List<object>)array.ToObject()).ToArray();
             if (list.Length == 0) return "null";
             return Util.ToJson(list[0], true);
         }

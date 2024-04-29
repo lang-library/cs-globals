@@ -384,71 +384,64 @@ public class Util
     }
     public static string ToJson(object x, bool indent = false)
     {
-#if false
-        string json = (x is JSONNode) ? x.ToString() : x.ToJson();
-        if (indent)
-        {
-            JSONNode node = FromJsonAsMyJson(json);
-            json = node.ToString(2);
-        }
-        return json;
-#else
         if (x is MyJson)
         {
             return ((MyJson)x).ToString(indent);
         }
+#if false
         string json = x.ToJson();
         return ReformatJson(json, indent);
-#endif
-    }
-#if false
-    public static MyJson FromJsonAsMyJson(string json)
-    {
-#if false
-        if (String.IsNullOrEmpty(json)) return null;
-        var inputStream = new AntlrInputStream(json);
-        var lexer = new JSON5Lexer(inputStream);
-        var commonTokenStream = new CommonTokenStream(lexer);
-        var parser = new JSON5Parser(commonTokenStream);
-        var context = parser.json5();
-        return JSON5ToObject(context);
 #else
-        if (String.IsNullOrEmpty(json)) return null;
-        return MyJson.Parse(json);
+        var myJson = MyJson.FromObject(x);
+        return myJson.ToString(indent);
 #endif
     }
-#endif
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyJson node = MyJson.Parse(json);
+        MyJson node = MyJson.FromString(json);
         return node.ToString(indent);
     }
     public static dynamic FromJson(string json)
     {
+#if false
         json = ReformatJson(json);
         return FromJson<object>(json);
+#else
+        var myJson = MyJson.FromString(json);
+        return myJson.ToObject();
+#endif
     }
+#if false
     public static T FromJson<T>(string json)
     {
         json = ReformatJson(json);
         return json.FromJson<T>();
     }
+#endif
     public static MyJson AsMyJson(object x)
     {
         if (x is MyJson) return ((MyJson)x).Clone();
+#if false
         string json = x.ToJson();
-        return MyJson.Parse(json);
+        return MyJson.FromString(json);
+#else
+        return MyJson.FromObject(x);
+#endif
     }
+#if false
     public static dynamic AsObject(MyJson node)
     {
         return As<object>(node);
     }
+#endif
+#if false
     public static T As<T>(object x)
     {
         //string json = (x is JSONNode) ? ((JSONNode)x).ToString() : x.ToJson();
         string json = ToJson(x);
         return json.FromJson<T>();
     }
+#endif
     public static string ToString(dynamic x)
     {
         if (x is null) return "null";
@@ -547,12 +540,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyJson.Parse(json);
+        return MyJson.FromString(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyJson.Parse(json);
+        return MyJson.FromString(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {
