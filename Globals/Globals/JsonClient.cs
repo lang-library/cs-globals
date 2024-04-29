@@ -99,10 +99,10 @@ public class JsonClient
         var result = Util.FromJson(CallAsJson(name, args));
         return result;
     }
-    public JSONNode CallAsNode(dynamic name, dynamic args)
+    public MyJson CallAsMyJson(dynamic name, dynamic args)
     {
         var result = Call(name, args);
-        return Util.AsNode(result);
+        return Util.AsMyJson(result);
     }
 #if false
     static ThreadLocal<IntPtr> HandleCallPtr = new ThreadLocal<IntPtr>();
