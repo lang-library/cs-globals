@@ -14,6 +14,8 @@ using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Net.Sockets;
+using System.CodeDom;
+
 #if !MINIMAL
 using Globals.Parser.Json5;
 #endif
@@ -418,8 +420,7 @@ public class Util
     public static T FromJson<T>(string json)
     {
         json = PurifyJson(json);
-        T result = json.FromJson<T>();
-        return result;
+        return json.FromJson<T>();
     }
     public static JSONNode AsNode(object x)
     {
@@ -441,27 +442,30 @@ public class Util
     {
         if (x is null) return "null";
         if (x is string) return (string)x;
+        string output = null;
         if (x is JSONNode)
         {
             var value = (JSONNode)x;
-            return value.ToString(2);
+            output = value.ToString(2);
         }
         else if (x is System.DateTime)
         {
-            return Util.DateTimeString(x); //x.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz");
+            output = Util.DateTimeString(x); //x.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz");
         }
         else
         {
             try
             {
-                string json = ToJson(x, true);
-                return json;
+                output = ToJson(x, true);
+                //return json;
+                //return $"<{Util.FullName(x)}> {json}";
             }
             catch (Exception)
             {
-                return x.ToString();
+                output = x.ToString();
             }
         }
+        return $"<{Util.FullName(x)}> {output}";
     }
     public static void Echo(object x, string title = null)
     {
@@ -469,6 +473,7 @@ public class Util
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.WriteLine(s);
+        System.Diagnostics.Debug.WriteLine(s);
     }
     public static void Log(dynamic x, string? title = null)
     {
@@ -476,6 +481,7 @@ public class Util
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.Error.WriteLine("[Log] " + s);
+        System.Diagnostics.Debug.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
     }
     public static void Debug(dynamic x, string? title = null)

@@ -96,9 +96,10 @@ public class JsonClient
     }
     public dynamic Call(dynamic name, dynamic args)
     {
-        return Util.FromJson(CallAsJson(name, args));
+        var result = Util.FromJson(CallAsJson(name, args));
+        return result;
     }
-    public dynamic CallAsNode(dynamic name, dynamic args)
+    public JSONNode CallAsNode(dynamic name, dynamic args)
     {
         var result = Call(name, args);
         return Util.AsNode(result);

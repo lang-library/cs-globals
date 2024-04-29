@@ -334,6 +334,7 @@ public static class JSONParser
         }
         if (char.IsDigit(json[0]) || json[0] == '-')
         {
+#if false
             if (json.Contains("."))
             {
                 double result;
@@ -346,6 +347,11 @@ public static class JSONParser
                 int.TryParse(json, out result);
                 return result;
             }
+#else
+            double result;
+            double.TryParse(json, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out result);
+            return result;
+#endif
         }
         if (json == "true")
             return true;
