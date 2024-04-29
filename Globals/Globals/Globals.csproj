@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462</TargetFrameworks>
-    <Version>2024.0429.1934.20</Version>
+    <Version>2024.0429.1936.15</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <RootNamespace>Globals</RootNamespace>
@@ -11,7 +11,7 @@
     <Authors>JavaCommons</Authors>
     <Company>JavaCommons Technologies</Company>
     <Product>Globals</Product>
-    <Description>FatJaonSLL Library</Description>
+    <Description>Globals Library</Description>
     <Copyright>Copyright © JavaCommons Technologies 2024</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Title>Globals Library</Title>
