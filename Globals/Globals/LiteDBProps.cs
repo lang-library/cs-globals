@@ -66,6 +66,7 @@ public class LiteDBProps
     }
     public void Put(string name, dynamic? data)
     {
+        if (data is MyJson) data = ((MyJson)data).ToObject();
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
             Connection = ConnectionType.Shared
@@ -77,13 +78,13 @@ public class LiteDBProps
             if (result == null)
             {
                 result = new Prop {
-                    Name = name, Data = AsObject(data)
+                    Name = name, Data = data
                 };
                 collection.Insert(result);
                 connection.Commit();
                 return;
             }
-            result.Data = AsObject(data);
+            result.Data = data;
             collection.Update(result);
             connection.Commit();
         }

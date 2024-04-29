@@ -8,6 +8,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Globals;
@@ -136,11 +138,8 @@ public abstract partial class MyJson
 
     #region common interface
 
-    public static bool forceASCII = false; // Use Unicode by default
-#if false
-    public static bool longAsString = false; // lazy creator creates a MyString instead of MyNumber
-#endif
-    public static bool allowLineComments = true; // allow "//"-style comments at the end of a line
+    public static bool ForceASCII = false; // Use Unicode by default
+    public static bool DecimalAsString = false;
 
     public abstract MyNodeType Tag { get; }
 
@@ -239,6 +238,38 @@ public abstract partial class MyJson
     }
     internal abstract void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, MyTextMode aMode);
     #endregion ToString()
+
+    #region ToObject()
+    public dynamic ToObject()
+    {
+        if (this is MyNull) return null;
+        if (this is MyBool) return this.AsBool;
+        if (this is MyNumber) return this.AsDecimal;
+        if (this is MyString) return this.Value;
+        if (this is MyArray)
+        {
+            var result = new List<object>();
+            var array = this as MyArray;
+            for (int i=0; i<array!.Count; i++)
+            {
+                result.Add(array[i].ToObject());
+            }
+            return result;
+        }
+        if (this is MyObject)
+        {
+            var result = new Dictionary<string, object>();
+            var obj = this as MyObject;
+            var keys = obj!.Keys;
+            foreach (var key in keys)
+            {
+                result[key] = obj![key].ToObject();
+            }
+            return result;
+        }
+        throw new Exception($"{this.GetType().FullName} is not supported");
+    }
+    #endregion ToObject()
 
     #region enumerator
     public abstract Enumerator GetEnumerator();
@@ -983,7 +1014,18 @@ public abstract partial class MyJson
 
     #endregion operators
 
-    #region parser
+    #region FromString()
+    public static MyJson FromString(string aJSON)
+    {
+        if (String.IsNullOrEmpty(aJSON)) return null;
+        var inputStream = new AntlrInputStream(aJSON);
+        var lexer = new JSON5Lexer(inputStream);
+        var commonTokenStream = new CommonTokenStream(lexer);
+        var parser = new JSON5Parser(commonTokenStream);
+        var context = parser.json5();
+        return JSON5ToObject(context);
+    }
+
     [ThreadStatic]
     private static StringBuilder m_EscapeBuilder;
     internal static StringBuilder EscapeBuilder
@@ -1027,7 +1069,7 @@ public abstract partial class MyJson
                     sb.Append("\\f");
                     break;
                 default:
-                    if (c < ' ' || (forceASCII && c > 127))
+                    if (c < ' ' || (ForceASCII && c > 127))
                     {
                         ushort val = c;
                         sb.Append("\\u").Append(val.ToString("X4"));
@@ -1042,16 +1084,6 @@ public abstract partial class MyJson
         return result;
     }
 
-    public static MyJson Parse(string aJSON)
-    {
-        if (String.IsNullOrEmpty(aJSON)) return null;
-        var inputStream = new AntlrInputStream(aJSON);
-        var lexer = new JSON5Lexer(inputStream);
-        var commonTokenStream = new CommonTokenStream(lexer);
-        var parser = new JSON5Parser(commonTokenStream);
-        var context = parser.json5();
-        return JSON5ToObject(context);
-    }
     private static MyJson ParseElement(string token, bool quoted)
     {
         if (quoted)
@@ -1221,6 +1253,7 @@ public abstract partial class MyJson
                         }
                     }
                     break;
+#if false
                 case '/':
                     if (allowLineComments && !QuoteMode && i + 1 < aJSON.Length && aJSON[i + 1] == '/')
                     {
@@ -1229,6 +1262,7 @@ public abstract partial class MyJson
                     }
                     Token.Append(aJSON[i]);
                     break;
+#endif
                 case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
                     break;
 
@@ -1382,7 +1416,126 @@ public abstract partial class MyJson
 
         return null;
     }
-    #endregion parser
+#endregion FromString()
+
+    #region FromObject()
+    public static MyJson FromObject(object item)
+    {
+        if (item == null)
+        {
+            return MyNull.CreateOrGet();
+        }
+
+        Type type = item.GetType();
+        if (type == typeof(string) || type == typeof(char))
+        {
+            string str = item.ToString();
+            return new MyString(str);
+        }
+        else if (type == typeof(byte) || type == typeof(sbyte))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(short) || type == typeof(ushort))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(int) || type == typeof(uint))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(long) || type == typeof(ulong))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(float))
+        {
+            return new MyNumber(Convert.ToDecimal(item));
+        }
+        else if (type == typeof(double))
+        {
+            return new MyNumber(Convert.ToDecimal(item));
+        }
+        else if (type == typeof(decimal))
+        {
+            if (DecimalAsString)
+                return new MyString(item.ToString());
+            return new MyNumber((decimal)item);
+        }
+        else if (type == typeof(bool))
+        {
+            return new MyBool((bool)item);
+        }
+        else if (type == typeof(DateTime))
+        {
+            return new MyString(Util.DateTimeString((DateTime)item));
+        }
+        else if (type.IsEnum)
+        {
+            return new MyString(item.ToString());
+        }
+        else if (item is IList)
+        {
+            IList list = item as IList;
+            var result = new MyArray();
+            for (int i = 0; i < list.Count; i++)
+            {
+                result.Add(FromObject(list[i]));
+            }
+            return result;
+        }
+        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            var result = new MyObject();
+            //Refuse to output dictionary keys that aren't of type string
+            if (keyType != typeof(string))
+            {
+                return result;
+            }
+            IDictionary dict = item as IDictionary;
+            foreach (object key in dict.Keys)
+            {
+                result[(string)key] = FromObject(dict[key]);
+            }
+            return result;
+        }
+        else
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            var result = new MyObject();
+            for (int i = 0; i < fieldInfos.Length; i++)
+            {
+                if (fieldInfos[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = fieldInfos[i].GetValue(item);
+                result[GetMemberName(fieldInfos[i])] = FromObject(value);
+            }
+            PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                if (!propertyInfo[i].CanRead || propertyInfo[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = propertyInfo[i].GetValue(item, null);
+                result[GetMemberName(propertyInfo[i])] = FromObject(value);
+            }
+            return result;
+        }
+    }
+
+    static string GetMemberName(MemberInfo member)
+    {
+        if (member.IsDefined(typeof(DataMemberAttribute), true))
+        {
+            DataMemberAttribute dataMemberAttribute = (DataMemberAttribute)Attribute.GetCustomAttribute(member, typeof(DataMemberAttribute), true);
+            if (!string.IsNullOrEmpty(dataMemberAttribute.Name))
+                return dataMemberAttribute.Name;
+        }
+
+        return member.Name;
+    }
+    #endregion FromObject()
 
 }
 // End of MyJson
