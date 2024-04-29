@@ -10,10 +10,10 @@ using System.Xml.Linq;
 namespace Globals;
 public static class Extensions
 {
-    public static dynamic? ToNode(this JsValue x)
+    public static dynamic? ToMyJson(this JsValue x)
     {
         if (x == null) return null;
-        return Util.AsNode(x.ToObject());
+        return Util.AsMyJson(x.ToObject());
     }
     public static void SetTypeReference(this Jint.Engine engine, string name, Type type)
     {

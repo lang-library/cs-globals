@@ -64,9 +64,9 @@ public class MyJS
     {
         return engine.GetValue(name).ToObject();
     }
-    public JSONNode GetValueAsNode(string name)
+    public MyJson GetValueAsMyJson(string name)
     {
-        return Util.AsNode(GetValue(name));
+        return Util.AsMyJson(GetValue(name));
     }
     public void Execute(string script, params object[] vars)
     {
@@ -95,9 +95,9 @@ public class MyJS
         }
         return result;
     }
-    public JSONNode EvaluateAsNode(string script, params object[] vars)
+    public MyJson EvaluateAsMyJson(string script, params object[] vars)
     {
-        return Util.AsNode(Evaluate(script, vars));
+        return Util.AsMyJson(Evaluate(script, vars));
     }
     public dynamic? Call(string name, params object[] vars)
     {
@@ -116,8 +116,8 @@ public class MyJS
         }
         return result;
     }
-    public JSONNode CallAsNode(string name, params object[] vars)
+    public MyJson CallAsMyJson(string name, params object[] vars)
     {
-        return Util.AsNode(Call(name, vars));
+        return Util.AsMyJson(Call(name, vars));
     }
 }

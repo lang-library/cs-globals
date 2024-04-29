@@ -388,25 +388,23 @@ public class Util
         string json = (x is JSONNode) ? x.ToString() : x.ToJson();
         if (indent)
         {
-            JSONNode node = FromJsonAsNode(json);
+            JSONNode node = FromJsonAsMyJson(json);
             json = node.ToString(2);
         }
         return json;
 #else
-        if (x is JSONNode)
+        if (x is MyJson)
         {
-            return ((JSONNode)x).ToString(indent ? 2 : 0);
+            return ((MyJson)x).ToString(indent);
         }
         string json = x.ToJson();
         return ReformatJson(json, indent);
 #endif
     }
-    public static JSONNode FromJsonAsNode(string json)
+#if false
+    public static MyJson FromJsonAsMyJson(string json)
     {
-#if MINIMAL
-        JSONNode node = JSON.Parse(json);
-        return node;
-#else
+#if false
         if (String.IsNullOrEmpty(json)) return null;
         var inputStream = new AntlrInputStream(json);
         var lexer = new JSON5Lexer(inputStream);
@@ -414,12 +412,16 @@ public class Util
         var parser = new JSON5Parser(commonTokenStream);
         var context = parser.json5();
         return JSON5ToObject(context);
+#else
+        if (String.IsNullOrEmpty(json)) return null;
+        return MyJson.Parse(json);
 #endif
     }
+#endif
     protected static string ReformatJson(string json, bool indent = false)
     {
-        JSONNode node = FromJsonAsNode(json);
-        return node.ToString(indent ? 2 : 0);
+        MyJson node = MyJson.Parse(json);
+        return node.ToString(indent);
     }
     public static dynamic FromJson(string json)
     {
@@ -431,13 +433,13 @@ public class Util
         json = ReformatJson(json);
         return json.FromJson<T>();
     }
-    public static JSONNode AsNode(object x)
+    public static MyJson AsMyJson(object x)
     {
-        if (x is JSONNode) return ((JSONNode)x).Clone();
+        if (x is MyJson) return ((MyJson)x).Clone();
         string json = x.ToJson();
-        return FromJsonAsNode(json);
+        return MyJson.Parse(json);
     }
-    public static dynamic AsObject(JSONNode node)
+    public static dynamic AsObject(MyJson node)
     {
         return As<object>(node);
     }
@@ -452,9 +454,9 @@ public class Util
         if (x is null) return "null";
         if (x is string) return (string)x;
         string output = null;
-        if (x is JSONNode)
+        if (x is MyJson)
         {
-            var value = (JSONNode)x;
+            var value = (MyJson)x;
             output = value.ToString(2);
         }
         else if (x is System.DateTime)
@@ -545,12 +547,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return FromJsonAsNode(json);
+        return MyJson.Parse(json);
     }
-    public static dynamic? ResourceAsNode(Assembly assembly, string name)
+    public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return FromJsonAsNode(json);
+        return MyJson.Parse(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {
@@ -590,174 +592,17 @@ public class Util
 #if false
     public static object ToObject(object x)
     {
-        JSONNode node = AsNode(x);
+        JSONNode node = AsMyJson(x);
         string json = node.ToString();
         return json.FromJson<object>();
     }
     public static T ToObject<T>(object x)
     {
-        JSONNode node = AsNode(x);
+        JSONNode node = AsMyJson(x);
         string json = node.ToString();
         return json.FromJson<T>();
     }
 #endif
-#if !MINIMAL
-    private static JSONNode JSON5ToObject(ParserRuleContext x)
-    {
-        //Log(Util.FullNamex), "Util.FullNamex)");
-        //string fullName = Util.FullName(x);
-        //if (fullName.EndsWith(".JSON5Parser+Json5Context"))
-        if (x is JSON5Parser.Json5Context)
-        {
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                //Print("  " + Util.FullNamex.children[i]));
-                //Print("    " + JSON5Terminal((x.children[i])));
-                if (x.children[i] is Antlr4.Runtime.Tree.ErrorNodeImpl)
-                {
-                    return null;
-                }
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+ValueContext"))
-        else if (x is JSON5Parser.ValueContext)
-        {
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return JSON.Parse(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    //Log(t, "t");
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    //Log(t, "t");
-                    return JSON.Parse(t);
-                }
-
-                switch (t)
-                {
-                    case "true":
-                        return true;
-                    case "false":
-                        return false;
-                    case "null":
-                        return null;
-                }
-
-                throw new Exception($"Unexpected JSON5Parser+ValueContext: {t}");
-                //return t;
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+ArrContext"))
-        else if (x is JSON5Parser.ArrContext)
-        {
-            var result = new JSONArray();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                //Print("  " + Util.FullNamex.children[i]));
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result.Add(JSON5ToObject(value));
-                }
-            }
-
-            return result;
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+ObjContext"))
-        else if (x is JSON5Parser.ObjContext)
-        {
-            var result = new JSONObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                //Print("  " + Util.FullNamex.children[i]));
-                if (x.children[i] is JSON5Parser.PairContext pair)
-                {
-                    var pairObj = JSON5ToObject(pair);
-                    result[(string)pairObj!["key"]] = pairObj["value"];
-                }
-            }
-
-            return result;
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+PairContext"))
-        else if (x is JSON5Parser.PairContext)
-        {
-            var result = new JSONObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                //Print("  " + Util.FullNamex.children[i]));
-                if (x.children[i] is JSON5Parser.KeyContext key)
-                {
-                    result["key"] = JSON5ToObject(key);
-                }
-
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result["value"] = JSON5ToObject(value);
-                }
-            }
-
-            return result;
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+KeyContext"))
-        else if (x is JSON5Parser.KeyContext)
-        {
-            //string t = JSON5Terminal(x.children[0])!;
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return JSON.Parse(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    //Log(t, "t");
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    //Log(t, "t");
-                    return JSON.Parse(t);
-                }
-
-                return t;
-            }
-            else
-            {
-                return "?";
-            }
-        }
-        //else if (fullName.EndsWith(".JSON5Parser+NumberContext"))
-        else if (x is JSON5Parser.NumberContext)
-        {
-            //return JSON.Parse(JSON5Terminal(x.children[0]));
-            return new JSONNumber(JSON5Terminal(x.children[0]));
-        }
-        else
-        {
-            throw new Exception($"Unexpected: {Util.FullName(x)}");
-        }
-    }
-
-    private static string? JSON5Terminal(Antlr4.Runtime.Tree.IParseTree x)
-    {
-        if (x is Antlr4.Runtime.Tree.TerminalNodeImpl t)
-        {
-            return t.ToString();
-        }
-
-        return null;
-    }
-#endif // ! MINIMAL
 #if false
     private static JSONNode ParseJson(string json)
     {
