@@ -384,14 +384,22 @@ public class Util
     }
     public static string ToJson(object x, bool indent = false)
     {
+#if false
         string json = (x is JSONNode) ? x.ToString() : x.ToJson();
         if (indent)
         {
-            //JSONNode node = JSON.Parse(json);
             JSONNode node = FromJsonAsNode(json);
             json = node.ToString(2);
         }
         return json;
+#else
+        if (x is JSONNode)
+        {
+            return ((JSONNode)x).ToString(indent ? 2 : 0);
+        }
+        string json = x.ToJson();
+        return ReformatJson(json, indent);
+#endif
     }
     public static JSONNode FromJsonAsNode(string json)
     {
@@ -408,26 +416,26 @@ public class Util
         return JSON5ToObject(context);
 #endif
     }
-    protected static string PurifyJson(string json)
+    protected static string ReformatJson(string json, bool indent = false)
     {
         JSONNode node = FromJsonAsNode(json);
-        return node.ToString();
+        return node.ToString(indent ? 2 : 0);
     }
     public static dynamic FromJson(string json)
     {
-        json = PurifyJson(json);
+        json = ReformatJson(json);
         return FromJson<object>(json);
     }
     public static T FromJson<T>(string json)
     {
-        json = PurifyJson(json);
+        json = ReformatJson(json);
         return json.FromJson<T>();
     }
     public static JSONNode AsNode(object x)
     {
         if (x is JSONNode) return ((JSONNode)x).Clone();
         string json = x.ToJson();
-        return JSON.Parse(json);
+        return FromJsonAsNode(json);
     }
     public static dynamic AsObject(JSONNode node)
     {
@@ -579,7 +587,7 @@ public class Util
             }
         }
     }
-#if false    
+#if false
     public static object ToObject(object x)
     {
         JSONNode node = AsNode(x);
@@ -593,7 +601,7 @@ public class Util
         return json.FromJson<T>();
     }
 #endif
-#if ! MINIMAL
+#if !MINIMAL
     private static JSONNode JSON5ToObject(ParserRuleContext x)
     {
         //Log(Util.FullNamex), "Util.FullNamex)");
