@@ -80,13 +80,13 @@ public class JsonClient
         if (result.StartsWith("\""))
         {
             //string error = Util.FromJson<string>(result);
-            string error = MyJson.FromString(result).Value;
+            string error = new MyParser().FromString(result).Value;
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
             //object[] list = Util.FromJson<object[]>(result);
-            var array = MyJson.FromString(result).AsArray;
+            var array = new MyParser().FromString(result).AsArray;
             var list = ((List<object>)array.ToObject()).ToArray();
             if (list.Length == 0) return "null";
             return Util.ToJson(list[0], true);

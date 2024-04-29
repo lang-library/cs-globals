@@ -1,6 +1,3 @@
-#if !MINIMAL
-using Antlr4.Runtime;
-#endif
 using System.Reflection;
 using System;
 using System.IO;
@@ -16,10 +13,6 @@ using System.Threading;
 using System.Net.Sockets;
 using System.CodeDom;
 
-#if !MINIMAL
-using Globals.Parser.Json5;
-#endif
-using System.Globalization;
 namespace Globals;
 public class Util
 {
@@ -388,60 +381,24 @@ public class Util
         {
             return ((MyJson)x).ToString(indent);
         }
-#if false
-        string json = x.ToJson();
-        return ReformatJson(json, indent);
-#else
-        var myJson = MyJson.FromObject(x);
+        var myJson = new MyParser().FromObject(x);
         return myJson.ToString(indent);
-#endif
     }
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyJson node = MyJson.FromString(json);
+        MyJson node = new MyParser().FromString(json);
         return node.ToString(indent);
     }
     public static dynamic FromJson(string json)
     {
-#if false
-        json = ReformatJson(json);
-        return FromJson<object>(json);
-#else
-        var myJson = MyJson.FromString(json);
+        var myJson = new MyParser().FromString(json);
         return myJson.ToObject();
-#endif
     }
-#if false
-    public static T FromJson<T>(string json)
-    {
-        json = ReformatJson(json);
-        return json.FromJson<T>();
-    }
-#endif
     public static MyJson AsMyJson(object x)
     {
         if (x is MyJson) return ((MyJson)x).Clone();
-#if false
-        string json = x.ToJson();
-        return MyJson.FromString(json);
-#else
-        return MyJson.FromObject(x);
-#endif
+        return new MyParser().FromObject(x);
     }
-#if false
-    public static dynamic AsObject(MyJson node)
-    {
-        return As<object>(node);
-    }
-#endif
-#if false
-    public static T As<T>(object x)
-    {
-        //string json = (x is JSONNode) ? ((JSONNode)x).ToString() : x.ToJson();
-        string json = ToJson(x);
-        return json.FromJson<T>();
-    }
-#endif
     public static string ToString(dynamic x)
     {
         if (x is null) return "null";
@@ -540,12 +497,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyJson.FromString(json);
+        return new MyParser().FromString(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyJson.FromString(json);
+        return new MyParser().FromString(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {
@@ -582,26 +539,6 @@ public class Util
             }
         }
     }
-#if false
-    public static object ToObject(object x)
-    {
-        JSONNode node = AsMyJson(x);
-        string json = node.ToString();
-        return json.FromJson<object>();
-    }
-    public static T ToObject<T>(object x)
-    {
-        JSONNode node = AsMyJson(x);
-        string json = node.ToString();
-        return json.FromJson<T>();
-    }
-#endif
-#if false
-    private static JSONNode ParseJson(string json)
-    {
-        return JSON.Parse(json); ;
-    }
-#endif
     internal static class NativeMethods
     {
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]

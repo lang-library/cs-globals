@@ -1012,8 +1012,66 @@ public abstract partial class MyJson
     }
     #endregion Equals()/GetHashCode()
 
+    [ThreadStatic]
+    private StringBuilder m_EscapeBuilder;
+    internal StringBuilder EscapeBuilder
+    {
+        get
+        {
+            if (m_EscapeBuilder == null)
+                m_EscapeBuilder = new StringBuilder();
+            return m_EscapeBuilder;
+        }
+    }
+    internal string Escape(string aText)
+    {
+        var sb = EscapeBuilder;
+        sb.Length = 0;
+        if (sb.Capacity < aText.Length + aText.Length / 10)
+            sb.Capacity = aText.Length + aText.Length / 10;
+        foreach (char c in aText)
+        {
+            switch (c)
+            {
+                case '\\':
+                    sb.Append("\\\\");
+                    break;
+                case '\"':
+                    sb.Append("\\\"");
+                    break;
+                case '\n':
+                    sb.Append("\\n");
+                    break;
+                case '\r':
+                    sb.Append("\\r");
+                    break;
+                case '\t':
+                    sb.Append("\\t");
+                    break;
+                case '\b':
+                    sb.Append("\\b");
+                    break;
+                case '\f':
+                    sb.Append("\\f");
+                    break;
+                default:
+                    if (c < ' ' || (ForceASCII && c > 127))
+                    {
+                        ushort val = c;
+                        sb.Append("\\u").Append(val.ToString("X4"));
+                    }
+                    else
+                        sb.Append(c);
+                    break;
+            }
+        }
+        string result = sb.ToString();
+        sb.Length = 0;
+        return result;
+    }
     #endregion operators
 
+#if false
     #region FromString()
     public static MyJson FromString(string aJSON)
     {
@@ -1536,7 +1594,7 @@ public abstract partial class MyJson
         return member.Name;
     }
     #endregion FromObject()
-
+#endif
 }
 // End of MyJson
 #endregion MyJson
@@ -2144,3 +2202,480 @@ public partial class MyNull : MyJson
 }
 // End of MyNull
 #endregion MyNull
+
+#region MyParser
+public class MyParser
+{
+    public bool DecimalAsString = false;
+    public bool ForceASCII = false; // Use Unicode by default
+    public MyParser(bool decimalAsString = false, bool forceASCII = false)
+    {
+        DecimalAsString = decimalAsString;
+        ForceASCII = forceASCII;
+    }
+    #region FromString()
+    public MyJson FromString(string aJSON)
+    {
+        if (String.IsNullOrEmpty(aJSON)) return null;
+        var inputStream = new AntlrInputStream(aJSON);
+        var lexer = new JSON5Lexer(inputStream);
+        var commonTokenStream = new CommonTokenStream(lexer);
+        var parser = new JSON5Parser(commonTokenStream);
+        var context = parser.json5();
+        return JSON5ToObject(context);
+    }
+
+    private MyJson ParseElement(string token, bool quoted)
+    {
+        if (quoted)
+            return token;
+        if (token.Length <= 5)
+        {
+            string tmp = token.ToLower();
+            if (tmp == "false" || tmp == "true")
+                return tmp == "true";
+            if (tmp == "null")
+                return MyNull.CreateOrGet();
+        }
+        double val;
+        if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
+            return val;
+        else
+            return token;
+    }
+
+    private MyJson ParseAtom(string aJSON)
+    {
+        Stack<MyJson> stack = new Stack<MyJson>();
+        MyJson ctx = null;
+        int i = 0;
+        StringBuilder Token = new StringBuilder();
+        string TokenName = "";
+        bool QuoteMode = false;
+        bool TokenIsQuoted = false;
+        bool HasNewlineChar = false;
+        while (i < aJSON.Length)
+        {
+            switch (aJSON[i])
+            {
+                case '{':
+                    if (QuoteMode)
+                    {
+                        Token.Append(aJSON[i]);
+                        break;
+                    }
+                    stack.Push(new MyObject());
+                    if (ctx != null)
+                    {
+                        ctx.Add(TokenName, stack.Peek());
+                    }
+                    TokenName = "";
+                    Token.Length = 0;
+                    ctx = stack.Peek();
+                    HasNewlineChar = false;
+                    break;
+
+                case '[':
+                    if (QuoteMode)
+                    {
+                        Token.Append(aJSON[i]);
+                        break;
+                    }
+
+                    stack.Push(new MyArray());
+                    if (ctx != null)
+                    {
+                        ctx.Add(TokenName, stack.Peek());
+                    }
+                    TokenName = "";
+                    Token.Length = 0;
+                    ctx = stack.Peek();
+                    HasNewlineChar = false;
+                    break;
+
+                case '}':
+                case ']':
+                    if (QuoteMode)
+                    {
+
+                        Token.Append(aJSON[i]);
+                        break;
+                    }
+                    if (stack.Count == 0)
+                        throw new Exception("My Parse: Too many closing brackets");
+
+                    stack.Pop();
+                    if (Token.Length > 0 || TokenIsQuoted)
+                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
+                    if (ctx != null)
+                        ctx.Inline = !HasNewlineChar;
+                    TokenIsQuoted = false;
+                    TokenName = "";
+                    Token.Length = 0;
+                    if (stack.Count > 0)
+                        ctx = stack.Peek();
+                    break;
+
+                case ':':
+                    if (QuoteMode)
+                    {
+                        Token.Append(aJSON[i]);
+                        break;
+                    }
+                    TokenName = Token.ToString();
+                    Token.Length = 0;
+                    TokenIsQuoted = false;
+                    break;
+
+                case '"':
+                    QuoteMode ^= true;
+                    TokenIsQuoted |= QuoteMode;
+                    break;
+
+                case ',':
+                    if (QuoteMode)
+                    {
+                        Token.Append(aJSON[i]);
+                        break;
+                    }
+                    if (Token.Length > 0 || TokenIsQuoted)
+                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
+                    TokenIsQuoted = false;
+                    TokenName = "";
+                    Token.Length = 0;
+                    TokenIsQuoted = false;
+                    break;
+
+                case '\r':
+                case '\n':
+                    HasNewlineChar = true;
+                    break;
+
+                case ' ':
+                case '\t':
+                    if (QuoteMode)
+                        Token.Append(aJSON[i]);
+                    break;
+
+                case '\\':
+                    ++i;
+                    if (QuoteMode)
+                    {
+                        char C = aJSON[i];
+                        switch (C)
+                        {
+                            case 't':
+                                Token.Append('\t');
+                                break;
+                            case 'r':
+                                Token.Append('\r');
+                                break;
+                            case 'n':
+                                Token.Append('\n');
+                                break;
+                            case 'b':
+                                Token.Append('\b');
+                                break;
+                            case 'f':
+                                Token.Append('\f');
+                                break;
+                            case 'u':
+                                {
+                                    string s = aJSON.Substring(i + 1, 4);
+                                    Token.Append((char)int.Parse(
+                                        s,
+                                        System.Globalization.NumberStyles.AllowHexSpecifier));
+                                    i += 4;
+                                    break;
+                                }
+                            default:
+                                Token.Append(C);
+                                break;
+                        }
+                    }
+                    break;
+#if false
+                case '/':
+                    if (allowLineComments && !QuoteMode && i + 1 < aJSON.Length && aJSON[i + 1] == '/')
+                    {
+                        while (++i < aJSON.Length && aJSON[i] != '\n' && aJSON[i] != '\r') ;
+                        break;
+                    }
+                    Token.Append(aJSON[i]);
+                    break;
+#endif
+                case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
+                    break;
+
+                default:
+                    Token.Append(aJSON[i]);
+                    break;
+            }
+            ++i;
+        }
+        if (QuoteMode)
+        {
+            throw new Exception("My Parse: Quotation marks seems to be messed up.");
+        }
+        if (ctx == null)
+            return ParseElement(Token.ToString(), TokenIsQuoted);
+        return ctx;
+    }
+
+    private MyJson JSON5ToObject(ParserRuleContext x)
+    {
+        if (x is JSON5Parser.Json5Context)
+        {
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is Antlr4.Runtime.Tree.ErrorNodeImpl)
+                {
+                    return null;
+                }
+            }
+
+            return JSON5ToObject((ParserRuleContext)x.children[0]);
+        }
+        else if (x is JSON5Parser.ValueContext)
+        {
+            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
+            {
+                string t = JSON5Terminal(x.children[0])!;
+                if (t.StartsWith("\""))
+                {
+                    return ParseAtom(t);
+                }
+
+                if (t.StartsWith("'"))
+                {
+                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
+                    t = "\"" + t + "\"";
+                    return ParseAtom(t);
+                }
+
+                switch (t)
+                {
+                    case "true":
+                        return true;
+                    case "false":
+                        return false;
+                    case "null":
+                        return null;
+                }
+
+                throw new Exception($"Unexpected JSON5Parser+ValueContext: {t}");
+                //return t;
+            }
+
+            return JSON5ToObject((ParserRuleContext)x.children[0]);
+        }
+        else if (x is JSON5Parser.ArrContext)
+        {
+            var result = new MyArray();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.ValueContext value)
+                {
+                    result.Add(JSON5ToObject(value));
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.ObjContext)
+        {
+            var result = new MyObject();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.PairContext pair)
+                {
+                    var pairObj = JSON5ToObject(pair);
+                    result[(string)pairObj!["key"]] = pairObj["value"];
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.PairContext)
+        {
+            var result = new MyObject();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.KeyContext key)
+                {
+                    result["key"] = JSON5ToObject(key);
+                }
+
+                if (x.children[i] is JSON5Parser.ValueContext value)
+                {
+                    result["value"] = JSON5ToObject(value);
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.KeyContext)
+        {
+            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
+            {
+                string t = JSON5Terminal(x.children[0])!;
+                if (t.StartsWith("\""))
+                {
+                    return ParseAtom(t);
+                }
+
+                if (t.StartsWith("'"))
+                {
+                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
+                    t = "\"" + t + "\"";
+                    return ParseAtom(t);
+                }
+
+                return t;
+            }
+            else
+            {
+                return "?";
+            }
+        }
+        else if (x is JSON5Parser.NumberContext)
+        {
+            return new MyNumber(JSON5Terminal(x.children[0]));
+        }
+        else
+        {
+            throw new Exception($"Unexpected: {x.GetType().FullName}");
+        }
+    }
+
+    private string? JSON5Terminal(Antlr4.Runtime.Tree.IParseTree x)
+    {
+        if (x is Antlr4.Runtime.Tree.TerminalNodeImpl t)
+        {
+            return t.ToString();
+        }
+
+        return null;
+    }
+    #endregion FromString()
+
+    #region FromObject()
+    public MyJson FromObject(object item)
+    {
+        if (item == null)
+        {
+            return MyNull.CreateOrGet();
+        }
+
+        Type type = item.GetType();
+        if (type == typeof(string) || type == typeof(char))
+        {
+            string str = item.ToString();
+            return new MyString(str);
+        }
+        else if (type == typeof(byte) || type == typeof(sbyte))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(short) || type == typeof(ushort))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(int) || type == typeof(uint))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(long) || type == typeof(ulong))
+        {
+            return FromString(item.ToString());
+        }
+        else if (type == typeof(float))
+        {
+            return new MyNumber(Convert.ToDecimal(item));
+        }
+        else if (type == typeof(double))
+        {
+            return new MyNumber(Convert.ToDecimal(item));
+        }
+        else if (type == typeof(decimal))
+        {
+            if (DecimalAsString)
+                return new MyString(item.ToString());
+            return new MyNumber((decimal)item);
+        }
+        else if (type == typeof(bool))
+        {
+            return new MyBool((bool)item);
+        }
+        else if (type == typeof(DateTime))
+        {
+            return new MyString(Util.DateTimeString((DateTime)item));
+        }
+        else if (type.IsEnum)
+        {
+            return new MyString(item.ToString());
+        }
+        else if (item is IList)
+        {
+            IList list = item as IList;
+            var result = new MyArray();
+            for (int i = 0; i < list.Count; i++)
+            {
+                result.Add(FromObject(list[i]));
+            }
+            return result;
+        }
+        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            var result = new MyObject();
+            //Refuse to output dictionary keys that aren't of type string
+            if (keyType != typeof(string))
+            {
+                return result;
+            }
+            IDictionary dict = item as IDictionary;
+            foreach (object key in dict.Keys)
+            {
+                result[(string)key] = FromObject(dict[key]);
+            }
+            return result;
+        }
+        else
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            var result = new MyObject();
+            for (int i = 0; i < fieldInfos.Length; i++)
+            {
+                if (fieldInfos[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = fieldInfos[i].GetValue(item);
+                result[GetMemberName(fieldInfos[i])] = FromObject(value);
+            }
+            PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                if (!propertyInfo[i].CanRead || propertyInfo[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = propertyInfo[i].GetValue(item, null);
+                result[GetMemberName(propertyInfo[i])] = FromObject(value);
+            }
+            return result;
+        }
+    }
+
+    string GetMemberName(MemberInfo member)
+    {
+        if (member.IsDefined(typeof(DataMemberAttribute), true))
+        {
+            DataMemberAttribute dataMemberAttribute = (DataMemberAttribute)Attribute.GetCustomAttribute(member, typeof(DataMemberAttribute), true);
+            if (!string.IsNullOrEmpty(dataMemberAttribute.Name))
+                return dataMemberAttribute.Name;
+        }
+
+        return member.Name;
+    }
+    #endregion FromObject()
+}
+#endregion MyParser
