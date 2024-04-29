@@ -348,8 +348,8 @@ public static class JSONParser
                 return result;
             }
 #else
-            double result;
-            double.TryParse(json, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out result);
+            decimal result;
+            decimal.TryParse(json, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out result);
             return result;
 #endif
         }

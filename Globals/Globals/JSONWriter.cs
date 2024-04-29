@@ -77,9 +77,9 @@ public static class JSONWriter
 #if false
             stringBuilder.Append(((decimal)item).ToString(System.Globalization.CultureInfo.InvariantCulture));
 #else
-            stringBuilder.Append('"');
+            //stringBuilder.Append('"');
             stringBuilder.Append(((decimal)item).ToString(System.Globalization.CultureInfo.InvariantCulture));
-            stringBuilder.Append('"');
+            //stringBuilder.Append('"');
 #endif
         }
         else if (type == typeof(bool))

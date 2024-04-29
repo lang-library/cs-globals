@@ -387,7 +387,8 @@ public class Util
         string json = (x is JSONNode) ? x.ToString() : x.ToJson();
         if (indent)
         {
-            JSONNode node = JSON.Parse(json);
+            //JSONNode node = JSON.Parse(json);
+            JSONNode node = FromJsonAsNode(json);
             json = node.ToString(2);
         }
         return json;
@@ -730,7 +731,8 @@ public class Util
         //else if (fullName.EndsWith(".JSON5Parser+NumberContext"))
         else if (x is JSON5Parser.NumberContext)
         {
-            return JSON.Parse(JSON5Terminal(x.children[0]));
+            //return JSON.Parse(JSON5Terminal(x.children[0]));
+            return new JSONNumber(JSON5Terminal(x.children[0]));
         }
         else
         {

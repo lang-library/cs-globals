@@ -42,6 +42,8 @@ namespace Globals;
 
 using System.Globalization;
 using System.Collections.Generic;
+using System;
+
 public partial class JSONNode
 {
     #region Decimal
@@ -62,14 +64,18 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(decimal aDecimal)
     {
+#if false
         return new JSONString(aDecimal.ToString());
+#else
+        return new JSONNumber(aDecimal);
+#endif
     }
 
     public static implicit operator decimal(JSONNode aNode)
     {
         return aNode.AsDecimal;
     }
-    #endregion Decimal
+#endregion Decimal
 
     #region Char
     public virtual char AsChar
@@ -117,14 +123,18 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(uint aUInt)
     {
+#if false
         return new JSONNumber(aUInt);
+#else
+        return new JSONNumber((decimal)aUInt);
+#endif
     }
 
     public static implicit operator uint(JSONNode aNode)
     {
         return aNode.AsUInt;
     }
-    #endregion UInt
+#endregion UInt
 
     #region Byte
     public virtual byte AsByte
@@ -141,14 +151,18 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(byte aByte)
     {
+#if false
         return new JSONNumber(aByte);
+#else
+        return new JSONNumber((decimal)aByte);
+#endif
     }
 
     public static implicit operator byte(JSONNode aNode)
     {
         return aNode.AsByte;
     }
-    #endregion Byte
+#endregion Byte
     #region SByte
     public virtual sbyte AsSByte
     {
@@ -164,14 +178,18 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(sbyte aSByte)
     {
+#if false
         return new JSONNumber(aSByte);
+#else
+        return new JSONNumber((decimal)aSByte);
+#endif
     }
 
     public static implicit operator sbyte(JSONNode aNode)
     {
         return aNode.AsSByte;
     }
-    #endregion SByte
+#endregion SByte
 
     #region Short
     public virtual short AsShort
@@ -188,14 +206,18 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(short aShort)
     {
+#if false
         return new JSONNumber(aShort);
+#else
+        return new JSONNumber((decimal)aShort);
+#endif
     }
 
     public static implicit operator short(JSONNode aNode)
     {
         return aNode.AsShort;
     }
-    #endregion Short
+#endregion Short
     #region UShort
     public virtual ushort AsUShort
     {
@@ -449,9 +471,15 @@ public partial class JSONNode
 
     public static implicit operator JSONNode(float? aValue)
     {
+#if false
         if (aValue == null)
             return JSONNull.CreateOrGet();
         return new JSONNumber((float)aValue);
+#else
+        if (aValue == null)
+            return JSONNull.CreateOrGet();
+        return new JSONNumber(Convert.ToDecimal(aValue));
+#endif
     }
     public static implicit operator float? (JSONNode aNode)
     {
@@ -464,7 +492,11 @@ public partial class JSONNode
     {
         if (aValue == null)
             return JSONNull.CreateOrGet();
+#if false
         return new JSONNumber((double)aValue);
+#else
+        return new JSONNumber((decimal)aValue);
+#endif
     }
     public static implicit operator double? (JSONNode aNode)
     {
@@ -511,5 +543,5 @@ public partial class JSONNode
             return null;
         return aNode.AsShort;
     }
-    #endregion NullableTypes
+#endregion NullableTypes
 }

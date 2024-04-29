@@ -168,7 +168,9 @@ public abstract partial class JSONNode
     #region common interface
 
     public static bool forceASCII = false; // Use Unicode by default
+#if false
     public static bool longAsString = false; // lazy creator creates a JSONString instead of JSONNumber
+#endif
     public static bool allowLineComments = true; // allow "//"-style comments at the end of a line
 
     public abstract JSONNodeType Tag { get; }
@@ -267,7 +269,7 @@ public abstract partial class JSONNode
     public KeyEnumerator Keys { get { return new KeyEnumerator(GetEnumerator()); } }
     public ValueEnumerator Values { get { return new ValueEnumerator(GetEnumerator()); } }
 
-    #endregion common interface
+#endregion common interface
 
     #region typecasting properties
 
@@ -376,7 +378,11 @@ public abstract partial class JSONNode
 
     public static implicit operator JSONNode(double n)
     {
+#if false
         return new JSONNumber(n);
+#else
+        return new JSONNumber((decimal)n);
+#endif
     }
     public static implicit operator double(JSONNode d)
     {
@@ -385,7 +391,11 @@ public abstract partial class JSONNode
 
     public static implicit operator JSONNode(float n)
     {
+#if false
         return new JSONNumber(n);
+#else
+        return new JSONNumber((decimal)n);
+#endif
     }
     public static implicit operator float(JSONNode d)
     {
@@ -394,7 +404,11 @@ public abstract partial class JSONNode
 
     public static implicit operator JSONNode(int n)
     {
+#if false
         return new JSONNumber(n);
+#else
+        return new JSONNumber((decimal)n);
+#endif
     }
     public static implicit operator int(JSONNode d)
     {
@@ -403,9 +417,13 @@ public abstract partial class JSONNode
 
     public static implicit operator JSONNode(long n)
     {
+#if false
         if (longAsString)
             return new JSONString(n.ToString(CultureInfo.InvariantCulture));
         return new JSONNumber(n);
+#else
+        return new JSONNumber((decimal)n);
+#endif
     }
     public static implicit operator long(JSONNode d)
     {
@@ -414,9 +432,13 @@ public abstract partial class JSONNode
 
     public static implicit operator JSONNode(ulong n)
     {
+#if false
         if (longAsString)
             return new JSONString(n.ToString(CultureInfo.InvariantCulture));
         return new JSONNumber(n);
+#else
+        return new JSONNumber((decimal)n);
+#endif
     }
     public static implicit operator ulong(JSONNode d)
     {
@@ -463,7 +485,7 @@ public abstract partial class JSONNode
         return base.GetHashCode();
     }
 
-    #endregion operators
+#endregion operators
 
     [ThreadStatic]
     private static StringBuilder m_EscapeBuilder;
@@ -1082,7 +1104,11 @@ public partial class JSONString : JSONNode
 
 public partial class JSONNumber : JSONNode
 {
+#if false
     private double m_Data;
+#else
+    decimal m_Data;
+#endif
 
     public override JSONNodeType Tag { get { return JSONNodeType.Number; } }
     public override bool IsNumber { get { return true; } }
@@ -1093,16 +1119,27 @@ public partial class JSONNumber : JSONNode
         get { return m_Data.ToString(CultureInfo.InvariantCulture); }
         set
         {
+#if false
             double v;
             if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
                 m_Data = v;
+#else
+            decimal v;
+            if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
+                m_Data = v;
+#endif
         }
     }
 
     public override double AsDouble
     {
+#if false
         get { return m_Data; }
         set { m_Data = value; }
+#else
+        get { return decimal.ToDouble(m_Data); }
+        set { m_Data = Convert.ToDecimal(value); }
+#endif
     }
     public override long AsLong
     {
@@ -1115,10 +1152,24 @@ public partial class JSONNumber : JSONNode
         set { m_Data = value; }
     }
 
-    public JSONNumber(double aData)
+#if false
+#else
+    public JSONNumber(decimal aData)
     {
         m_Data = aData;
     }
+#endif
+
+#if false
+    public JSONNumber(double aData)
+    {
+#if false
+        m_Data = aData;
+#else
+        m_Data = Convert.ToDecimal(aData);
+#endif
+    }
+#endif
 
     public JSONNumber(string aData)
     {
@@ -1152,8 +1203,13 @@ public partial class JSONNumber : JSONNode
         JSONNumber s2 = obj as JSONNumber;
         if (s2 != null)
             return m_Data == s2.m_Data;
+#if false
         if (IsNumeric(obj))
             return Convert.ToDouble(obj) == m_Data;
+#else
+        if (IsNumeric(obj))
+            return Convert.ToDecimal(obj) == m_Data;
+#endif
         return false;
     }
     public override int GetHashCode()
@@ -1356,38 +1412,62 @@ internal partial class JSONLazyCreator : JSONNode
 
     public override int AsInt
     {
+#if false
         get { Set(new JSONNumber(0)); return 0; }
         set { Set(new JSONNumber(value)); }
+#else
+        get { Set(new JSONNumber((decimal)0)); return 0; }
+        set { Set(new JSONNumber(Convert.ToDecimal(value))); }
+#endif
     }
 
     public override float AsFloat
     {
+#if false
         get { Set(new JSONNumber(0.0f)); return 0.0f; }
         set { Set(new JSONNumber(value)); }
+#else
+        get { Set(new JSONNumber(0.0m)); return 0.0f; }
+        set { Set(new JSONNumber(Convert.ToDecimal(value))); }
+#endif
     }
 
     public override double AsDouble
     {
+#if false
         get { Set(new JSONNumber(0.0)); return 0.0; }
         set { Set(new JSONNumber(value)); }
+#else
+        get { Set(new JSONNumber(0.0m)); return 0.0; }
+        set { Set(new JSONNumber(Convert.ToDecimal(value))); }
+#endif
     }
 
     public override long AsLong
     {
         get
         {
+#if false
             if (longAsString)
                 Set(new JSONString("0"));
             else
                 Set(new JSONNumber(0.0));
             return 0L;
+#else
+            Set(new JSONNumber(0.0m));
+            return 0L;
+#endif
         }
         set
         {
+#if false
             if (longAsString)
                 Set(new JSONString(value.ToString(CultureInfo.InvariantCulture)));
             else
                 Set(new JSONNumber(value));
+#else
+            Set(new JSONNumber(Convert.ToDecimal(value)));
+#endif
         }
     }
 
@@ -1395,18 +1475,27 @@ internal partial class JSONLazyCreator : JSONNode
     {
         get
         {
+#if false
             if (longAsString)
                 Set(new JSONString("0"));
             else
                 Set(new JSONNumber(0.0));
             return 0L;
+#else
+            Set(new JSONNumber(0.0m));
+            return 0L;
+#endif
         }
         set
         {
+#if false
             if (longAsString)
                 Set(new JSONString(value.ToString(CultureInfo.InvariantCulture)));
             else
                 Set(new JSONNumber(value));
+#else
+            Set(new JSONNumber(Convert.ToDecimal(value)));
+#endif
         }
     }
 
