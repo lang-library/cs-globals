@@ -7,7 +7,6 @@ version="${ts}"
 
 cd $cwd/Globals
 #sed -i -e "s/<Version>.*<\/Version>/<Version>${version}<\/Version>/g" Globals.csproj
-#cp -r $cwd/../Globals.Slim/Globals.Slim/*.cs $cwd/../Globals.Slim/Globals.Slim/Parser .
 rm -rf obj bin
 rm -rf *.nupkg
 dotnet pack -o . -p:Configuration=Release -p:Platform="Any CPU" Globals.csproj
