@@ -921,13 +921,14 @@ public abstract partial class MyJson
         var commonTokenStream = new CommonTokenStream(lexer);
         var parser = new JSON5Parser(commonTokenStream);
         var context = parser.json5();
-        return JSON5ToObject(context);
+        var result = JSON5ToObject(context);
+        return result;
     }
 
     private static MyJson ParseJsonString(string aJSON)
     {
         Stack<MyJson> stack = new Stack<MyJson>();
-        MyJson ctx = null;
+        //MyJson ctx = null;
         int i = 0;
         StringBuilder Token = new StringBuilder();
         string TokenName = "";
@@ -1006,7 +1007,7 @@ public abstract partial class MyJson
         {
             throw new Exception("My Parse: Quotation marks seems to be messed up.");
         }
-        return ctx;
+        return Token.ToString();
     }
 
     private static MyJson JSON5ToObject(ParserRuleContext x)
@@ -1077,7 +1078,8 @@ public abstract partial class MyJson
                 if (x.children[i] is JSON5Parser.PairContext pair)
                 {
                     var pairObj = JSON5ToObject(pair);
-                    result[(string)pairObj!["key"]] = pairObj["value"];
+                    string key = (string)pairObj!["key"];
+                    result[key] = pairObj["value"];
                 }
             }
 
