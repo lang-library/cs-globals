@@ -381,23 +381,23 @@ public class Util
         {
             return ((MyJson)x).ToString(indent);
         }
-        var myJson = new MyParser().FromObject(x);
+        var myJson = MyJson.FromObject(x);
         return myJson.ToString(indent);
     }
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyJson node = new MyParser().FromString(json);
+        MyJson node = MyJson.FromString(json);
         return node.ToString(indent);
     }
     public static dynamic FromJson(string json)
     {
-        var myJson = new MyParser().FromString(json);
+        var myJson = MyJson.FromString(json);
         return myJson.ToObject();
     }
     public static MyJson AsMyJson(object x)
     {
         if (x is MyJson) return ((MyJson)x).Clone();
-        return new MyParser().FromObject(x);
+        return MyJson.FromObject(x);
     }
     public static string ToString(dynamic x)
     {
@@ -497,12 +497,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return new MyParser().FromString(json);
+        return MyJson.FromString(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return new MyParser().FromString(json);
+        return MyJson.FromString(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {
