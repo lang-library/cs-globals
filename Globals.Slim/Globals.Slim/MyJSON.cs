@@ -740,12 +740,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(List<byte> aByteList)
     {
-        return new MyArray { AsByteList = aByteList };
+        return FromObject(aByteList);
     }
 
-    public static implicit operator List<byte>(MyJson aNode)
+    public static implicit operator List<byte>(MyJson d)
     {
-        return aNode.AsByteList;
+        return d == null ? null : d.AsByteList;
     }
     #endregion ByteList
 
@@ -774,12 +774,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(string[] aStringArray)
     {
-        return new MyArray { AsStringArray = aStringArray };
+        return FromObject(aStringArray);
     }
 
-    public static implicit operator string[](MyJson aNode)
+    public static implicit operator string[](MyJson d)
     {
-        return aNode.AsStringArray;
+        return d == null ? null : d.AsStringArray;
     }
     #endregion StringArray
     #region StringList
@@ -807,111 +807,14 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(List<string> aStringList)
     {
-        return new MyArray { AsStringList = aStringList };
+        return FromObject(aStringList);
     }
 
-    public static implicit operator List<string>(MyJson aNode)
+    public static implicit operator List<string>(MyJson d)
     {
-        return aNode.AsStringList;
+        return d == null ? null : d.AsStringList;
     }
     #endregion StringList
-
-    #region NullableTypes
-    public static implicit operator MyJson(int? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((int)aValue);
-    }
-    public static implicit operator int?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsInt;
-    }
-
-    public static implicit operator MyJson(float? aValue)
-    {
-#if false
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((float)aValue);
-#else
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber(Convert.ToDecimal(aValue));
-#endif
-    }
-    public static implicit operator float?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsFloat;
-    }
-
-    public static implicit operator MyJson(double? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-#if false
-        return new MyNumber((double)aValue);
-#else
-        return new MyNumber((decimal)aValue);
-#endif
-    }
-    public static implicit operator double?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsDouble;
-    }
-
-    public static implicit operator MyJson(bool? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyBool((bool)aValue);
-    }
-    public static implicit operator bool?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsBool;
-    }
-
-    public static implicit operator MyJson(long? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((long)aValue);
-    }
-    public static implicit operator long?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsLong;
-    }
-
-    public static implicit operator MyJson(short? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((short)aValue);
-    }
-    public static implicit operator short?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsShort;
-    }
-    #endregion NullableTypes
-
-    #region KeyValuePair
-    public static implicit operator MyJson(KeyValuePair<string, MyJson> aKeyValue)
-    {
-        return aKeyValue.Value;
-    }
-    #endregion KeyValuePair
 
     #region ==/!=
     public static bool operator ==(MyJson a, object b)
@@ -942,6 +845,7 @@ public abstract partial class MyJson
     }
     #endregion Equals()/GetHashCode()
 
+    #region Escape()
     [ThreadStatic]
     private StringBuilder m_EscapeBuilder;
     internal StringBuilder EscapeBuilder
@@ -999,6 +903,8 @@ public abstract partial class MyJson
         sb.Length = 0;
         return result;
     }
+    #endregion Escape()
+
     #endregion operators
 
     #region FromString()
@@ -1012,66 +918,6 @@ public abstract partial class MyJson
         var context = parser.json5();
         return JSON5ToObject(context);
     }
-
-#if false
-    [ThreadStatic]
-    private static StringBuilder m_EscapeBuilder;
-    internal static StringBuilder EscapeBuilder
-    {
-        get
-        {
-            if (m_EscapeBuilder == null)
-                m_EscapeBuilder = new StringBuilder();
-            return m_EscapeBuilder;
-        }
-    }
-    internal static string Escape(string aText)
-    {
-        var sb = EscapeBuilder;
-        sb.Length = 0;
-        if (sb.Capacity < aText.Length + aText.Length / 10)
-            sb.Capacity = aText.Length + aText.Length / 10;
-        foreach (char c in aText)
-        {
-            switch (c)
-            {
-                case '\\':
-                    sb.Append("\\\\");
-                    break;
-                case '\"':
-                    sb.Append("\\\"");
-                    break;
-                case '\n':
-                    sb.Append("\\n");
-                    break;
-                case '\r':
-                    sb.Append("\\r");
-                    break;
-                case '\t':
-                    sb.Append("\\t");
-                    break;
-                case '\b':
-                    sb.Append("\\b");
-                    break;
-                case '\f':
-                    sb.Append("\\f");
-                    break;
-                default:
-                    if (c < ' ' || (ForceASCII && c > 127))
-                    {
-                        ushort val = c;
-                        sb.Append("\\u").Append(val.ToString("X4"));
-                    }
-                    else
-                        sb.Append(c);
-                    break;
-            }
-        }
-        string result = sb.ToString();
-        sb.Length = 0;
-        return result;
-    }
-#endif
 
     private static MyJson ParseElement(string token, bool quoted)
     {
@@ -1478,10 +1324,16 @@ public abstract partial class MyJson
         {
             return new MyString(item.ToString());
         }
+#if false
         else if (type == typeof(byte[]))
         {
             return new MyArray { AsByteArray = (byte[])item };
         }
+        else if (type == typeof(List<byte>))
+        {
+            return new MyArray { AsByteList = (List<byte>)item };
+        }
+#endif
         else if (type.IsEnum)
         {
             return new MyString(item.ToString());
