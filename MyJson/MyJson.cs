@@ -1,4 +1,45 @@
 #region License and information
+/*
+------------------------------------------------------------------------------
+This software is available under 2 licenses -- choose whichever you prefer.
+------------------------------------------------------------------------------
+ALTERNATIVE A - MIT License
+Copyright (c) 2024 JavaCommons Technologies
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+------------------------------------------------------------------------------
+ALTERNATIVE B - Public Domain (www.unlicense.org)
+This is free and unencumbered software released into the public domain.
+Anyone is free to copy, modify, publish, use, compile, sell, or distribute this
+software, either in source code form or as a compiled binary, for any purpose,
+commercial or non-commercial, and by any means.
+In jurisdictions that recognize copyright laws, the author or authors of this
+software dedicate any and all copyright interest in the software to the public
+domain. We make this dedication for the benefit of the public at large and to
+the detriment of our heirs and successors. We intend this dedication to be an
+overt act of relinquishment in perpetuity of all present and future rights to
+this software under copyright law.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-----------------------------------------------------------------------------
+*/
 #endregion License and information
 
 using Antlr4.Runtime;
@@ -251,8 +292,6 @@ public abstract partial class MyData
         if (this is MyBool) return this.AsBool;
         if (this is MyNumber)
         {
-            //if (DecimalAsString) return this.AsDouble;
-            //return this.AsDecimal;
             return ((MyNumber)this).m_Data;
         }
         if (this is MyString) return this.Value;
@@ -292,7 +331,7 @@ public abstract partial class MyData
 
     #region typecasting properties
 
-
+    #region Double
     public virtual double AsDouble
     {
         get
@@ -302,24 +341,33 @@ public abstract partial class MyData
                 return v;
             return 0.0;
         }
-        set
-        {
-            Value = value.ToString(CultureInfo.InvariantCulture);
-        }
     }
+    #endregion Double
 
+    #region Int
     public virtual int AsInt
     {
         get { return (int)AsDouble; }
-        set { AsDouble = value; }
     }
+    #endregion Int
+    #region UInt
+    public virtual uint AsUInt
+    {
+        get
+        {
+            return (uint)AsDouble;
+        }
+    }
+    #endregion UInt
 
+    #region Float
     public virtual float AsFloat
     {
         get { return (float)AsDouble; }
-        set { AsDouble = value; }
     }
+    #endregion Float
 
+    #region Bool
     public virtual bool AsBool
     {
         get
@@ -329,12 +377,10 @@ public abstract partial class MyData
                 return v;
             return !string.IsNullOrEmpty(Value);
         }
-        set
-        {
-            Value = (value) ? "true" : "false";
-        }
     }
+    #endregion Bool
 
+    #region Long
     public virtual long AsLong
     {
         get
@@ -344,12 +390,9 @@ public abstract partial class MyData
                 return val;
             return 0L;
         }
-        set
-        {
-            Value = value.ToString(CultureInfo.InvariantCulture);
-        }
     }
-
+    #endregion Long
+    #region ULong
     public virtual ulong AsULong
     {
         get
@@ -359,12 +402,10 @@ public abstract partial class MyData
                 return val;
             return 0;
         }
-        set
-        {
-            Value = value.ToString(CultureInfo.InvariantCulture);
-        }
     }
+    #endregion ULong
 
+    #region Array
     public virtual MyArray AsArray
     {
         get
@@ -372,7 +413,9 @@ public abstract partial class MyData
             return this as MyArray;
         }
     }
+    #endregion Array
 
+    #region Object
     public virtual MyObject AsObject
     {
         get
@@ -380,12 +423,7 @@ public abstract partial class MyData
             return this as MyObject;
         }
     }
-
-
-    #endregion typecasting properties
-
-    #region operators
-
+    #endregion Object
 
     #region Decimal
     public virtual decimal AsDecimal
@@ -397,26 +435,8 @@ public abstract partial class MyData
                 result = 0;
             return result;
         }
-        set
-        {
-            Value = value.ToString();
-        }
     }
     #endregion Decimal
-
-    #region UInt
-    public virtual uint AsUInt
-    {
-        get
-        {
-            return (uint)AsDouble;
-        }
-        set
-        {
-            AsDouble = value;
-        }
-    }
-    #endregion UInt
 
     #region Byte
     public virtual byte AsByte
@@ -424,10 +444,6 @@ public abstract partial class MyData
         get
         {
             return (byte)AsInt;
-        }
-        set
-        {
-            AsInt = value;
         }
     }
     #endregion Byte
@@ -437,10 +453,6 @@ public abstract partial class MyData
         get
         {
             return (sbyte)AsInt;
-        }
-        set
-        {
-            AsInt = value;
         }
     }
     #endregion SByte
@@ -452,10 +464,6 @@ public abstract partial class MyData
         {
             return (short)AsInt;
         }
-        set
-        {
-            AsInt = value;
-        }
     }
     #endregion Short
     #region UShort
@@ -464,10 +472,6 @@ public abstract partial class MyData
         get
         {
             return (ushort)AsInt;
-        }
-        set
-        {
-            AsInt = value;
         }
     }
     #endregion UShort
@@ -482,10 +486,6 @@ public abstract partial class MyData
                 result = new System.DateTime(0);
             return result;
         }
-        set
-        {
-            Value = value.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz");
-        }
     }
     #endregion DateTime
     #region TimeSpan
@@ -498,10 +498,6 @@ public abstract partial class MyData
                 result = new System.TimeSpan(0);
             return result;
         }
-        set
-        {
-            Value = value.ToString();
-        }
     }
     #endregion TimeSpan
 
@@ -513,10 +509,6 @@ public abstract partial class MyData
             System.Guid result;
             System.Guid.TryParse(Value, out result);
             return result;
-        }
-        set
-        {
-            Value = value.ToString();
         }
     }
     #endregion Guid
@@ -534,14 +526,6 @@ public abstract partial class MyData
                 result[i] = this[i].AsByte;
             return result;
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Length; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion ByteArray
     #region ByteList
@@ -549,21 +533,9 @@ public abstract partial class MyData
     {
         get
         {
-            if (this.IsNull || !this.IsArray)
-                return null;
-            int count = Count;
-            List<byte> result = new List<byte>(count);
-            for (int i = 0; i < count; i++)
-                result.Add(this[i].AsByte);
-            return result;
-        }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Count; i++)
-                Add(FromObject(value[i]));
+            byte[] array = this.AsByteArray;
+            if (array == null) return null;
+            return new List<byte>(array);
         }
     }
     #endregion ByteList
@@ -581,14 +553,6 @@ public abstract partial class MyData
                 result[i] = this[i].Value;
             return result;
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Length; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion StringArray
     #region StringList
@@ -596,21 +560,9 @@ public abstract partial class MyData
     {
         get
         {
-            if (this.IsNull || !this.IsArray)
-                return null;
-            int count = Count;
-            List<string> result = new List<string>(count);
-            for (int i = 0; i < count; i++)
-                result.Add(this[i].Value);
-            return result;
-        }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Count; i++)
-                Add(FromObject(value[i]));
+            string[] array = this.AsStringArray;
+            if (array == null) return null;
+            return new List<string>(array);
         }
     }
     #endregion StringList
@@ -628,14 +580,6 @@ public abstract partial class MyData
                 result[i] = this[i].ToObject();
             return result;
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Length; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion ObjectArray
     #region ObjectList
@@ -646,14 +590,6 @@ public abstract partial class MyData
             var array = this.AsObjectArray;
             if (array == null) return null;
             return new List<object>(array);
-        }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Count; i++)
-                Add(FromObject(value[i]));
         }
     }
     #endregion ObjectList
@@ -671,14 +607,6 @@ public abstract partial class MyData
                 result[i] = this[i].AsDecimal;
             return result;
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Length; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion DecimalArray
     #region DecimalList
@@ -689,14 +617,6 @@ public abstract partial class MyData
             var array = this.AsDecimalArray;
             if (array == null) return null;
             return new List<decimal>(array);
-        }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Count; i++)
-                Add(FromObject(value[i]));
         }
     }
     #endregion DecimalList
@@ -714,14 +634,6 @@ public abstract partial class MyData
                 result[i] = this[i].AsDouble;
             return result;
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Length; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion DoubleArray
     #region DoubleList
@@ -733,24 +645,21 @@ public abstract partial class MyData
             if (array == null) return null;
             return new List<double>(array);
         }
-        set
-        {
-            if (!IsArray || value == null)
-                return;
-            Clear();
-            for (int i = 0; i < value.Count; i++)
-                Add(FromObject(value[i]));
-        }
     }
     #endregion DoubleList
+
+
+    #endregion typecasting properties
+
+    #region operators
 
     #region ==/!=
     public static bool operator ==(MyData a, object b)
     {
         if (ReferenceEquals(a, b))
             return true;
-        bool aIsNull = a is MyNull || ReferenceEquals(a, null); //|| a is MyLazyCreator;
-        bool bIsNull = b is MyNull || ReferenceEquals(b, null); //|| b is MyLazyCreator;
+        bool aIsNull = a is MyNull || ReferenceEquals(a, null);
+        bool bIsNull = b is MyNull || ReferenceEquals(b, null);
         if (aIsNull && bIsNull)
             return true;
         return !aIsNull && a.Equals(b);
@@ -834,43 +743,6 @@ public abstract partial class MyData
     #endregion Escape()
 
 #endregion operators
-
-    #region IsNumeric()
-    public static bool IsNumeric(object x)
-    {
-        if (x == null) return false;
-        Type type = x.GetType();
-        if (type == typeof(byte) || type == typeof(sbyte))
-        {
-            return true;
-        }
-        else if (type == typeof(short) || type == typeof(ushort))
-        {
-            return true;
-        }
-        else if (type == typeof(int) || type == typeof(uint))
-        {
-            return true;
-        }
-        else if (type == typeof(long) || type == typeof(ulong))
-        {
-            return true;
-        }
-        else if (type == typeof(float))
-        {
-            return true;
-        }
-        else if (type == typeof(double))
-        {
-            return true;
-        }
-        else if (type == typeof(decimal))
-        {
-            return true;
-        }
-        return false;
-    }
-    #endregion IsNumeric()
 
     #region FromString()
     public static MyData FromString(string aJSON)
@@ -1370,10 +1242,6 @@ public partial class MyArray : MyData
     {
         aSB.Append('[');
         int count = m_List.Count;
-#if false
-        if (inline)
-            aMode = MyTextMode.Compact;
-#endif
         for (int i = 0; i < count; i++)
         {
             if (i > 0)
@@ -1440,7 +1308,7 @@ public partial class MyObject : MyData
         get
         {
             if (aIndex < 0 || aIndex >= m_Dict.Count)
-                return null;
+                return MyNull.CreateOrGet();
             return m_Dict.ElementAt(aIndex).Value;
         }
         set
@@ -1548,10 +1416,6 @@ public partial class MyObject : MyData
     {
         aSB.Append('{');
         bool first = true;
-#if false
-        if (inline)
-            aMode = MyTextMode.Compact;
-#endif
         foreach (var k in m_Dict)
         {
             if (!first)
@@ -1637,11 +1501,7 @@ public partial class MyString : MyData
 #region MyNumber
 public partial class MyNumber : MyData
 {
-#if false
-    decimal m_Data;
-#else
     internal object m_Data;
-#endif
 
     public override MyNodeType Tag { get { return MyNodeType.Number; } }
     public override bool IsNumber { get { return true; } }
@@ -1672,30 +1532,18 @@ public partial class MyNumber : MyData
 
     public override double AsDouble
     {
-#if false
-        get { return m_Data; }
-        set { m_Data = value; }
-#else
         get
         {
             return Convert.ToDouble(m_Data);
         }
-        set
-        {
-            //m_Data = Convert.ToDecimal(value);
-            m_Data = value;
-        }
-#endif
     }
     public override long AsLong
     {
         get { return (long)Convert.ToDecimal(m_Data); }
-        set { m_Data = value; }
     }
     public override ulong AsULong
     {
         get { return (ulong)Convert.ToDecimal(m_Data); }
-        set { m_Data = value; }
     }
 
     public MyNumber(object aData)
@@ -1711,14 +1559,6 @@ public partial class MyNumber : MyData
         }
         m_Data = aData;
     }
-
-#if false
-    public MyNumber(string aData)
-    {
-        Value = aData;
-    }
-#else
-#endif
 
     public override MyData Clone()
     {
@@ -1747,13 +1587,8 @@ public partial class MyNumber : MyData
         MyNumber s2 = obj as MyNumber;
         if (s2 != null)
             return m_Data == s2.m_Data;
-#if false
-        if (IsNumeric(obj))
-            return Convert.ToDouble(obj) == m_Data;
-#else
         if (IsNumeric(obj))
             return Convert.ToDecimal(obj) == Convert.ToDecimal(m_Data);
-#endif
         return false;
     }
     public override int GetHashCode()
@@ -1790,7 +1625,6 @@ public partial class MyBool : MyData
     public override bool AsBool
     {
         get { return m_Data; }
-        set { m_Data = value; }
     }
 
     public MyBool(bool aData)
@@ -1857,7 +1691,6 @@ public partial class MyNull : MyData
     public override bool AsBool
     {
         get { return false; }
-        set { }
     }
 
     public override MyData Clone()
@@ -1897,13 +1730,6 @@ public class MyTool
         DebugFlag = flag;
         return this;
     }
-#if false
-    public MyTool WithUsingNUnit(bool flag)
-    {
-        UsingNUnit |= flag;
-        return this;
-    }
-#endif
     public void Echo(object x, string title = null)
     {
         String s = "";
