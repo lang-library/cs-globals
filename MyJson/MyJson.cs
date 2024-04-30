@@ -995,73 +995,103 @@ public abstract partial class MyData
     //public static MyData FromObject(object item, bool display = false)
     public static MyData FromObject(object item)
     {
+        //Console.Error.WriteLine("FromObject(1)");
         if (item == null)
         {
+            //Console.Error.WriteLine("FromObject(2)");
             return MyNull.CreateOrGet();
         }
+        //Console.Error.WriteLine("FromObject(3)");
 
+#if false
         var MyData = item as MyData;
         if (MyData != null)
         {
+            //Console.Error.WriteLine("FromObject(4)");
             return MyData/*.Clone()*/;
         }
+#endif
 
         Type type = item.GetType();
+        if (type == typeof(MyArray)
+         || type == typeof(MyObject)
+         || type == typeof(MyString)
+         || type == typeof(MyNumber)
+         || type == typeof(MyBool)
+         || type == typeof(MyNull))
+        {
+            //Console.Error.WriteLine("FromObject(4.1)");
+            return (MyData)item;
+        }
         if (type == typeof(string) || type == typeof(char))
         {
+            //Console.Error.WriteLine("FromObject(5)");
             string str = item.ToString();
             return new MyString(str);
         }
         else if (type == typeof(byte) || type == typeof(sbyte))
         {
+            //Console.Error.WriteLine("FromObject(6)");
             return new MyNumber(item);
         }
         else if (type == typeof(short) || type == typeof(ushort))
         {
+            //Console.Error.WriteLine("FromObject(7)");
             return new MyNumber(item);
         }
         else if (type == typeof(int) || type == typeof(uint))
         {
+            //Console.Error.WriteLine("FromObject(8)");
             return new MyNumber(item);
         }
         else if (type == typeof(long) || type == typeof(ulong))
         {
+            //Console.Error.WriteLine("FromObject(9)");
             return new MyNumber(item);
         }
         else if (type == typeof(float))
         {
+            //Console.Error.WriteLine("FromObject(10)");
             return new MyNumber(item);
         }
         else if (type == typeof(double))
         {
+            //Console.Error.WriteLine("FromObject(11)");
             return new MyNumber(item);
         }
         else if (type == typeof(decimal))
         {
+            //Console.Error.WriteLine("FromObject(12)");
             return new MyNumber(item);
         }
         else if (type == typeof(bool))
         {
+            //Console.Error.WriteLine("FromObject(13)");
             return new MyBool((bool)item);
         }
         else if (type == typeof(DateTime))
         {
+            //Console.Error.WriteLine("FromObject(14)");
             return new MyString(((DateTime)item).ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"));
         }
         else if (type == typeof(TimeSpan))
         {
+            //Console.Error.WriteLine("FromObject(15)");
             return new MyString(item.ToString());
         }
         else if (type == typeof(Guid))
         {
+            //Console.Error.WriteLine("FromObject(16)");
             return new MyString(item.ToString());
         }
         else if (type.IsEnum)
         {
+            //Console.Error.WriteLine("FromObject(17)");
             return new MyString(item.ToString());
         }
         else if (item is ExpandoObject)
         {
+            //Console.Error.WriteLine("FromObject(18)");
             var dic = item as IDictionary<string, object>;
             var result = new MyObject();
             foreach (var key in dic.Keys)
@@ -1072,16 +1102,20 @@ public abstract partial class MyData
         }
         else if (item is IList)
         {
+            //Console.Error.WriteLine("FromObject(19)");
             IList list = item as IList;
+            //Console.Error.WriteLine($"list.Count: {list.Count}");
             var result = new MyArray();
             for (int i = 0; i < list.Count; i++)
             {
+                //Console.Error.WriteLine($"i: {i}");
                 result.Add(FromObject(list[i]));
             }
             return result;
         }
         else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
         {
+            //Console.Error.WriteLine("FromObject(20)");
             Type keyType = type.GetGenericArguments()[0];
             var result = new MyObject();
             //Refuse to output dictionary keys that aren't of type string
@@ -1098,8 +1132,11 @@ public abstract partial class MyData
         }
         else
         {
+            //Console.Error.WriteLine("FromObject(21)");
+            //Console.Error.WriteLine(type.FullName);
             Type keyType = type.GetGenericArguments()[0];
             FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            Console.Error.WriteLine("FromObject(21.1)");
             var result = new MyObject();
             for (int i = 0; i < fieldInfos.Length; i++)
             {
@@ -1108,6 +1145,7 @@ public abstract partial class MyData
                 object value = fieldInfos[i].GetValue(item);
                 result[GetMemberName(fieldInfos[i])] = FromObject(value);
             }
+            //Console.Error.WriteLine("FromObject(21.2)");
             PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
             for (int i = 0; i < propertyInfo.Length; i++)
             {
@@ -1116,6 +1154,7 @@ public abstract partial class MyData
                 object value = propertyInfo[i].GetValue(item, null);
                 result[GetMemberName(propertyInfo[i])] = FromObject(value);
             }
+            //Console.Error.WriteLine("FromObject(22)");
             return result;
         }
     }
