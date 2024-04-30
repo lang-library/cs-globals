@@ -19,7 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-namespace Globals.Parser.Json5 {
+namespace MyJson.Parser.Json5 {
 using System;
 using System.IO;
 using System.Text;
@@ -614,4 +614,4 @@ public partial class JSON5Parser : Parser {
 
 
 }
-} // namespace Globals.Parser.Json5
+} // namespace MyJson.Parser.Json5

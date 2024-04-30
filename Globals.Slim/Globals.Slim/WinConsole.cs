@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Text;
 using System.Security.Cryptography;
-namespace Globals;
+namespace MyJson;
 internal static class WinConsole
 {
     static public void Initialize(bool alwaysCreateNewConsole = true)

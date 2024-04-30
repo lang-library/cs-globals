@@ -1,11 +1,11 @@
 #if true
-using static Globals.Util;
+using static MyJson.Util;
 using LiteDB;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using static Globals.LiteDBProps;
-namespace Globals;
+using static MyJson.LiteDBProps;
+namespace MyJson;
 public class LiteDBProps
 {
     public class Prop
@@ -66,7 +66,7 @@ public class LiteDBProps
     }
     public void Put(string name, dynamic? data)
     {
-        if (data is MyJson) data = ((MyJson)data).ToObject();
+        if (data is MyData) data = ((MyData)data).ToObject();
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
             Connection = ConnectionType.Shared

@@ -2,7 +2,8 @@
 #endregion License and information
 
 using Antlr4.Runtime;
-using Globals.Parser.Json5;
+using MyJson.Parser.Json5;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Globals;
+namespace MyJson;
 
 #region enums
 public enum MyNodeType
@@ -34,38 +35,41 @@ public enum MyTextMode
 }
 #endregion enums
 
-#region MyJson
-public abstract partial class MyJson
+#region MyData
+public abstract partial class MyData
+
+
+
 {
     #region Enumerators
     public struct Enumerator
     {
         private enum Type { None, Array, Object }
         private Type type;
-        private Dictionary<string, MyJson>.Enumerator m_Object;
-        private List<MyJson>.Enumerator m_Array;
+        private Dictionary<string, MyData>.Enumerator m_Object;
+        private List<MyData>.Enumerator m_Array;
         public bool IsValid { get { return type != Type.None; } }
-        public Enumerator(List<MyJson>.Enumerator aArrayEnum)
+        public Enumerator(List<MyData>.Enumerator aArrayEnum)
         {
             type = Type.Array;
-            m_Object = default(Dictionary<string, MyJson>.Enumerator);
+            m_Object = default(Dictionary<string, MyData>.Enumerator);
             m_Array = aArrayEnum;
         }
-        public Enumerator(Dictionary<string, MyJson>.Enumerator aDictEnum)
+        public Enumerator(Dictionary<string, MyData>.Enumerator aDictEnum)
         {
             type = Type.Object;
             m_Object = aDictEnum;
-            m_Array = default(List<MyJson>.Enumerator);
+            m_Array = default(List<MyData>.Enumerator);
         }
-        public KeyValuePair<string, MyJson> Current
+        public KeyValuePair<string, MyData> Current
         {
             get
             {
                 if (type == Type.Array)
-                    return new KeyValuePair<string, MyJson>(string.Empty, m_Array.Current);
+                    return new KeyValuePair<string, MyData>(string.Empty, m_Array.Current);
                 else if (type == Type.Object)
                     return m_Object.Current;
-                return new KeyValuePair<string, MyJson>(string.Empty, null);
+                return new KeyValuePair<string, MyData>(string.Empty, null);
             }
         }
         public bool MoveNext()
@@ -80,35 +84,35 @@ public abstract partial class MyJson
     public struct ValueEnumerator
     {
         private Enumerator m_Enumerator;
-        public ValueEnumerator(List<MyJson>.Enumerator aArrayEnum) : this(new Enumerator(aArrayEnum)) { }
-        public ValueEnumerator(Dictionary<string, MyJson>.Enumerator aDictEnum) : this(new Enumerator(aDictEnum)) { }
+        public ValueEnumerator(List<MyData>.Enumerator aArrayEnum) : this(new Enumerator(aArrayEnum)) { }
+        public ValueEnumerator(Dictionary<string, MyData>.Enumerator aDictEnum) : this(new Enumerator(aDictEnum)) { }
         public ValueEnumerator(Enumerator aEnumerator) { m_Enumerator = aEnumerator; }
-        public MyJson Current { get { return m_Enumerator.Current.Value; } }
+        public MyData Current { get { return m_Enumerator.Current.Value; } }
         public bool MoveNext() { return m_Enumerator.MoveNext(); }
         public ValueEnumerator GetEnumerator() { return this; }
     }
     public struct KeyEnumerator
     {
         private Enumerator m_Enumerator;
-        public KeyEnumerator(List<MyJson>.Enumerator aArrayEnum) : this(new Enumerator(aArrayEnum)) { }
-        public KeyEnumerator(Dictionary<string, MyJson>.Enumerator aDictEnum) : this(new Enumerator(aDictEnum)) { }
+        public KeyEnumerator(List<MyData>.Enumerator aArrayEnum) : this(new Enumerator(aArrayEnum)) { }
+        public KeyEnumerator(Dictionary<string, MyData>.Enumerator aDictEnum) : this(new Enumerator(aDictEnum)) { }
         public KeyEnumerator(Enumerator aEnumerator) { m_Enumerator = aEnumerator; }
         public string Current { get { return m_Enumerator.Current.Key; } }
         public bool MoveNext() { return m_Enumerator.MoveNext(); }
         public KeyEnumerator GetEnumerator() { return this; }
     }
 
-    public class LinqEnumerator : IEnumerator<KeyValuePair<string, MyJson>>, IEnumerable<KeyValuePair<string, MyJson>>
+    public class LinqEnumerator : IEnumerator<KeyValuePair<string, MyData>>, IEnumerable<KeyValuePair<string, MyData>>
     {
-        private MyJson m_Node;
+        private MyData m_Node;
         private Enumerator m_Enumerator;
-        internal LinqEnumerator(MyJson aNode)
+        internal LinqEnumerator(MyData aNode)
         {
             m_Node = aNode;
             if (m_Node != null)
                 m_Enumerator = m_Node.GetEnumerator();
         }
-        public KeyValuePair<string, MyJson> Current { get { return m_Enumerator.Current; } }
+        public KeyValuePair<string, MyData> Current { get { return m_Enumerator.Current; } }
         object IEnumerator.Current { get { return m_Enumerator.Current; } }
         public bool MoveNext() { return m_Enumerator.MoveNext(); }
 
@@ -118,7 +122,7 @@ public abstract partial class MyJson
             m_Enumerator = new Enumerator();
         }
 
-        public IEnumerator<KeyValuePair<string, MyJson>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, MyData>> GetEnumerator()
         {
             return new LinqEnumerator(m_Node);
         }
@@ -145,9 +149,9 @@ public abstract partial class MyJson
 
     public abstract MyNodeType Tag { get; }
 
-    public virtual MyJson this[int aIndex] { get { return null; } set { } }
+    public virtual MyData this[int aIndex] { get { return null; } set { } }
 
-    public virtual MyJson this[string aKey] { get { return null; } set { } }
+    public virtual MyData this[string aKey] { get { return null; } set { } }
 
     public virtual string Value { get { return ""; } set { } }
 
@@ -162,36 +166,36 @@ public abstract partial class MyJson
 
     public virtual bool Inline { get { return false; } set { } }
 
-    public virtual void Add(string aKey, MyJson aItem)
+    public virtual void Add(string aKey, MyData aItem)
     {
     }
-    public virtual void Add(MyJson aItem)
+    public virtual void Add(MyData aItem)
     {
         Add("", aItem);
     }
 
-    public virtual MyJson Remove(string aKey)
+    public virtual MyData Remove(string aKey)
     {
         return null;
     }
 
-    public virtual MyJson Remove(int aIndex)
+    public virtual MyData Remove(int aIndex)
     {
         return null;
     }
 
-    public virtual MyJson Remove(MyJson aNode)
+    public virtual MyData Remove(MyData aNode)
     {
         return aNode;
     }
     public virtual void Clear() { }
 
-    public virtual MyJson Clone()
+    public virtual MyData Clone()
     {
         return null;
     }
 
-    public virtual IEnumerable<MyJson> Children
+    public virtual IEnumerable<MyData> Children
     {
         get
         {
@@ -199,7 +203,7 @@ public abstract partial class MyJson
         }
     }
 
-    public IEnumerable<MyJson> DeepChildren
+    public IEnumerable<MyData> DeepChildren
     {
         get
         {
@@ -214,7 +218,7 @@ public abstract partial class MyJson
         return false;
     }
 
-    public virtual MyJson GetValueOrDefault(string aKey, MyJson aDefault)
+    public virtual MyData GetValueOrDefault(string aKey, MyData aDefault)
     {
         return aDefault;
     }
@@ -280,7 +284,7 @@ public abstract partial class MyJson
 
     #region enumerator
     public abstract Enumerator GetEnumerator();
-    public IEnumerable<KeyValuePair<string, MyJson>> Linq { get { return new LinqEnumerator(this); } }
+    public IEnumerable<KeyValuePair<string, MyData>> Linq { get { return new LinqEnumerator(this); } }
     public KeyEnumerator Keys { get { return new KeyEnumerator(GetEnumerator()); } }
     public ValueEnumerator Values { get { return new ValueEnumerator(GetEnumerator()); } }
     #endregion enumerator
@@ -742,7 +746,7 @@ public abstract partial class MyJson
     #endregion DoubleList
 
     #region ==/!=
-    public static bool operator ==(MyJson a, object b)
+    public static bool operator ==(MyData a, object b)
     {
         if (ReferenceEquals(a, b))
             return true;
@@ -752,7 +756,7 @@ public abstract partial class MyJson
             return true;
         return !aIsNull && a.Equals(b);
     }
-    public static bool operator !=(MyJson a, object b)
+    public static bool operator !=(MyData a, object b)
     {
         return !(a == b);
     }
@@ -870,7 +874,7 @@ public abstract partial class MyJson
     #endregion IsNumeric()
 
     #region FromString()
-    public static MyJson FromString(string aJSON)
+    public static MyData FromString(string aJSON)
     {
         if (String.IsNullOrEmpty(aJSON)) return null;
         var inputStream = new AntlrInputStream(aJSON);
@@ -882,10 +886,10 @@ public abstract partial class MyJson
         return result;
     }
 
-    private static MyJson ParseJsonString(string aJSON)
+    private static MyData ParseJsonString(string aJSON)
     {
-        Stack<MyJson> stack = new Stack<MyJson>();
-        //MyJson ctx = null;
+        Stack<MyData> stack = new Stack<MyData>();
+        //MyData ctx = null;
         int i = 0;
         StringBuilder Token = new StringBuilder();
         //string TokenName = "";
@@ -967,7 +971,7 @@ public abstract partial class MyJson
         return FromObject(Token.ToString());
     }
 
-    private static MyJson JSON5ToObject(ParserRuleContext x)
+    private static MyData JSON5ToObject(ParserRuleContext x)
     {
         if (x is JSON5Parser.Json5Context)
         {
@@ -1117,18 +1121,18 @@ public abstract partial class MyJson
     #endregion FromString()
 
     #region FromObject()
-    //public static MyJson FromObject(object item, bool display = false)
-    public static MyJson FromObject(object item)
+    //public static MyData FromObject(object item, bool display = false)
+    public static MyData FromObject(object item)
     {
         if (item == null)
         {
             return MyNull.CreateOrGet();
         }
 
-        var myjson = item as MyJson;
-        if (myjson != null)
+        var MyData = item as MyData;
+        if (MyData != null)
         {
-            return myjson/*.Clone()*/;
+            return MyData/*.Clone()*/;
         }
 
         Type type = item.GetType();
@@ -1259,13 +1263,13 @@ public abstract partial class MyJson
     #endregion FromObject()
 
 }
-// End of MyJson
-#endregion MyJson
+// End of MyData
+#endregion MyData
 
 #region MyArray
-public partial class MyArray : MyJson
+public partial class MyArray : MyData
 {
-    private List<MyJson> m_List = new List<MyJson>();
+    private List<MyData> m_List = new List<MyData>();
     private bool inline = false;
     public override bool Inline
     {
@@ -1277,7 +1281,7 @@ public partial class MyArray : MyJson
     public override bool IsArray { get { return true; } }
     public override Enumerator GetEnumerator() { return new Enumerator(m_List.GetEnumerator()); }
 
-    public override MyJson this[int aIndex]
+    public override MyData this[int aIndex]
     {
         get
         {
@@ -1296,7 +1300,7 @@ public partial class MyArray : MyJson
         }
     }
 
-    public override MyJson this[string aKey]
+    public override MyData this[string aKey]
     {
         get { return MyNull.CreateOrGet()/*new MyLazyCreator(this)*/; }
         set
@@ -1312,23 +1316,23 @@ public partial class MyArray : MyJson
         get { return m_List.Count; }
     }
 
-    public override void Add(string aKey, MyJson aItem)
+    public override void Add(string aKey, MyData aItem)
     {
         if (aItem == null)
             aItem = MyNull.CreateOrGet();
         m_List.Add(aItem);
     }
 
-    public override MyJson Remove(int aIndex)
+    public override MyData Remove(int aIndex)
     {
         if (aIndex < 0 || aIndex >= m_List.Count)
             return null;
-        MyJson tmp = m_List[aIndex];
+        MyData tmp = m_List[aIndex];
         m_List.RemoveAt(aIndex);
         return tmp;
     }
 
-    public override MyJson Remove(MyJson aNode)
+    public override MyData Remove(MyData aNode)
     {
         m_List.Remove(aNode);
         return aNode;
@@ -1339,7 +1343,7 @@ public partial class MyArray : MyJson
         m_List.Clear();
     }
 
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         var node = new MyArray();
         node.m_List.Capacity = m_List.Capacity;
@@ -1353,11 +1357,11 @@ public partial class MyArray : MyJson
         return node;
     }
 
-    public override IEnumerable<MyJson> Children
+    public override IEnumerable<MyData> Children
     {
         get
         {
-            foreach (MyJson N in m_List)
+            foreach (MyData N in m_List)
                 yield return N;
         }
     }
@@ -1391,9 +1395,9 @@ public partial class MyArray : MyJson
 #endregion MyArray
 
 #region MyObject
-public partial class MyObject : MyJson
+public partial class MyObject : MyData
 {
-    private Dictionary<string, MyJson> m_Dict = new Dictionary<string, MyJson>();
+    private Dictionary<string, MyData> m_Dict = new Dictionary<string, MyData>();
 
     private bool inline = false;
     public override bool Inline
@@ -1408,7 +1412,7 @@ public partial class MyObject : MyJson
     public override Enumerator GetEnumerator() { return new Enumerator(m_Dict.GetEnumerator()); }
 
 
-    public override MyJson this[string aKey]
+    public override MyData this[string aKey]
     {
         get
         {
@@ -1432,7 +1436,7 @@ public partial class MyObject : MyJson
         }
     }
 
-    public override MyJson this[int aIndex]
+    public override MyData this[int aIndex]
     {
         get
         {
@@ -1456,7 +1460,7 @@ public partial class MyObject : MyJson
         get { return m_Dict.Count; }
     }
 
-    public override void Add(string aKey, MyJson aItem)
+    public override void Add(string aKey, MyData aItem)
     {
         if (aItem == null)
             aItem = MyNull.CreateOrGet();
@@ -1472,16 +1476,16 @@ public partial class MyObject : MyJson
             m_Dict.Add(Guid.NewGuid().ToString(), aItem);
     }
 
-    public override MyJson Remove(string aKey)
+    public override MyData Remove(string aKey)
     {
         if (!m_Dict.ContainsKey(aKey))
             return null;
-        MyJson tmp = m_Dict[aKey];
+        MyData tmp = m_Dict[aKey];
         m_Dict.Remove(aKey);
         return tmp;
     }
 
-    public override MyJson Remove(int aIndex)
+    public override MyData Remove(int aIndex)
     {
         if (aIndex < 0 || aIndex >= m_Dict.Count)
             return null;
@@ -1490,7 +1494,7 @@ public partial class MyObject : MyJson
         return item.Value;
     }
 
-    public override MyJson Remove(MyJson aNode)
+    public override MyData Remove(MyData aNode)
     {
         try
         {
@@ -1509,7 +1513,7 @@ public partial class MyObject : MyJson
         m_Dict.Clear();
     }
 
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         var node = new MyObject();
         foreach (var n in m_Dict)
@@ -1524,19 +1528,19 @@ public partial class MyObject : MyJson
         return m_Dict.ContainsKey(aKey);
     }
 
-    public override MyJson GetValueOrDefault(string aKey, MyJson aDefault)
+    public override MyData GetValueOrDefault(string aKey, MyData aDefault)
     {
-        MyJson res;
+        MyData res;
         if (m_Dict.TryGetValue(aKey, out res))
             return res;
         return aDefault;
     }
 
-    public override IEnumerable<MyJson> Children
+    public override IEnumerable<MyData> Children
     {
         get
         {
-            foreach (KeyValuePair<string, MyJson> N in m_Dict)
+            foreach (KeyValuePair<string, MyData> N in m_Dict)
                 yield return N.Value;
         }
     }
@@ -1575,7 +1579,7 @@ public partial class MyObject : MyJson
 #endregion MyObject
 
 #region MyString
-public partial class MyString : MyJson
+public partial class MyString : MyData
 {
     private string m_Data;
 
@@ -1598,7 +1602,7 @@ public partial class MyString : MyJson
     {
         m_Data = aData;
     }
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         return new MyString(m_Data);
     }
@@ -1632,7 +1636,7 @@ public partial class MyString : MyJson
 #endregion MyString
 
 #region MyNumber
-public partial class MyNumber : MyJson
+public partial class MyNumber : MyData
 {
 #if false
     decimal m_Data;
@@ -1717,7 +1721,7 @@ public partial class MyNumber : MyJson
 #else
 #endif
 
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         return new MyNumber(m_Data);
     }
@@ -1766,7 +1770,7 @@ public partial class MyNumber : MyJson
 #endregion MyNumber
 
 #region MyBool
-public partial class MyBool : MyJson
+public partial class MyBool : MyData
 {
     private bool m_Data;
 
@@ -1800,7 +1804,7 @@ public partial class MyBool : MyJson
         Value = aData;
     }
 
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         return new MyBool(m_Data);
     }
@@ -1830,7 +1834,7 @@ public partial class MyBool : MyJson
 #endregion MyBool
 
 #region MyNull
-public partial class MyNull : MyJson
+public partial class MyNull : MyData
 {
     static MyNull m_StaticInstance = new MyNull();
     public static bool reuseSameInstance = true;
@@ -1857,7 +1861,7 @@ public partial class MyNull : MyJson
         set { }
     }
 
-    public override MyJson Clone()
+    public override MyData Clone()
     {
         return CreateOrGet();
     }
@@ -1880,3 +1884,101 @@ public partial class MyNull : MyJson
 }
 // End of MyNull
 #endregion MyNull
+
+#region MyTool
+public class MyTool
+{
+    bool DebugFlag = false;
+    //bool UsingNUnit = false;
+    public MyTool()
+    {
+    }
+    public MyTool WithDebugFlag(bool flag)
+    {
+        DebugFlag = flag;
+        return this;
+    }
+#if false
+    public MyTool WithUsingNUnit(bool flag)
+    {
+        UsingNUnit |= flag;
+        return this;
+    }
+#endif
+    public void Echo(object x, string title = null)
+    {
+        String s = "";
+        if (title != null) s = title + ": ";
+        s += ToDisplayString(x);
+        Console.WriteLine(s);
+        System.Diagnostics.Debug.WriteLine(s);
+        //if (UsingNUnit) TestContext.Out.WriteLine(s);
+    }
+    public void Log(dynamic x, string? title = null)
+    {
+        String s = "";
+        if (title != null) s = title + ": ";
+        s += ToDisplayString(x);
+        Console.Error.WriteLine("[Log] " + s);
+        System.Diagnostics.Debug.WriteLine("[Log] " + s);
+        //if (UsingNUnit) TestContext.Out.WriteLine("[Log] " + s);
+    }
+    public void Debug(dynamic x, string? title = null)
+    {
+        if (!DebugFlag) return;
+        String s = "";
+        if (title != null) s = title + ": ";
+        s += ToDisplayString(x);
+        Console.Error.WriteLine("[Debug] " + s);
+        System.Diagnostics.Debug.WriteLine("[Debug] " + s);
+        //if (UsingNUnit) TestContext.Out.WriteLine("[Debug] " + s);
+    }
+    public string FullName(dynamic x)
+    {
+        if (x is null) return "null";
+        string fullName = ((object)x).GetType().FullName;
+        return fullName.Split('`')[0];
+    }
+    protected string ToJson(object x, bool indent = false)
+    {
+        if (x is MyData)
+        {
+            return ((MyData)x).ToString(indent);
+        }
+        var myJson = MyData.FromObject(x);
+        return myJson.ToString(indent);
+    }
+    protected string ToDisplayString(object x)
+    {
+        if (x is null) return "null";
+        if (x is string)
+        {
+            return "\"" + (string)x + "\"";
+        }
+        string output = null;
+        if (x is MyString)
+        {
+            var value = (MyString)x;
+            output = "\"" + value.Value + "\"";
+        }
+        else if (x is MyData)
+        {
+            var value = (MyData)x;
+            output = value.ToString(true);
+        }
+        else
+        {
+            try
+            {
+                output = ToJson(x, true);
+            }
+            catch (Exception)
+            {
+                output = x.ToString();
+            }
+        }
+        return $"<{FullName(x)}> {output}";
+    }
+
+}
+#endregion MyTool

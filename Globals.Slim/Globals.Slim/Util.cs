@@ -13,7 +13,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.CodeDom;
 
-namespace Globals;
+namespace MyJson;
 public class Util
 {
     public static bool DebugFlag = false;
@@ -378,28 +378,28 @@ public class Util
     //public static string ToJson(object x, bool indent = false, bool display = false)
     public static string ToJson(object x, bool indent = false)
     {
-        if (x is MyJson)
+        if (x is MyData)
         {
-            return ((MyJson)x).ToString(indent);
+            return ((MyData)x).ToString(indent);
         }
         //var myJson = MyJson.FromObject(x, display);
-        var myJson = MyJson.FromObject(x);
+        var myJson = MyData.FromObject(x);
         return myJson.ToString(indent);
     }
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyJson node = MyJson.FromString(json);
+        MyData node = MyData.FromString(json);
         return node.ToString(indent);
     }
     public static dynamic FromJson(string json)
     {
-        var myJson = MyJson.FromString(json);
+        var myJson = MyData.FromString(json);
         return myJson.ToObject();
     }
-    public static MyJson AsMyJson(object x)
+    public static MyData AsMyJson(object x)
     {
-        if (x is MyJson) return ((MyJson)x).Clone();
-        return MyJson.FromObject(x);
+        if (x is MyData) return ((MyData)x).Clone();
+        return MyData.FromObject(x);
     }
     public static string ToString(dynamic x)
     {
@@ -415,9 +415,9 @@ public class Util
             output = "\"" + value.Value + "\"";
             //output = "'" + value.Value + "'";
         }
-        else if (x is MyJson)
+        else if (x is MyData)
         {
-            var value = (MyJson)x;
+            var value = (MyData)x;
             output = value.ToString(2);
         }
         else if (x is System.DateTime)
@@ -507,12 +507,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyJson.FromString(json);
+        return MyData.FromString(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyJson.FromString(json);
+        return MyData.FromString(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {

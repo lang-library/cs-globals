@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-namespace Globals;
+namespace MyJson;
 public static class Extensions
 {
     public static dynamic? ToMyJson(this JsValue x)

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Globals;
+namespace MyJson;
 public class JsonServer
 {
     Type? apiType = null;

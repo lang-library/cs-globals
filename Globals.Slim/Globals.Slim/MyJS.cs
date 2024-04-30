@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Globals;
+namespace MyJson;
 
 public class MyJS
 {
@@ -64,7 +64,7 @@ public class MyJS
     {
         return engine.GetValue(name).ToObject();
     }
-    public MyJson GetValueAsMyJson(string name)
+    public MyData GetValueAsMyJson(string name)
     {
         return Util.AsMyJson(GetValue(name));
     }
@@ -95,7 +95,7 @@ public class MyJS
         }
         return result;
     }
-    public MyJson EvaluateAsMyJson(string script, params object[] vars)
+    public MyData EvaluateAsMyJson(string script, params object[] vars)
     {
         return Util.AsMyJson(Evaluate(script, vars));
     }
@@ -116,7 +116,7 @@ public class MyJS
         }
         return result;
     }
-    public MyJson CallAsMyJson(string name, params object[] vars)
+    public MyData CallAsMyJson(string name, params object[] vars)
     {
         return Util.AsMyJson(Call(name, vars));
     }
