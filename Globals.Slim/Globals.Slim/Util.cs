@@ -12,8 +12,9 @@ using System.Media;
 using System.Threading;
 using System.Net.Sockets;
 using System.CodeDom;
+using MyJson;
 
-namespace MyJson;
+namespace Globals;
 public class Util
 {
     public static bool DebugFlag = false;

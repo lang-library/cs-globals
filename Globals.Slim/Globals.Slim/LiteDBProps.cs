@@ -1,11 +1,10 @@
 #if true
-using static MyJson.Util;
+using static Globals.Util;
 using LiteDB;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
-using static MyJson.LiteDBProps;
-namespace MyJson;
+using MyJson;
+namespace Globals;
 public class LiteDBProps
 {
     public class Prop

@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Reflection;
 using System.Text;
 
-namespace MyJson;
+namespace Globals;
 
 public class Installer
 {

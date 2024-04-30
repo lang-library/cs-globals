@@ -8,7 +8,7 @@ using System;
 //using CurlThin.SafeHandles;
 using System.Text;
 using System.Web.Routing;
-namespace MyJson;
+namespace Globals;
 class PartialHTTPStream : Stream, IDisposable
 {
     Stream stream = null;

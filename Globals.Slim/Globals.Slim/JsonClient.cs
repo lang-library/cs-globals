@@ -1,10 +1,11 @@
+using MyJson;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace MyJson;
+namespace Globals;
 public class JsonClient
 {
 #if false

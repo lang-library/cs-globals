@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace MyJson;
+namespace Globals;
 public static class TextEmbedder
 {
     const long MinimumCheckLength = 8192;

@@ -5,7 +5,7 @@ using Jint.Native;
 using System;
 using System.IO;
 using System.Reflection;
-namespace MyJson;
+namespace Globals;
 public class JintScript
 {
     public static Jint.Engine CreateEngine(params Assembly[] list)

@@ -1,10 +1,11 @@
 ﻿//using Newtonsoft.Json.Linq;
+using MyJson;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace MyJson;
+namespace Globals;
 
 public class MyJS
 {

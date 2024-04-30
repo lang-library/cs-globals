@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
-namespace MyJson;
+namespace Globals;
 internal class Internal
 {
     public static string InstallResourceDll(string name)
