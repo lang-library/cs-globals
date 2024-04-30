@@ -4,7 +4,6 @@
 using Antlr4.Runtime;
 using Globals.Parser.Json5;
 using System;
-using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -382,82 +381,6 @@ public abstract partial class MyJson
 
     #region operators
 
-    #region String
-    public static implicit operator MyJson(string s)
-    {
-        return FromObject(s);
-    }
-    public static implicit operator string(MyJson d)
-    {
-        return (d == null) ? null : d.Value;
-    }
-    #endregion String
-
-    #region Double
-    public static implicit operator MyJson(double n)
-    {
-        return FromObject(n);
-    }
-    public static implicit operator double(MyJson d)
-    {
-        return (d == null) ? 0 : d.AsDouble;
-    }
-    #endregion Double
-
-    #region Float
-    public static implicit operator MyJson(float n)
-    {
-        return FromObject(n);
-    }
-    public static implicit operator float(MyJson d)
-    {
-        return (d == null) ? 0 : d.AsFloat;
-    }
-    #endregion Float
-
-    #region Int
-    public static implicit operator MyJson(int n)
-    {
-        return FromObject(n);
-    }
-    public static implicit operator int(MyJson d)
-    {
-        return (d == null) ? 0 : d.AsInt;
-    }
-    #endregion Int
-
-    #region Long
-    public static implicit operator MyJson(long n)
-    {
-        return FromObject(n);
-    }
-    public static implicit operator long(MyJson d)
-    {
-        return (d == null) ? 0L : d.AsLong;
-    }
-    #endregion Long
-
-    #region ULong
-    public static implicit operator MyJson(ulong n)
-    {
-        return FromObject(n);
-    }
-    public static implicit operator ulong(MyJson d)
-    {
-        return (d == null) ? 0 : d.AsULong;
-    }
-    #endregion ULong
-
-    #region Bool
-    public static implicit operator MyJson(bool b)
-    {
-        return FromObject(b);
-    }
-    public static implicit operator bool(MyJson d)
-    {
-        return (d == null) ? false : d.AsBool;
-    }
-    #endregion Bool
 
     #region Decimal
     public virtual decimal AsDecimal
@@ -474,16 +397,6 @@ public abstract partial class MyJson
             Value = value.ToString();
         }
     }
-
-    public static implicit operator MyJson(decimal aDecimal)
-    {
-        return FromObject(aDecimal);
-    }
-
-    public static implicit operator decimal(MyJson d)
-    {
-        return (d == null) ? 0 : d.AsDecimal;
-    }
     #endregion Decimal
 
     #region UInt
@@ -497,20 +410,6 @@ public abstract partial class MyJson
         {
             AsDouble = value;
         }
-    }
-
-    public static implicit operator MyJson(uint aUInt)
-    {
-#if false
-        return new MyNumber(aUInt);
-#else
-        return new MyNumber((decimal)aUInt);
-#endif
-    }
-
-    public static implicit operator uint(MyJson aNode)
-    {
-        return aNode.AsUInt;
     }
     #endregion UInt
 
@@ -526,16 +425,6 @@ public abstract partial class MyJson
             AsInt = value;
         }
     }
-
-    public static implicit operator MyJson(byte aByte)
-    {
-        return FromObject(aByte);
-    }
-
-    public static implicit operator byte(MyJson d)
-    {
-        return d == null ? (byte)0 : d.AsByte;
-    }
     #endregion Byte
     #region SByte
     public virtual sbyte AsSByte
@@ -548,16 +437,6 @@ public abstract partial class MyJson
         {
             AsInt = value;
         }
-    }
-
-    public static implicit operator MyJson(sbyte aSByte)
-    {
-        return FromObject(aSByte);
-    }
-
-    public static implicit operator sbyte(MyJson d)
-    {
-        return d == null ? (sbyte)0 : d.AsSByte;
     }
     #endregion SByte
 
@@ -573,16 +452,6 @@ public abstract partial class MyJson
             AsInt = value;
         }
     }
-
-    public static implicit operator MyJson(short aShort)
-    {
-        return FromObject(aShort);
-    }
-
-    public static implicit operator short(MyJson d)
-    {
-        return d == null ? (short)0 : d.AsShort;
-    }
     #endregion Short
     #region UShort
     public virtual ushort AsUShort
@@ -595,16 +464,6 @@ public abstract partial class MyJson
         {
             AsInt = value;
         }
-    }
-
-    public static implicit operator MyJson(ushort aUShort)
-    {
-        return FromObject(aUShort);
-    }
-
-    public static implicit operator ushort(MyJson d)
-    {
-        return d == null ? (ushort)0 : d.AsUShort;
     }
     #endregion UShort
 
@@ -620,20 +479,8 @@ public abstract partial class MyJson
         }
         set
         {
-            //Value = value.ToString(CultureInfo.InvariantCulture);
             Value = value.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz");
-
         }
-    }
-
-    public static implicit operator MyJson(System.DateTime aDateTime)
-    {
-        return new MyString(aDateTime.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"));
-    }
-
-    public static implicit operator System.DateTime(MyJson aNode)
-    {
-        return aNode.AsDateTime;
     }
     #endregion DateTime
     #region TimeSpan
@@ -650,16 +497,6 @@ public abstract partial class MyJson
         {
             Value = value.ToString();
         }
-    }
-
-    public static implicit operator MyJson(System.TimeSpan aTimeSpan)
-    {
-        return FromObject(aTimeSpan);
-    }
-
-    public static implicit operator System.TimeSpan(MyJson d)
-    {
-        return d == null ? new TimeSpan(0) : d.AsTimeSpan;
     }
     #endregion TimeSpan
 
@@ -708,18 +545,8 @@ public abstract partial class MyJson
                 return;
             Clear();
             for (int i = 0; i < value.Length; i++)
-                Add(value[i]);
+                Add(FromObject(value[i]));
         }
-    }
-
-    public static implicit operator MyJson(byte[] aByteArray)
-    {
-        return FromObject(aByteArray);
-    }
-
-    public static implicit operator byte[](MyJson d)
-    {
-        return d == null ? null : d.AsByteArray;
     }
     #endregion ByteArray
     #region ByteList
@@ -741,18 +568,8 @@ public abstract partial class MyJson
                 return;
             Clear();
             for (int i = 0; i < value.Count; i++)
-                Add(value[i]);
+                Add(FromObject(value[i]));
         }
-    }
-
-    public static implicit operator MyJson(List<byte> aByteList)
-    {
-        return FromObject(aByteList);
-    }
-
-    public static implicit operator List<byte>(MyJson d)
-    {
-        return d == null ? null : d.AsByteList;
     }
     #endregion ByteList
 
@@ -775,18 +592,8 @@ public abstract partial class MyJson
                 return;
             Clear();
             for (int i = 0; i < value.Length; i++)
-                Add(value[i]);
+                Add(FromObject(value[i]));
         }
-    }
-
-    public static implicit operator MyJson(string[] aStringArray)
-    {
-        return FromObject(aStringArray);
-    }
-
-    public static implicit operator string[](MyJson d)
-    {
-        return d == null ? null : d.AsStringArray;
     }
     #endregion StringArray
     #region StringList
@@ -808,18 +615,8 @@ public abstract partial class MyJson
                 return;
             Clear();
             for (int i = 0; i < value.Count; i++)
-                Add(value[i]);
+                Add(FromObject(value[i]));
         }
-    }
-
-    public static implicit operator MyJson(List<string> aStringList)
-    {
-        return FromObject(aStringList);
-    }
-
-    public static implicit operator List<string>(MyJson d)
-    {
-        return d == null ? null : d.AsStringList;
     }
     #endregion StringList
 
@@ -912,7 +709,44 @@ public abstract partial class MyJson
     }
     #endregion Escape()
 
-    #endregion operators
+#endregion operators
+
+    #region IsNumeric()
+    public static bool IsNumeric(object x)
+    {
+        if (x == null) return false;
+        Type type = x.GetType();
+        if (type == typeof(byte) || type == typeof(sbyte))
+        {
+            return true;
+        }
+        else if (type == typeof(short) || type == typeof(ushort))
+        {
+            return true;
+        }
+        else if (type == typeof(int) || type == typeof(uint))
+        {
+            return true;
+        }
+        else if (type == typeof(long) || type == typeof(ulong))
+        {
+            return true;
+        }
+        else if (type == typeof(float))
+        {
+            return true;
+        }
+        else if (type == typeof(double))
+        {
+            return true;
+        }
+        else if (type == typeof(decimal))
+        {
+            return true;
+        }
+        return false;
+    }
+    #endregion IsNumeric()
 
     #region FromString()
     public static MyJson FromString(string aJSON)
@@ -1009,7 +843,7 @@ public abstract partial class MyJson
         {
             throw new Exception("My Parse: Quotation marks seems to be messed up.");
         }
-        return Token.ToString();
+        return FromObject(Token.ToString());
     }
 
     private static MyJson JSON5ToObject(ParserRuleContext x)
@@ -1046,9 +880,9 @@ public abstract partial class MyJson
                 switch (t)
                 {
                     case "true":
-                        return true;
+                        return FromObject(true);
                     case "false":
-                        return false;
+                        return FromObject(false);
                     case "null":
                         return null;
                 }
@@ -1080,7 +914,7 @@ public abstract partial class MyJson
                 if (x.children[i] is JSON5Parser.PairContext pair)
                 {
                     var pairObj = JSON5ToObject(pair);
-                    string key = (string)pairObj!["key"];
+                    string key = pairObj!["key"].Value;
                     result[key] = pairObj["value"];
                 }
             }
@@ -1122,11 +956,11 @@ public abstract partial class MyJson
                     return ParseJsonString(t);
                 }
 
-                return t;
+                return FromObject(t);
             }
             else
             {
-                return "?";
+                return FromObject("?");
             }
         }
         else if (x is JSON5Parser.NumberContext)
@@ -1161,43 +995,6 @@ public abstract partial class MyJson
     }
     #endregion FromString()
 
-    #region IsNumeric()
-    public static bool IsNumeric(object x)
-    {
-        if (x == null) return false;
-        Type type = x.GetType();
-        if (type == typeof(byte) || type == typeof(sbyte))
-        {
-            return true;
-        }
-        else if (type == typeof(short) || type == typeof(ushort))
-        {
-            return true;
-        }
-        else if (type == typeof(int) || type == typeof(uint))
-        {
-            return true;
-        }
-        else if (type == typeof(long) || type == typeof(ulong))
-        {
-            return true;
-        }
-        else if (type == typeof(float))
-        {
-            return true;
-        }
-        else if (type == typeof(double))
-        {
-            return true;
-        }
-        else if (type == typeof(decimal))
-        {
-            return true;
-        }
-        return false;
-    }
-    #endregion IsNumeric()
-
     #region FromObject()
     //public static MyJson FromObject(object item, bool display = false)
     public static MyJson FromObject(object item)
@@ -1210,7 +1007,7 @@ public abstract partial class MyJson
         var myjson = item as MyJson;
         if (myjson != null)
         {
-            return myjson.Clone();
+            return myjson/*.Clone()*/;
         }
 
         Type type = item.GetType();
