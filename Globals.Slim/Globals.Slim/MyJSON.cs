@@ -379,7 +379,7 @@ public abstract partial class MyJson
     #region String
     public static implicit operator MyJson(string s)
     {
-        return (s == null) ? (MyJson)MyNull.CreateOrGet() : new MyString(s);
+        return FromObject(s);
     }
     public static implicit operator string(MyJson d)
     {
@@ -390,11 +390,7 @@ public abstract partial class MyJson
     #region Double
     public static implicit operator MyJson(double n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator double(MyJson d)
     {
@@ -405,11 +401,7 @@ public abstract partial class MyJson
     #region Float
     public static implicit operator MyJson(float n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator float(MyJson d)
     {
@@ -420,11 +412,7 @@ public abstract partial class MyJson
     #region Int
     public static implicit operator MyJson(int n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator int(MyJson d)
     {
@@ -435,13 +423,7 @@ public abstract partial class MyJson
     #region Long
     public static implicit operator MyJson(long n)
     {
-#if false
-        if (longAsString)
-            return new MyString(n.ToString(CultureInfo.InvariantCulture));
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator long(MyJson d)
     {
@@ -452,13 +434,7 @@ public abstract partial class MyJson
     #region ULong
     public static implicit operator MyJson(ulong n)
     {
-#if false
-        if (longAsString)
-            return new MyString(n.ToString(CultureInfo.InvariantCulture));
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator ulong(MyJson d)
     {
@@ -469,7 +445,7 @@ public abstract partial class MyJson
     #region Bool
     public static implicit operator MyJson(bool b)
     {
-        return new MyBool(b);
+        return FromObject(b);
     }
     public static implicit operator bool(MyJson d)
     {
@@ -495,16 +471,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(decimal aDecimal)
     {
-#if false
-        return new MyString(aDecimal.ToString());
-#else
-        return new MyNumber(aDecimal);
-#endif
+        return FromObject(aDecimal);
     }
 
-    public static implicit operator decimal(MyJson aNode)
+    public static implicit operator decimal(MyJson d)
     {
-        return aNode.AsDecimal;
+        return (d == null) ? 0 : d.AsDecimal;
     }
     #endregion Decimal
     #region Char
@@ -1071,7 +1043,6 @@ public abstract partial class MyJson
     }
     #endregion operators
 
-#if false
     #region FromString()
     public static MyJson FromString(string aJSON)
     {
@@ -1084,6 +1055,7 @@ public abstract partial class MyJson
         return JSON5ToObject(context);
     }
 
+#if false
     [ThreadStatic]
     private static StringBuilder m_EscapeBuilder;
     internal static StringBuilder EscapeBuilder
@@ -1141,6 +1113,7 @@ public abstract partial class MyJson
         sb.Length = 0;
         return result;
     }
+#endif
 
     private static MyJson ParseElement(string token, bool quoted)
     {
@@ -1594,7 +1567,7 @@ public abstract partial class MyJson
         return member.Name;
     }
     #endregion FromObject()
-#endif
+
 }
 // End of MyJson
 #endregion MyJson
