@@ -255,7 +255,7 @@ public abstract partial class MyJson
         {
             var result = new List<object>();
             var array = this as MyArray;
-            for (int i=0; i<array!.Count; i++)
+            for (int i = 0; i < array!.Count; i++)
             {
                 result.Add(array[i].ToObject());
             }
@@ -1160,6 +1160,43 @@ public abstract partial class MyJson
     }
     #endregion FromString()
 
+    #region IsNumeric()
+    public static bool IsNumeric(object x)
+    {
+        if (x == null) return false;
+        Type type = x.GetType();
+        if (type == typeof(byte) || type == typeof(sbyte))
+        {
+            return true;
+        }
+        else if (type == typeof(short) || type == typeof(ushort))
+        {
+            return true;
+        }
+        else if (type == typeof(int) || type == typeof(uint))
+        {
+            return true;
+        }
+        else if (type == typeof(long) || type == typeof(ulong))
+        {
+            return true;
+        }
+        else if (type == typeof(float))
+        {
+            return true;
+        }
+        else if (type == typeof(double))
+        {
+            return true;
+        }
+        else if (type == typeof(decimal))
+        {
+            return true;
+        }
+        return false;
+    }
+    #endregion IsNumeric()
+
     #region FromObject()
     //public static MyJson FromObject(object item, bool display = false)
     public static MyJson FromObject(object item)
@@ -1177,41 +1214,30 @@ public abstract partial class MyJson
         }
         else if (type == typeof(byte) || type == typeof(sbyte))
         {
-            //return FromString(item.ToString());
             return new MyNumber(item);
         }
         else if (type == typeof(short) || type == typeof(ushort))
         {
-            //return FromString(item.ToString());
             return new MyNumber(item);
         }
         else if (type == typeof(int) || type == typeof(uint))
         {
-            //return FromString(item.ToString());
             return new MyNumber(item);
         }
         else if (type == typeof(long) || type == typeof(ulong))
         {
-            //return FromString(item.ToString());
             return new MyNumber(item);
         }
         else if (type == typeof(float))
         {
-            //return new MyNumber(Convert.ToDecimal(item));
             return new MyNumber(item);
         }
         else if (type == typeof(double))
         {
-            //return new MyNumber(Convert.ToDecimal(item));
             return new MyNumber(item);
         }
         else if (type == typeof(decimal))
         {
-#if false
-            if (!display && DecimalAsString)
-                return new MyString(item.ToString());
-#endif
-            //return new MyNumber((decimal)item);
             return new MyNumber(item);
         }
         else if (type == typeof(bool))
@@ -1230,16 +1256,6 @@ public abstract partial class MyJson
         {
             return new MyString(item.ToString());
         }
-#if false
-        else if (type == typeof(byte[]))
-        {
-            return new MyArray { AsByteArray = (byte[])item };
-        }
-        else if (type == typeof(List<byte>))
-        {
-            return new MyArray { AsByteList = (List<byte>)item };
-        }
-#endif
         else if (type.IsEnum)
         {
             return new MyString(item.ToString());
@@ -1305,7 +1321,7 @@ public abstract partial class MyJson
 
         return member.Name;
     }
-#endregion FromObject()
+    #endregion FromObject()
 
 }
 // End of MyJson
@@ -1697,20 +1713,22 @@ public partial class MyNumber : MyJson
     {
         get
         {
-            //return m_Data.ToString(CultureInfo.InvariantCulture);
             return m_Data.ToString();
         }
         set
         {
-#if false
-            double v;
-            if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
-                m_Data = v;
-#else
-            decimal v;
-            if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
-                m_Data = v;
-#endif
+            if (!NumberAsDecimal)
+            {
+                double v;
+                if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
+                    m_Data = v;
+            }
+            else
+            {
+                decimal v;
+                if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
+                    m_Data = v;
+            }
         }
     }
 
@@ -1742,30 +1760,27 @@ public partial class MyNumber : MyJson
         set { m_Data = value; }
     }
 
-#if false
-#else
-    //public MyNumber(decimal aData)
     public MyNumber(object aData)
     {
+        if (aData == null)
+        {
+            throw new ArgumentException("Argument is null");
+        }
+        if (!IsNumeric(aData))
+        {
+            string error = $"Argument is not numeric: {aData.GetType().FullName}";
+            throw new ArgumentException(error);
+        }
         m_Data = aData;
     }
-#endif
 
 #if false
-    public MyNumber(double aData)
-    {
-#if false
-        m_Data = aData;
-#else
-        m_Data = Convert.ToDecimal(aData);
-#endif
-    }
-#endif
-
     public MyNumber(string aData)
     {
         Value = aData;
     }
+#else
+#endif
 
     public override MyJson Clone()
     {
