@@ -35,7 +35,7 @@ public class JsonServer
         {
             try
             {
-                result = (MyData)mi.Invoke(null, new object[] { args });
+                result = MyData.FromObject(mi.Invoke(null, new object[] { args }));
                 result = MyData.FromObject(new object[] { result });
             }
             catch (TargetInvocationException ex)
