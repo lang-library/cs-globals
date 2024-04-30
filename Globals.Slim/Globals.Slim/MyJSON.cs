@@ -244,7 +244,11 @@ public abstract partial class MyJson
     {
         if (this is MyNull) return null;
         if (this is MyBool) return this.AsBool;
-        if (this is MyNumber) return this.AsDecimal;
+        if (this is MyNumber)
+        {
+            if (DecimalAsString) return this.AsDouble;
+            return this.AsDecimal;
+        }
         if (this is MyString) return this.Value;
         if (this is MyArray)
         {
@@ -919,26 +923,7 @@ public abstract partial class MyJson
         return JSON5ToObject(context);
     }
 
-    private static MyJson ParseElement(string token, bool quoted)
-    {
-        if (quoted)
-            return token;
-        if (token.Length <= 5)
-        {
-            string tmp = token.ToLower();
-            if (tmp == "false" || tmp == "true")
-                return tmp == "true";
-            if (tmp == "null")
-                return MyNull.CreateOrGet();
-        }
-        double val;
-        if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
-            return val;
-        else
-            return token;
-    }
-
-    private static MyJson ParseAtom(string aJSON)
+    private static MyJson ParseJsonString(string aJSON)
     {
         Stack<MyJson> stack = new Stack<MyJson>();
         MyJson ctx = null;
@@ -952,92 +937,10 @@ public abstract partial class MyJson
         {
             switch (aJSON[i])
             {
-                case '{':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    stack.Push(new MyObject());
-                    if (ctx != null)
-                    {
-                        ctx.Add(TokenName, stack.Peek());
-                    }
-                    TokenName = "";
-                    Token.Length = 0;
-                    ctx = stack.Peek();
-                    HasNewlineChar = false;
-                    break;
-
-                case '[':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-
-                    stack.Push(new MyArray());
-                    if (ctx != null)
-                    {
-                        ctx.Add(TokenName, stack.Peek());
-                    }
-                    TokenName = "";
-                    Token.Length = 0;
-                    ctx = stack.Peek();
-                    HasNewlineChar = false;
-                    break;
-
-                case '}':
-                case ']':
-                    if (QuoteMode)
-                    {
-
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    if (stack.Count == 0)
-                        throw new Exception("My Parse: Too many closing brackets");
-
-                    stack.Pop();
-                    if (Token.Length > 0 || TokenIsQuoted)
-                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
-                    if (ctx != null)
-                        ctx.Inline = !HasNewlineChar;
-                    TokenIsQuoted = false;
-                    TokenName = "";
-                    Token.Length = 0;
-                    if (stack.Count > 0)
-                        ctx = stack.Peek();
-                    break;
-
-                case ':':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    TokenName = Token.ToString();
-                    Token.Length = 0;
-                    TokenIsQuoted = false;
-                    break;
 
                 case '"':
                     QuoteMode ^= true;
                     TokenIsQuoted |= QuoteMode;
-                    break;
-
-                case ',':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    if (Token.Length > 0 || TokenIsQuoted)
-                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
-                    TokenIsQuoted = false;
-                    TokenName = "";
-                    Token.Length = 0;
-                    TokenIsQuoted = false;
                     break;
 
                 case '\r':
@@ -1088,16 +991,7 @@ public abstract partial class MyJson
                         }
                     }
                     break;
-#if false
-                case '/':
-                    if (allowLineComments && !QuoteMode && i + 1 < aJSON.Length && aJSON[i + 1] == '/')
-                    {
-                        while (++i < aJSON.Length && aJSON[i] != '\n' && aJSON[i] != '\r') ;
-                        break;
-                    }
-                    Token.Append(aJSON[i]);
-                    break;
-#endif
+
                 case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
                     break;
 
@@ -1111,8 +1005,6 @@ public abstract partial class MyJson
         {
             throw new Exception("My Parse: Quotation marks seems to be messed up.");
         }
-        if (ctx == null)
-            return ParseElement(Token.ToString(), TokenIsQuoted);
         return ctx;
     }
 
@@ -1137,14 +1029,14 @@ public abstract partial class MyJson
                 string t = JSON5Terminal(x.children[0])!;
                 if (t.StartsWith("\""))
                 {
-                    return ParseAtom(t);
+                    return ParseJsonString(t);
                 }
 
                 if (t.StartsWith("'"))
                 {
                     t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
                     t = "\"" + t + "\"";
-                    return ParseAtom(t);
+                    return ParseJsonString(t);
                 }
 
                 switch (t)
@@ -1215,14 +1107,14 @@ public abstract partial class MyJson
                 string t = JSON5Terminal(x.children[0])!;
                 if (t.StartsWith("\""))
                 {
-                    return ParseAtom(t);
+                    return ParseJsonString(t);
                 }
 
                 if (t.StartsWith("'"))
                 {
                     t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
                     t = "\"" + t + "\"";
-                    return ParseAtom(t);
+                    return ParseJsonString(t);
                 }
 
                 return t;
@@ -1265,7 +1157,7 @@ public abstract partial class MyJson
 #endregion FromString()
 
     #region FromObject()
-    public static MyJson FromObject(object item)
+    public static MyJson FromObject(object item, bool display = false)
     {
         if (item == null)
         {
@@ -1304,7 +1196,7 @@ public abstract partial class MyJson
         }
         else if (type == typeof(decimal))
         {
-            if (DecimalAsString)
+            if (!display && DecimalAsString)
                 return new MyString(item.ToString());
             return new MyNumber((decimal)item);
         }

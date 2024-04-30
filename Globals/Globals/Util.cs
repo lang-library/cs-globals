@@ -375,13 +375,13 @@ public class Util
         string fullName = ((object)x).GetType().FullName;
         return fullName.Split('`')[0];
     }
-    public static string ToJson(object x, bool indent = false)
+    public static string ToJson(object x, bool indent = false, bool display = false)
     {
         if (x is MyJson)
         {
             return ((MyJson)x).ToString(indent);
         }
-        var myJson = MyJson.FromObject(x);
+        var myJson = MyJson.FromObject(x, display);
         return myJson.ToString(indent);
     }
     protected static string ReformatJson(string json, bool indent = false)
@@ -402,9 +402,18 @@ public class Util
     public static string ToString(dynamic x)
     {
         if (x is null) return "null";
-        if (x is string) return (string)x;
+        if (x is string)
+        {
+            return "\"" + (string)x + "\"";
+        }
         string output = null;
-        if (x is MyJson)
+        if (x is MyString)
+        {
+            var value = (MyString)x;
+            output = "\"" + value.Value + "\"";
+            //output = "'" + value.Value + "'";
+        }
+        else if (x is MyJson)
         {
             var value = (MyJson)x;
             output = value.ToString(2);
@@ -417,9 +426,7 @@ public class Util
         {
             try
             {
-                output = ToJson(x, true);
-                //return json;
-                //return $"<{Util.FullName(x)}> {json}";
+                output = ToJson(x, true, true);
             }
             catch (Exception)
             {
