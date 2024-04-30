@@ -61,6 +61,7 @@ public class Tests
     {
         MyJson.DecimalAsString = false;
         var n1 = new MyNumber(777);
+        CheckObjectJson(n1, "777");
         Assert.That(() => new MyNumber(null), Throws.TypeOf<ArgumentException>()
         .With.Message.EqualTo("Argument is null"));
         Assert.That(() => new MyNumber("abc"), Throws.TypeOf<ArgumentException>()

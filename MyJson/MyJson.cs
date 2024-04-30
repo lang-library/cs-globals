@@ -4,6 +4,7 @@
 using Antlr4.Runtime;
 using Globals.Parser.Json5;
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -1204,6 +1205,12 @@ public abstract partial class MyJson
         if (item == null)
         {
             return MyNull.CreateOrGet();
+        }
+
+        var myjson = item as MyJson;
+        if (myjson != null)
+        {
+            return myjson.Clone();
         }
 
         Type type = item.GetType();
