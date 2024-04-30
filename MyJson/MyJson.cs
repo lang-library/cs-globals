@@ -6,6 +6,7 @@ using Globals.Parser.Json5;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -1183,6 +1184,16 @@ public abstract partial class MyJson
         else if (type.IsEnum)
         {
             return new MyString(item.ToString());
+        }
+        else if (item is ExpandoObject)
+        {
+            var dic = item as IDictionary<string, object>;
+            var result = new MyObject();
+            foreach (var key in dic.Keys)
+            {
+                result[key] = FromObject(dic[key]);
+            }
+            return result;
         }
         else if (item is IList)
         {
