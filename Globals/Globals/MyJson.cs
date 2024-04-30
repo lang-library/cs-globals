@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Globals;
 
-#region enum
+#region enums
 public enum MyNodeType
 {
     Array = 1,
@@ -31,7 +31,7 @@ public enum MyTextMode
     Compact,
     Indent
 }
-#endregion enum
+#endregion enums
 
 #region MyJson
 public abstract partial class MyJson
@@ -139,6 +139,7 @@ public abstract partial class MyJson
     #region common interface
 
     public static bool ForceASCII = false; // Use Unicode by default
+    public static bool NumberAsDecimal = false;
     public static bool DecimalAsString = false;
 
     public abstract MyNodeType Tag { get; }
@@ -1126,18 +1127,18 @@ public abstract partial class MyJson
         }
         else if (x is JSON5Parser.NumberContext)
         {
-#if false
-            return new MyNumber(JSON5Terminal(x.children[0]));
-#else
             string n = JSON5Terminal(x.children[0]);
-            if (n != "-" && n != "+")
+            if (n == "-" || n == "+")
             {
-                return new MyNumber(n);
+                string sign = n;
+                n = sign + JSON5Terminal(x.children[1]);
             }
-            string sign = n;
-            n = sign + JSON5Terminal(x.children[1]);
-            return new MyNumber(n);
-#endif
+            decimal result;
+            if (!decimal.TryParse(n, out result))
+                result = 0;
+            if (NumberAsDecimal)
+                return new MyNumber(result);
+            return new MyNumber(Convert.ToDouble(result));
         }
         else
         {
@@ -1173,27 +1174,33 @@ public abstract partial class MyJson
         }
         else if (type == typeof(byte) || type == typeof(sbyte))
         {
-            return FromString(item.ToString());
+            //return FromString(item.ToString());
+            return new MyNumber(item);
         }
         else if (type == typeof(short) || type == typeof(ushort))
         {
-            return FromString(item.ToString());
+            //return FromString(item.ToString());
+            return new MyNumber(item);
         }
         else if (type == typeof(int) || type == typeof(uint))
         {
-            return FromString(item.ToString());
+            //return FromString(item.ToString());
+            return new MyNumber(item);
         }
         else if (type == typeof(long) || type == typeof(ulong))
         {
-            return FromString(item.ToString());
+            //return FromString(item.ToString());
+            return new MyNumber(item);
         }
         else if (type == typeof(float))
         {
-            return new MyNumber(Convert.ToDecimal(item));
+            //return new MyNumber(Convert.ToDecimal(item));
+            return new MyNumber(item);
         }
         else if (type == typeof(double))
         {
-            return new MyNumber(Convert.ToDecimal(item));
+            //return new MyNumber(Convert.ToDecimal(item));
+            return new MyNumber(item);
         }
         else if (type == typeof(decimal))
         {
@@ -1201,7 +1208,8 @@ public abstract partial class MyJson
             if (!display && DecimalAsString)
                 return new MyString(item.ToString());
 #endif
-            return new MyNumber((decimal)item);
+            //return new MyNumber((decimal)item);
+            return new MyNumber(item);
         }
         else if (type == typeof(bool))
         {
@@ -1669,9 +1677,9 @@ public partial class MyString : MyJson
 public partial class MyNumber : MyJson
 {
 #if false
-    private double m_Data;
-#else
     decimal m_Data;
+#else
+    object m_Data;
 #endif
 
     public override MyNodeType Tag { get { return MyNodeType.Number; } }
@@ -1680,7 +1688,11 @@ public partial class MyNumber : MyJson
 
     public override string Value
     {
-        get { return m_Data.ToString(CultureInfo.InvariantCulture); }
+        get
+        {
+            //return m_Data.ToString(CultureInfo.InvariantCulture);
+            return m_Data.ToString();
+        }
         set
         {
 #if false
@@ -1701,24 +1713,32 @@ public partial class MyNumber : MyJson
         get { return m_Data; }
         set { m_Data = value; }
 #else
-        get { return decimal.ToDouble(m_Data); }
-        set { m_Data = Convert.ToDecimal(value); }
+        get
+        {
+            return Convert.ToDouble(m_Data);
+        }
+        set
+        {
+            //m_Data = Convert.ToDecimal(value);
+            m_Data = value;
+        }
 #endif
     }
     public override long AsLong
     {
-        get { return (long)m_Data; }
+        get { return (long)Convert.ToDecimal(m_Data); }
         set { m_Data = value; }
     }
     public override ulong AsULong
     {
-        get { return (ulong)m_Data; }
+        get { return (ulong)Convert.ToDecimal(m_Data); }
         set { m_Data = value; }
     }
 
 #if false
 #else
-    public MyNumber(decimal aData)
+    //public MyNumber(decimal aData)
+    public MyNumber(object aData)
     {
         m_Data = aData;
     }
@@ -1772,7 +1792,7 @@ public partial class MyNumber : MyJson
             return Convert.ToDouble(obj) == m_Data;
 #else
         if (IsNumeric(obj))
-            return Convert.ToDecimal(obj) == m_Data;
+            return Convert.ToDecimal(obj) == Convert.ToDecimal(m_Data);
 #endif
         return false;
     }
