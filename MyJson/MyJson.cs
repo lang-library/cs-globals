@@ -634,6 +634,111 @@ public abstract partial class MyJson
         }
     }
     #endregion ObjectArray
+    #region ObjectList
+    public virtual List<object> AsObjectList
+    {
+        get
+        {
+            var array = this.AsObjectArray;
+            if (array == null) return null;
+            return new List<object>(array);
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Count; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion ObjectList
+
+    #region DecimalArray
+    public virtual decimal[] AsDecimalArray
+    {
+        get
+        {
+            if (this.IsNull || !this.IsArray)
+                return null;
+            int count = Count;
+            decimal[] result = new decimal[count];
+            for (int i = 0; i < count; i++)
+                result[i] = this[i].AsDecimal;
+            return result;
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Length; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion DecimalArray
+    #region DecimalList
+    public virtual List<decimal> AsDecimalList
+    {
+        get
+        {
+            var array = this.AsDecimalArray;
+            if (array == null) return null;
+            return new List<decimal>(array);
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Count; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion DecimalList
+
+    #region DoubleArray
+    public virtual double[] AsDoubleArray
+    {
+        get
+        {
+            if (this.IsNull || !this.IsArray)
+                return null;
+            int count = Count;
+            double[] result = new double[count];
+            for (int i = 0; i < count; i++)
+                result[i] = this[i].AsDouble;
+            return result;
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Length; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion DoubleArray
+    #region DoubleList
+    public virtual List<double> AsDoubleList
+    {
+        get
+        {
+            var array = this.AsDoubleArray;
+            if (array == null) return null;
+            return new List<double>(array);
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Count; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion DoubleList
 
     #region ==/!=
     public static bool operator ==(MyJson a, object b)
