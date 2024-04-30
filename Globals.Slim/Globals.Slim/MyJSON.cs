@@ -593,12 +593,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(ushort aUShort)
     {
-        return new MyNumber(aUShort);
+        return FromObject(aUShort);
     }
 
-    public static implicit operator ushort(MyJson aNode)
+    public static implicit operator ushort(MyJson d)
     {
-        return aNode.AsUShort;
+        return d == null ? (ushort)0 : d.AsUShort;
     }
     #endregion UShort
 
@@ -614,13 +614,13 @@ public abstract partial class MyJson
         }
         set
         {
-            Value = value.ToString(CultureInfo.InvariantCulture);
+            //Value = value.ToString(CultureInfo.InvariantCulture);
+            Value = Util.DateTimeString(value);
         }
     }
 
     public static implicit operator MyJson(System.DateTime aDateTime)
     {
-        //return new MyString(aDateTime.ToString(CultureInfo.InvariantCulture));
         return new MyString(Util.DateTimeString(aDateTime));
     }
 
@@ -647,12 +647,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(System.TimeSpan aTimeSpan)
     {
-        return new MyString(aTimeSpan.ToString());
+        return FromObject(aTimeSpan);
     }
 
-    public static implicit operator System.TimeSpan(MyJson aNode)
+    public static implicit operator System.TimeSpan(MyJson d)
     {
-        return aNode.AsTimeSpan;
+        return d == null ? new TimeSpan(0) : d.AsTimeSpan;
     }
     #endregion TimeSpan
 
@@ -673,12 +673,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(System.Guid aGuid)
     {
-        return new MyString(aGuid.ToString());
+        return FromObject(aGuid);
     }
 
-    public static implicit operator System.Guid(MyJson aNode)
+    public static implicit operator System.Guid(MyJson d)
     {
-        return aNode.AsGuid;
+        return d == null ? Guid.Empty : d.AsGuid;
     }
     #endregion Guid
 
@@ -1434,12 +1434,7 @@ public abstract partial class MyJson
         }
         else if (type == typeof(byte) || type == typeof(sbyte))
         {
-#if false
             return FromString(item.ToString());
-#else
-            string s = item.ToString();
-            return FromString(s);
-#endif
         }
         else if (type == typeof(short) || type == typeof(ushort))
         {
@@ -1474,6 +1469,14 @@ public abstract partial class MyJson
         else if (type == typeof(DateTime))
         {
             return new MyString(Util.DateTimeString((DateTime)item));
+        }
+        else if (type == typeof(TimeSpan))
+        {
+            return new MyString(item.ToString());
+        }
+        else if (type == typeof(Guid))
+        {
+            return new MyString(item.ToString());
         }
         else if (type.IsEnum)
         {
