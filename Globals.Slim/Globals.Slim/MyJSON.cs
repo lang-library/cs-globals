@@ -1458,6 +1458,8 @@ public partial class MyObject : MyJson
     {
         get
         {
+            if (aKey == null)
+                return MyNull.CreateOrGet()/*new MyLazyCreator(this, aKey)*/;
             if (m_Dict.ContainsKey(aKey))
                 return m_Dict[aKey];
             else
@@ -1465,6 +1467,8 @@ public partial class MyObject : MyJson
         }
         set
         {
+            if (aKey == null)
+                return;
             if (value == null)
                 value = MyNull.CreateOrGet();
             if (m_Dict.ContainsKey(aKey))
