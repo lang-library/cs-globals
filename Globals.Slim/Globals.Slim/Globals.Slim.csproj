@@ -56,4 +56,11 @@
     <EmbeddedResource Include="*.dll" />
     <EmbeddedResource Include="*.zip" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\MyJson\MyJson.cs" Link="MyJson.cs" />
+    <Compile Include="..\..\MyJson\Parser\Json5\JSON5BaseListener.cs" Link="JSON5BaseListener.cs" />
+    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Lexer.cs" Link="JSON5Lexer.cs" />
+    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Listener.cs" Link="JSON5Listener.cs" />
+    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Parser.cs" Link="JSON5Parser.cs" />
+  </ItemGroup>
 </Project>
