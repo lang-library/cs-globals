@@ -379,7 +379,7 @@ public abstract partial class MyJson
     #region String
     public static implicit operator MyJson(string s)
     {
-        return (s == null) ? (MyJson)MyNull.CreateOrGet() : new MyString(s);
+        return FromObject(s);
     }
     public static implicit operator string(MyJson d)
     {
@@ -390,11 +390,7 @@ public abstract partial class MyJson
     #region Double
     public static implicit operator MyJson(double n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator double(MyJson d)
     {
@@ -405,11 +401,7 @@ public abstract partial class MyJson
     #region Float
     public static implicit operator MyJson(float n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator float(MyJson d)
     {
@@ -420,11 +412,7 @@ public abstract partial class MyJson
     #region Int
     public static implicit operator MyJson(int n)
     {
-#if false
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator int(MyJson d)
     {
@@ -435,13 +423,7 @@ public abstract partial class MyJson
     #region Long
     public static implicit operator MyJson(long n)
     {
-#if false
-        if (longAsString)
-            return new MyString(n.ToString(CultureInfo.InvariantCulture));
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator long(MyJson d)
     {
@@ -452,13 +434,7 @@ public abstract partial class MyJson
     #region ULong
     public static implicit operator MyJson(ulong n)
     {
-#if false
-        if (longAsString)
-            return new MyString(n.ToString(CultureInfo.InvariantCulture));
-        return new MyNumber(n);
-#else
-        return new MyNumber((decimal)n);
-#endif
+        return FromObject(n);
     }
     public static implicit operator ulong(MyJson d)
     {
@@ -469,7 +445,7 @@ public abstract partial class MyJson
     #region Bool
     public static implicit operator MyJson(bool b)
     {
-        return new MyBool(b);
+        return FromObject(b);
     }
     public static implicit operator bool(MyJson d)
     {
@@ -495,46 +471,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(decimal aDecimal)
     {
-#if false
-        return new MyString(aDecimal.ToString());
-#else
-        return new MyNumber(aDecimal);
-#endif
+        return FromObject(aDecimal);
     }
 
-    public static implicit operator decimal(MyJson aNode)
+    public static implicit operator decimal(MyJson d)
     {
-        return aNode.AsDecimal;
-    }
-    #endregion Decimal
-    #region Char
-    public virtual char AsChar
-    {
-        get
-        {
-            if (IsString && Value.Length > 0)
-                return Value[0];
-            if (IsNumber)
-                return (char)AsInt;
-            return '\0';
-        }
-        set
-        {
-            if (IsString)
-                Value = value.ToString();
-            else if (IsNumber)
-                AsInt = (int)value;
-        }
-    }
-
-    public static implicit operator MyJson(char aChar)
-    {
-        return new MyString(aChar.ToString());
-    }
-
-    public static implicit operator char(MyJson aNode)
-    {
-        return aNode.AsChar;
+        return (d == null) ? 0 : d.AsDecimal;
     }
     #endregion Decimal
 
@@ -581,16 +523,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(byte aByte)
     {
-#if false
-        return new MyNumber(aByte);
-#else
-        return new MyNumber((decimal)aByte);
-#endif
+        return FromObject(aByte);
     }
 
-    public static implicit operator byte(MyJson aNode)
+    public static implicit operator byte(MyJson d)
     {
-        return aNode.AsByte;
+        return d == null ? (byte)0 : d.AsByte;
     }
     #endregion Byte
     #region SByte
@@ -608,16 +546,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(sbyte aSByte)
     {
-#if false
-        return new MyNumber(aSByte);
-#else
-        return new MyNumber((decimal)aSByte);
-#endif
+        return FromObject(aSByte);
     }
 
-    public static implicit operator sbyte(MyJson aNode)
+    public static implicit operator sbyte(MyJson d)
     {
-        return aNode.AsSByte;
+        return d == null ? (sbyte)0 : d.AsSByte;
     }
     #endregion SByte
 
@@ -636,16 +570,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(short aShort)
     {
-#if false
-        return new MyNumber(aShort);
-#else
-        return new MyNumber((decimal)aShort);
-#endif
+        return FromObject(aShort);
     }
 
-    public static implicit operator short(MyJson aNode)
+    public static implicit operator short(MyJson d)
     {
-        return aNode.AsShort;
+        return d == null ? (short)0 : d.AsShort;
     }
     #endregion Short
     #region UShort
@@ -663,12 +593,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(ushort aUShort)
     {
-        return new MyNumber(aUShort);
+        return FromObject(aUShort);
     }
 
-    public static implicit operator ushort(MyJson aNode)
+    public static implicit operator ushort(MyJson d)
     {
-        return aNode.AsUShort;
+        return d == null ? (ushort)0 : d.AsUShort;
     }
     #endregion UShort
 
@@ -684,13 +614,13 @@ public abstract partial class MyJson
         }
         set
         {
-            Value = value.ToString(CultureInfo.InvariantCulture);
+            //Value = value.ToString(CultureInfo.InvariantCulture);
+            Value = Util.DateTimeString(value);
         }
     }
 
     public static implicit operator MyJson(System.DateTime aDateTime)
     {
-        //return new MyString(aDateTime.ToString(CultureInfo.InvariantCulture));
         return new MyString(Util.DateTimeString(aDateTime));
     }
 
@@ -717,12 +647,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(System.TimeSpan aTimeSpan)
     {
-        return new MyString(aTimeSpan.ToString());
+        return FromObject(aTimeSpan);
     }
 
-    public static implicit operator System.TimeSpan(MyJson aNode)
+    public static implicit operator System.TimeSpan(MyJson d)
     {
-        return aNode.AsTimeSpan;
+        return d == null ? new TimeSpan(0) : d.AsTimeSpan;
     }
     #endregion TimeSpan
 
@@ -743,12 +673,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(System.Guid aGuid)
     {
-        return new MyString(aGuid.ToString());
+        return FromObject(aGuid);
     }
 
-    public static implicit operator System.Guid(MyJson aNode)
+    public static implicit operator System.Guid(MyJson d)
     {
-        return aNode.AsGuid;
+        return d == null ? Guid.Empty : d.AsGuid;
     }
     #endregion Guid
 
@@ -777,12 +707,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(byte[] aByteArray)
     {
-        return new MyArray { AsByteArray = aByteArray };
+        return FromObject(aByteArray);
     }
 
-    public static implicit operator byte[](MyJson aNode)
+    public static implicit operator byte[](MyJson d)
     {
-        return aNode.AsByteArray;
+        return d == null ? null : d.AsByteArray;
     }
     #endregion ByteArray
     #region ByteList
@@ -810,12 +740,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(List<byte> aByteList)
     {
-        return new MyArray { AsByteList = aByteList };
+        return FromObject(aByteList);
     }
 
-    public static implicit operator List<byte>(MyJson aNode)
+    public static implicit operator List<byte>(MyJson d)
     {
-        return aNode.AsByteList;
+        return d == null ? null : d.AsByteList;
     }
     #endregion ByteList
 
@@ -844,12 +774,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(string[] aStringArray)
     {
-        return new MyArray { AsStringArray = aStringArray };
+        return FromObject(aStringArray);
     }
 
-    public static implicit operator string[](MyJson aNode)
+    public static implicit operator string[](MyJson d)
     {
-        return aNode.AsStringArray;
+        return d == null ? null : d.AsStringArray;
     }
     #endregion StringArray
     #region StringList
@@ -877,111 +807,14 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(List<string> aStringList)
     {
-        return new MyArray { AsStringList = aStringList };
+        return FromObject(aStringList);
     }
 
-    public static implicit operator List<string>(MyJson aNode)
+    public static implicit operator List<string>(MyJson d)
     {
-        return aNode.AsStringList;
+        return d == null ? null : d.AsStringList;
     }
     #endregion StringList
-
-    #region NullableTypes
-    public static implicit operator MyJson(int? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((int)aValue);
-    }
-    public static implicit operator int?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsInt;
-    }
-
-    public static implicit operator MyJson(float? aValue)
-    {
-#if false
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((float)aValue);
-#else
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber(Convert.ToDecimal(aValue));
-#endif
-    }
-    public static implicit operator float?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsFloat;
-    }
-
-    public static implicit operator MyJson(double? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-#if false
-        return new MyNumber((double)aValue);
-#else
-        return new MyNumber((decimal)aValue);
-#endif
-    }
-    public static implicit operator double?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsDouble;
-    }
-
-    public static implicit operator MyJson(bool? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyBool((bool)aValue);
-    }
-    public static implicit operator bool?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsBool;
-    }
-
-    public static implicit operator MyJson(long? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((long)aValue);
-    }
-    public static implicit operator long?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsLong;
-    }
-
-    public static implicit operator MyJson(short? aValue)
-    {
-        if (aValue == null)
-            return MyNull.CreateOrGet();
-        return new MyNumber((short)aValue);
-    }
-    public static implicit operator short?(MyJson aNode)
-    {
-        if (aNode == null || aNode.IsNull)
-            return null;
-        return aNode.AsShort;
-    }
-    #endregion NullableTypes
-
-    #region KeyValuePair
-    public static implicit operator MyJson(KeyValuePair<string, MyJson> aKeyValue)
-    {
-        return aKeyValue.Value;
-    }
-    #endregion KeyValuePair
 
     #region ==/!=
     public static bool operator ==(MyJson a, object b)
@@ -1012,6 +845,7 @@ public abstract partial class MyJson
     }
     #endregion Equals()/GetHashCode()
 
+    #region Escape()
     [ThreadStatic]
     private StringBuilder m_EscapeBuilder;
     internal StringBuilder EscapeBuilder
@@ -1069,9 +903,10 @@ public abstract partial class MyJson
         sb.Length = 0;
         return result;
     }
+    #endregion Escape()
+
     #endregion operators
 
-#if false
     #region FromString()
     public static MyJson FromString(string aJSON)
     {
@@ -1082,64 +917,6 @@ public abstract partial class MyJson
         var parser = new JSON5Parser(commonTokenStream);
         var context = parser.json5();
         return JSON5ToObject(context);
-    }
-
-    [ThreadStatic]
-    private static StringBuilder m_EscapeBuilder;
-    internal static StringBuilder EscapeBuilder
-    {
-        get
-        {
-            if (m_EscapeBuilder == null)
-                m_EscapeBuilder = new StringBuilder();
-            return m_EscapeBuilder;
-        }
-    }
-    internal static string Escape(string aText)
-    {
-        var sb = EscapeBuilder;
-        sb.Length = 0;
-        if (sb.Capacity < aText.Length + aText.Length / 10)
-            sb.Capacity = aText.Length + aText.Length / 10;
-        foreach (char c in aText)
-        {
-            switch (c)
-            {
-                case '\\':
-                    sb.Append("\\\\");
-                    break;
-                case '\"':
-                    sb.Append("\\\"");
-                    break;
-                case '\n':
-                    sb.Append("\\n");
-                    break;
-                case '\r':
-                    sb.Append("\\r");
-                    break;
-                case '\t':
-                    sb.Append("\\t");
-                    break;
-                case '\b':
-                    sb.Append("\\b");
-                    break;
-                case '\f':
-                    sb.Append("\\f");
-                    break;
-                default:
-                    if (c < ' ' || (ForceASCII && c > 127))
-                    {
-                        ushort val = c;
-                        sb.Append("\\u").Append(val.ToString("X4"));
-                    }
-                    else
-                        sb.Append(c);
-                    break;
-            }
-        }
-        string result = sb.ToString();
-        sb.Length = 0;
-        return result;
     }
 
     private static MyJson ParseElement(string token, bool quoted)
@@ -1457,7 +1234,18 @@ public abstract partial class MyJson
         }
         else if (x is JSON5Parser.NumberContext)
         {
+#if false
             return new MyNumber(JSON5Terminal(x.children[0]));
+#else
+            string n = JSON5Terminal(x.children[0]);
+            if (n != "-" && n != "+")
+            {
+                return new MyNumber(n);
+            }
+            string sign = n;
+            n = sign + JSON5Terminal(x.children[1]);
+            return new MyNumber(n);
+#endif
         }
         else
         {
@@ -1528,6 +1316,24 @@ public abstract partial class MyJson
         {
             return new MyString(Util.DateTimeString((DateTime)item));
         }
+        else if (type == typeof(TimeSpan))
+        {
+            return new MyString(item.ToString());
+        }
+        else if (type == typeof(Guid))
+        {
+            return new MyString(item.ToString());
+        }
+#if false
+        else if (type == typeof(byte[]))
+        {
+            return new MyArray { AsByteArray = (byte[])item };
+        }
+        else if (type == typeof(List<byte>))
+        {
+            return new MyArray { AsByteList = (List<byte>)item };
+        }
+#endif
         else if (type.IsEnum)
         {
             return new MyString(item.ToString());
@@ -1593,8 +1399,8 @@ public abstract partial class MyJson
 
         return member.Name;
     }
-    #endregion FromObject()
-#endif
+#endregion FromObject()
+
 }
 // End of MyJson
 #endregion MyJson
@@ -2202,480 +2008,3 @@ public partial class MyNull : MyJson
 }
 // End of MyNull
 #endregion MyNull
-
-#region MyParser
-public class MyParser
-{
-    public bool DecimalAsString = false;
-    public bool ForceASCII = false; // Use Unicode by default
-    public MyParser(bool decimalAsString = false, bool forceASCII = false)
-    {
-        DecimalAsString = decimalAsString;
-        ForceASCII = forceASCII;
-    }
-    #region FromString()
-    public MyJson FromString(string aJSON)
-    {
-        if (String.IsNullOrEmpty(aJSON)) return null;
-        var inputStream = new AntlrInputStream(aJSON);
-        var lexer = new JSON5Lexer(inputStream);
-        var commonTokenStream = new CommonTokenStream(lexer);
-        var parser = new JSON5Parser(commonTokenStream);
-        var context = parser.json5();
-        return JSON5ToObject(context);
-    }
-
-    private MyJson ParseElement(string token, bool quoted)
-    {
-        if (quoted)
-            return token;
-        if (token.Length <= 5)
-        {
-            string tmp = token.ToLower();
-            if (tmp == "false" || tmp == "true")
-                return tmp == "true";
-            if (tmp == "null")
-                return MyNull.CreateOrGet();
-        }
-        double val;
-        if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
-            return val;
-        else
-            return token;
-    }
-
-    private MyJson ParseAtom(string aJSON)
-    {
-        Stack<MyJson> stack = new Stack<MyJson>();
-        MyJson ctx = null;
-        int i = 0;
-        StringBuilder Token = new StringBuilder();
-        string TokenName = "";
-        bool QuoteMode = false;
-        bool TokenIsQuoted = false;
-        bool HasNewlineChar = false;
-        while (i < aJSON.Length)
-        {
-            switch (aJSON[i])
-            {
-                case '{':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    stack.Push(new MyObject());
-                    if (ctx != null)
-                    {
-                        ctx.Add(TokenName, stack.Peek());
-                    }
-                    TokenName = "";
-                    Token.Length = 0;
-                    ctx = stack.Peek();
-                    HasNewlineChar = false;
-                    break;
-
-                case '[':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-
-                    stack.Push(new MyArray());
-                    if (ctx != null)
-                    {
-                        ctx.Add(TokenName, stack.Peek());
-                    }
-                    TokenName = "";
-                    Token.Length = 0;
-                    ctx = stack.Peek();
-                    HasNewlineChar = false;
-                    break;
-
-                case '}':
-                case ']':
-                    if (QuoteMode)
-                    {
-
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    if (stack.Count == 0)
-                        throw new Exception("My Parse: Too many closing brackets");
-
-                    stack.Pop();
-                    if (Token.Length > 0 || TokenIsQuoted)
-                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
-                    if (ctx != null)
-                        ctx.Inline = !HasNewlineChar;
-                    TokenIsQuoted = false;
-                    TokenName = "";
-                    Token.Length = 0;
-                    if (stack.Count > 0)
-                        ctx = stack.Peek();
-                    break;
-
-                case ':':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    TokenName = Token.ToString();
-                    Token.Length = 0;
-                    TokenIsQuoted = false;
-                    break;
-
-                case '"':
-                    QuoteMode ^= true;
-                    TokenIsQuoted |= QuoteMode;
-                    break;
-
-                case ',':
-                    if (QuoteMode)
-                    {
-                        Token.Append(aJSON[i]);
-                        break;
-                    }
-                    if (Token.Length > 0 || TokenIsQuoted)
-                        ctx.Add(TokenName, ParseElement(Token.ToString(), TokenIsQuoted));
-                    TokenIsQuoted = false;
-                    TokenName = "";
-                    Token.Length = 0;
-                    TokenIsQuoted = false;
-                    break;
-
-                case '\r':
-                case '\n':
-                    HasNewlineChar = true;
-                    break;
-
-                case ' ':
-                case '\t':
-                    if (QuoteMode)
-                        Token.Append(aJSON[i]);
-                    break;
-
-                case '\\':
-                    ++i;
-                    if (QuoteMode)
-                    {
-                        char C = aJSON[i];
-                        switch (C)
-                        {
-                            case 't':
-                                Token.Append('\t');
-                                break;
-                            case 'r':
-                                Token.Append('\r');
-                                break;
-                            case 'n':
-                                Token.Append('\n');
-                                break;
-                            case 'b':
-                                Token.Append('\b');
-                                break;
-                            case 'f':
-                                Token.Append('\f');
-                                break;
-                            case 'u':
-                                {
-                                    string s = aJSON.Substring(i + 1, 4);
-                                    Token.Append((char)int.Parse(
-                                        s,
-                                        System.Globalization.NumberStyles.AllowHexSpecifier));
-                                    i += 4;
-                                    break;
-                                }
-                            default:
-                                Token.Append(C);
-                                break;
-                        }
-                    }
-                    break;
-#if false
-                case '/':
-                    if (allowLineComments && !QuoteMode && i + 1 < aJSON.Length && aJSON[i + 1] == '/')
-                    {
-                        while (++i < aJSON.Length && aJSON[i] != '\n' && aJSON[i] != '\r') ;
-                        break;
-                    }
-                    Token.Append(aJSON[i]);
-                    break;
-#endif
-                case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
-                    break;
-
-                default:
-                    Token.Append(aJSON[i]);
-                    break;
-            }
-            ++i;
-        }
-        if (QuoteMode)
-        {
-            throw new Exception("My Parse: Quotation marks seems to be messed up.");
-        }
-        if (ctx == null)
-            return ParseElement(Token.ToString(), TokenIsQuoted);
-        return ctx;
-    }
-
-    private MyJson JSON5ToObject(ParserRuleContext x)
-    {
-        if (x is JSON5Parser.Json5Context)
-        {
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is Antlr4.Runtime.Tree.ErrorNodeImpl)
-                {
-                    return null;
-                }
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        else if (x is JSON5Parser.ValueContext)
-        {
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return ParseAtom(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    return ParseAtom(t);
-                }
-
-                switch (t)
-                {
-                    case "true":
-                        return true;
-                    case "false":
-                        return false;
-                    case "null":
-                        return null;
-                }
-
-                throw new Exception($"Unexpected JSON5Parser+ValueContext: {t}");
-                //return t;
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        else if (x is JSON5Parser.ArrContext)
-        {
-            var result = new MyArray();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result.Add(JSON5ToObject(value));
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.ObjContext)
-        {
-            var result = new MyObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.PairContext pair)
-                {
-                    var pairObj = JSON5ToObject(pair);
-                    result[(string)pairObj!["key"]] = pairObj["value"];
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.PairContext)
-        {
-            var result = new MyObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.KeyContext key)
-                {
-                    result["key"] = JSON5ToObject(key);
-                }
-
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result["value"] = JSON5ToObject(value);
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.KeyContext)
-        {
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return ParseAtom(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    return ParseAtom(t);
-                }
-
-                return t;
-            }
-            else
-            {
-                return "?";
-            }
-        }
-        else if (x is JSON5Parser.NumberContext)
-        {
-            return new MyNumber(JSON5Terminal(x.children[0]));
-        }
-        else
-        {
-            throw new Exception($"Unexpected: {x.GetType().FullName}");
-        }
-    }
-
-    private string? JSON5Terminal(Antlr4.Runtime.Tree.IParseTree x)
-    {
-        if (x is Antlr4.Runtime.Tree.TerminalNodeImpl t)
-        {
-            return t.ToString();
-        }
-
-        return null;
-    }
-    #endregion FromString()
-
-    #region FromObject()
-    public MyJson FromObject(object item)
-    {
-        if (item == null)
-        {
-            return MyNull.CreateOrGet();
-        }
-
-        Type type = item.GetType();
-        if (type == typeof(string) || type == typeof(char))
-        {
-            string str = item.ToString();
-            return new MyString(str);
-        }
-        else if (type == typeof(byte) || type == typeof(sbyte))
-        {
-            return FromString(item.ToString());
-        }
-        else if (type == typeof(short) || type == typeof(ushort))
-        {
-            return FromString(item.ToString());
-        }
-        else if (type == typeof(int) || type == typeof(uint))
-        {
-            return FromString(item.ToString());
-        }
-        else if (type == typeof(long) || type == typeof(ulong))
-        {
-            return FromString(item.ToString());
-        }
-        else if (type == typeof(float))
-        {
-            return new MyNumber(Convert.ToDecimal(item));
-        }
-        else if (type == typeof(double))
-        {
-            return new MyNumber(Convert.ToDecimal(item));
-        }
-        else if (type == typeof(decimal))
-        {
-            if (DecimalAsString)
-                return new MyString(item.ToString());
-            return new MyNumber((decimal)item);
-        }
-        else if (type == typeof(bool))
-        {
-            return new MyBool((bool)item);
-        }
-        else if (type == typeof(DateTime))
-        {
-            return new MyString(Util.DateTimeString((DateTime)item));
-        }
-        else if (type.IsEnum)
-        {
-            return new MyString(item.ToString());
-        }
-        else if (item is IList)
-        {
-            IList list = item as IList;
-            var result = new MyArray();
-            for (int i = 0; i < list.Count; i++)
-            {
-                result.Add(FromObject(list[i]));
-            }
-            return result;
-        }
-        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-        {
-            Type keyType = type.GetGenericArguments()[0];
-            var result = new MyObject();
-            //Refuse to output dictionary keys that aren't of type string
-            if (keyType != typeof(string))
-            {
-                return result;
-            }
-            IDictionary dict = item as IDictionary;
-            foreach (object key in dict.Keys)
-            {
-                result[(string)key] = FromObject(dict[key]);
-            }
-            return result;
-        }
-        else
-        {
-            Type keyType = type.GetGenericArguments()[0];
-            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-            var result = new MyObject();
-            for (int i = 0; i < fieldInfos.Length; i++)
-            {
-                if (fieldInfos[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
-                    continue;
-                object value = fieldInfos[i].GetValue(item);
-                result[GetMemberName(fieldInfos[i])] = FromObject(value);
-            }
-            PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-            for (int i = 0; i < propertyInfo.Length; i++)
-            {
-                if (!propertyInfo[i].CanRead || propertyInfo[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
-                    continue;
-                object value = propertyInfo[i].GetValue(item, null);
-                result[GetMemberName(propertyInfo[i])] = FromObject(value);
-            }
-            return result;
-        }
-    }
-
-    string GetMemberName(MemberInfo member)
-    {
-        if (member.IsDefined(typeof(DataMemberAttribute), true))
-        {
-            DataMemberAttribute dataMemberAttribute = (DataMemberAttribute)Attribute.GetCustomAttribute(member, typeof(DataMemberAttribute), true);
-            if (!string.IsNullOrEmpty(dataMemberAttribute.Name))
-                return dataMemberAttribute.Name;
-        }
-
-        return member.Name;
-    }
-    #endregion FromObject()
-}
-#endregion MyParser
