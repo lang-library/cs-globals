@@ -707,12 +707,12 @@ public abstract partial class MyJson
 
     public static implicit operator MyJson(byte[] aByteArray)
     {
-        return new MyArray { AsByteArray = aByteArray };
+        return FromObject(aByteArray);
     }
 
-    public static implicit operator byte[](MyJson aNode)
+    public static implicit operator byte[](MyJson d)
     {
-        return aNode.AsByteArray;
+        return d == null ? null : d.AsByteArray;
     }
     #endregion ByteArray
     #region ByteList
@@ -1477,6 +1477,10 @@ public abstract partial class MyJson
         else if (type == typeof(Guid))
         {
             return new MyString(item.ToString());
+        }
+        else if (type == typeof(byte[]))
+        {
+            return new MyArray { AsByteArray = (byte[])item };
         }
         else if (type.IsEnum)
         {
