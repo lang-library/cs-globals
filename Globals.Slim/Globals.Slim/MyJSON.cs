@@ -1154,10 +1154,11 @@ public abstract partial class MyJson
 
         return null;
     }
-#endregion FromString()
+    #endregion FromString()
 
     #region FromObject()
-    public static MyJson FromObject(object item, bool display = false)
+    //public static MyJson FromObject(object item, bool display = false)
+    public static MyJson FromObject(object item)
     {
         if (item == null)
         {
@@ -1196,8 +1197,10 @@ public abstract partial class MyJson
         }
         else if (type == typeof(decimal))
         {
+#if false
             if (!display && DecimalAsString)
                 return new MyString(item.ToString());
+#endif
             return new MyNumber((decimal)item);
         }
         else if (type == typeof(bool))

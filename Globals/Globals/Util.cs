@@ -375,13 +375,15 @@ public class Util
         string fullName = ((object)x).GetType().FullName;
         return fullName.Split('`')[0];
     }
-    public static string ToJson(object x, bool indent = false, bool display = false)
+    //public static string ToJson(object x, bool indent = false, bool display = false)
+    public static string ToJson(object x, bool indent = false)
     {
         if (x is MyJson)
         {
             return ((MyJson)x).ToString(indent);
         }
-        var myJson = MyJson.FromObject(x, display);
+        //var myJson = MyJson.FromObject(x, display);
+        var myJson = MyJson.FromObject(x);
         return myJson.ToString(indent);
     }
     protected static string ReformatJson(string json, bool indent = false)
@@ -426,7 +428,8 @@ public class Util
         {
             try
             {
-                output = ToJson(x, true, true);
+                //output = ToJson(x, true, true);
+                output = ToJson(x, true);
             }
             catch (Exception)
             {
