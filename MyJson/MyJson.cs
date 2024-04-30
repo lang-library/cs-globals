@@ -247,8 +247,9 @@ public abstract partial class MyJson
         if (this is MyBool) return this.AsBool;
         if (this is MyNumber)
         {
-            if (DecimalAsString) return this.AsDouble;
-            return this.AsDecimal;
+            //if (DecimalAsString) return this.AsDouble;
+            //return this.AsDecimal;
+            return ((MyNumber)this).m_Data;
         }
         if (this is MyString) return this.Value;
         if (this is MyArray)
@@ -514,16 +515,6 @@ public abstract partial class MyJson
             Value = value.ToString();
         }
     }
-
-    public static implicit operator MyJson(System.Guid aGuid)
-    {
-        return FromObject(aGuid);
-    }
-
-    public static implicit operator System.Guid(MyJson d)
-    {
-        return d == null ? Guid.Empty : d.AsGuid;
-    }
     #endregion Guid
 
     #region ByteArray
@@ -619,6 +610,30 @@ public abstract partial class MyJson
         }
     }
     #endregion StringList
+
+    #region ObjectArray
+    public virtual object[] AsObjectArray
+    {
+        get
+        {
+            if (this.IsNull || !this.IsArray)
+                return null;
+            int count = Count;
+            object[] result = new object[count];
+            for (int i = 0; i < count; i++)
+                result[i] = this[i].ToObject();
+            return result;
+        }
+        set
+        {
+            if (!IsArray || value == null)
+                return;
+            Clear();
+            for (int i = 0; i < value.Length; i++)
+                Add(FromObject(value[i]));
+        }
+    }
+    #endregion ObjectArray
 
     #region ==/!=
     public static bool operator ==(MyJson a, object b)
@@ -1506,7 +1521,7 @@ public partial class MyNumber : MyJson
 #if false
     decimal m_Data;
 #else
-    object m_Data;
+    internal object m_Data;
 #endif
 
     public override MyNodeType Tag { get { return MyNodeType.Number; } }
