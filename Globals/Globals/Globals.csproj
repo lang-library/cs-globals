@@ -44,7 +44,7 @@
     <!--
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     -->
-    <PackageReference Include="MyJson" Version="2024.501.1126.59" />
+    <PackageReference Include="MyJson" Version="2024.501.1540.11" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <!--<PackageReference Include="LiteDB" Version="5.0.19" />-->
     <PackageReference Include="Jint" Version="3.1.0" />

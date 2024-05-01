@@ -443,29 +443,47 @@ public class Util
     }
     public static void Echo(object x, string title = null)
     {
+#if false
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.WriteLine(s);
         System.Diagnostics.Debug.WriteLine(s);
+#else
+        new MyTool()
+            .SetDebugOutput(DebugFlag)
+            .Echo(x, title);
+#endif
     }
     public static void Log(dynamic x, string? title = null)
     {
+#if false
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.Error.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
+#else
+        new MyTool()
+            .SetDebugOutput(DebugFlag)
+            .Log(x, title);
+#endif
     }
     public static void Debug(dynamic x, string? title = null)
     {
+#if false
         if (!DebugFlag) return;
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.Error.WriteLine("[Debug] " + s);
         System.Diagnostics.Debug.WriteLine("[Debug] " + s);
+#else
+        new MyTool()
+            .SetDebugOutput(DebugFlag)
+            .Debug(x, title);
+#endif
     }
     public static string[] ResourceNames(Assembly assembly)
     {
