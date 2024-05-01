@@ -270,53 +270,24 @@ public abstract partial class MyData
         WriteToStringBuilder(sb, 0, 0, MyTextMode.Compact);
         return sb.ToString();
     }
-
-    public virtual string ToString(int aIndent)
-    {
-        StringBuilder sb = new StringBuilder();
-        WriteToStringBuilder(sb, 0, aIndent, MyTextMode.Indent);
-        return sb.ToString();
-    }
-    public virtual string ToString(bool indent)
-    {
-        if (indent) return ToString(2);
-        return ToString();
-    }
     internal abstract void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, MyTextMode aMode);
     #endregion ToString()
 
-    #region ToObject()
-    public dynamic ToObject()
+    #region ToJson()
+    public static string ToJson(MyData x, int aIndent)
     {
-        if (this is MyNull) return null;
-        if (this is MyBool) return this.AsBool;
-        if (this is MyNumber)
-        {
-            return ((MyNumber)this).m_Data;
-        }
-        if (this is MyString) return this.Value;
-        if (this is MyArray)
-        {
-            var result = new List<object>();
-            var array = this as MyArray;
-            for (int i = 0; i < array!.Count; i++)
-            {
-                result.Add(array[i].ToObject());
-            }
-            return result;
-        }
-        if (this is MyObject)
-        {
-            var result = new Dictionary<string, object>();
-            var obj = this as MyObject;
-            var keys = obj!.Keys;
-            foreach (var key in keys)
-            {
-                result[key] = obj![key].ToObject();
-            }
-            return result;
-        }
-        throw new Exception($"{this.GetType().FullName} is not supported");
+        return new MyTool().ToJson(x, aIndent);
+    }
+    public static string ToJson(MyData x, bool indent)
+    {
+        return new MyTool().ToJson(x, indent);
+    }
+    #endregion ToJson()
+
+    #region ToObject()
+    public static dynamic ToObject(MyData x)
+    {
+        return new MyTool().ToObject(x);
     }
     #endregion ToObject()
 
@@ -577,7 +548,7 @@ public abstract partial class MyData
             int count = Count;
             object[] result = new object[count];
             for (int i = 0; i < count; i++)
-                result[i] = this[i].ToObject();
+                result[i] = ToObject(this[i]);
             return result;
         }
     }
@@ -744,8 +715,8 @@ public abstract partial class MyData
 
 #endregion operators
 
-    #region FromString()
-    public static MyData FromString(string aJSON)
+    #region FromJson()
+    public static MyData FromJson(string aJSON)
     {
         if (String.IsNullOrEmpty(aJSON)) return null;
         var inputStream = new AntlrInputStream(aJSON);
@@ -759,14 +730,9 @@ public abstract partial class MyData
 
     private static MyData ParseJsonString(string aJSON)
     {
-        Stack<MyData> stack = new Stack<MyData>();
-        //MyData ctx = null;
         int i = 0;
         StringBuilder Token = new StringBuilder();
-        //string TokenName = "";
         bool QuoteMode = false;
-        bool TokenIsQuoted = false;
-        //bool HasNewlineChar = false;
         while (i < aJSON.Length)
         {
             switch (aJSON[i])
@@ -774,12 +740,10 @@ public abstract partial class MyData
 
                 case '"':
                     QuoteMode ^= true;
-                    TokenIsQuoted |= QuoteMode;
                     break;
 
                 case '\r':
                 case '\n':
-                    //HasNewlineChar = true;
                     break;
 
                 case ' ':
@@ -989,7 +953,7 @@ public abstract partial class MyData
 
         return null;
     }
-    #endregion FromString()
+    #endregion FromJson()
 
     #region FromObject()
     //public static MyData FromObject(object item, bool display = false)
@@ -1803,14 +1767,14 @@ public class MyTool
         string fullName = ((object)x).GetType().FullName;
         return fullName.Split('`')[0];
     }
-    protected string ToJson(object x, bool indent = false)
+    protected string ToJsonString(object x, bool indent = false)
     {
         if (x is MyData)
         {
-            return ((MyData)x).ToString(indent);
+            return MyData.ToJson((MyData)x, indent);
         }
         var myJson = MyData.FromObject(x);
-        return myJson.ToString(indent);
+        return MyData.ToJson(myJson, indent);
     }
     protected string ToDisplayString(object x)
     {
@@ -1828,13 +1792,13 @@ public class MyTool
         else if (x is MyData)
         {
             var value = (MyData)x;
-            output = value.ToString(true);
+            output = MyData.ToJson(value, true);
         }
         else
         {
             try
             {
-                output = ToJson(x, true);
+                output = ToJsonString(x, true);
             }
             catch (Exception)
             {
@@ -1844,5 +1808,54 @@ public class MyTool
         return $"<{FullName(x)}> {output}";
     }
 
+    #region ToJson()
+    public string ToJson(MyData x, int aIndent)
+    {
+        StringBuilder sb = new StringBuilder();
+        x.WriteToStringBuilder(sb, 0, aIndent, MyTextMode.Indent);
+        return sb.ToString();
+    }
+    public string ToJson(MyData x, bool indent)
+    {
+        if (indent) return ToJson(x, 2);
+        return x.ToString();
+    }
+    #endregion ToJson()
+
+    #region ToObject()
+    public dynamic ToObject(MyData x)
+    {
+        if (x == null) return null;
+        if (x is MyNull) return null;
+        if (x is MyBool) return x.AsBool;
+        if (x is MyNumber)
+        {
+            return ((MyNumber)x).m_Data;
+        }
+        if (x is MyString) return x.Value;
+        if (x is MyArray)
+        {
+            var result = new List<object>();
+            var array = x as MyArray;
+            for (int i = 0; i < array!.Count; i++)
+            {
+                result.Add(ToObject(array[i]));
+            }
+            return result;
+        }
+        if (x is MyObject)
+        {
+            var result = new Dictionary<string, object>();
+            var obj = x as MyObject;
+            var keys = obj!.Keys;
+            foreach (var key in keys)
+            {
+                result[key] = ToObject(obj![key]);
+            }
+            return result;
+        }
+        throw new Exception($"{x.GetType().FullName} is not supported");
+    }
+    #endregion ToObject()
 }
 #endregion MyTool

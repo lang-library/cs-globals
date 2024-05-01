@@ -38,7 +38,7 @@ public class Tests
         string json = ObjectToJson(new object[] { true, false, null });
         tool.Echo(json, "json");
         Assert.That(json, Is.EqualTo("""[true,false,null]"""));
-        MyData array = MyData.FromString(json);
+        MyData array = MyData.FromJson(json);
         tool.Echo($"array.IsArray: {array.IsArray}");
         Assert.True(array.IsArray);
         var array2 = array.AsStringArray;
@@ -50,7 +50,7 @@ public class Tests
         MyData.DecimalAsString = false;
         string json = ObjectToJson(123);
         Assert.That(json, Is.EqualTo("""123"""));
-        MyData array = MyData.FromString(json);
+        MyData array = MyData.FromJson(json);
         Assert.False(array.IsArray);
         var array2 = array.AsStringArray;
         CheckObjectJson(array2, """null""");
@@ -69,12 +69,12 @@ public class Tests
     protected string ObjectToJson(object x, bool indent = false)
     {
         MyData mj = MyData.FromObject(x);
-        return mj.ToString(indent);
+        return MyData.ToJson(mj, indent);
     }
     protected string ReformatJson(string json, bool indent = false)
     {
-        MyData mj = MyData.FromString(json);
-        return mj.ToString(indent);
+        MyData mj = MyData.FromJson(json);
+        return MyData.ToJson(mj, indent);
     }
     protected void CheckObjectJson(object x, string expectedJson)
     {
