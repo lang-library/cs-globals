@@ -33,6 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="fastJSON" Version="2.4.0.4" />
+    <PackageReference Include="Jil" Version="2.17.0" />
     <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
     <ProjectReference Include="..\..\Globals\Globals.csproj" />
   </ItemGroup>
