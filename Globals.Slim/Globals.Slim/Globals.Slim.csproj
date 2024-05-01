@@ -41,7 +41,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <!---
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    -->
+    <PackageReference Include="MyJson" Version="2024.501.1126.59" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <!--<PackageReference Include="LiteDB" Version="5.0.19" />-->
     <PackageReference Include="Jint" Version="3.1.0" />
@@ -55,12 +58,5 @@
   <ItemGroup>
     <EmbeddedResource Include="*.dll" />
     <EmbeddedResource Include="*.zip" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\MyJson\MyJson.cs" Link="MyJson.cs" />
-    <Compile Include="..\..\MyJson\Parser\Json5\JSON5BaseListener.cs" Link="JSON5BaseListener.cs" />
-    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Lexer.cs" Link="JSON5Lexer.cs" />
-    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Listener.cs" Link="JSON5Listener.cs" />
-    <Compile Include="..\..\MyJson\Parser\Json5\JSON5Parser.cs" Link="JSON5Parser.cs" />
   </ItemGroup>
 </Project>
