@@ -24,7 +24,7 @@ public class JsonServer
         var name = Util.UTF8AddrToString(nameAddr);
         //Util.Log($"Calling {name}()");
         var input = Util.UTF8AddrToString(inputAddr);
-        var args = MyData.FromString(input);
+        var args = MyData.FromJson(input);
         MethodInfo mi = this.apiType!.GetMethod(name);
         MyData result = null;
         if (mi == null)
@@ -43,7 +43,7 @@ public class JsonServer
                 result = MyData.FromObject(ex.InnerException.ToString().Replace("\r\n", "\n"));
             }
         }
-        string output = result.ToString(true);
+        string output = MyData.ToJson(result, true);
         HandleCallPtr.Value = Util.StringToUTF8Addr(output);
         return HandleCallPtr.Value;
     }

@@ -381,21 +381,23 @@ public class Util
     {
         if (x is MyData)
         {
-            return ((MyData)x).ToString(indent);
+            return MyData.ToJson(((MyData)x), indent);
         }
         //var myJson = MyJson.FromObject(x, display);
         var myJson = MyData.FromObject(x);
-        return myJson.ToString(indent);
+        return MyData.ToJson(myJson, indent);
     }
+#if false
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyData node = MyData.FromString(json);
-        return node.ToString(indent);
+        MyData node = MyData.FromJson(json);
+        return MyData.ToJson(node, indent);
     }
+#endif
     public static dynamic FromJson(string json)
     {
-        var myJson = MyData.FromString(json);
-        return myJson.ToObject();
+        var myJson = MyData.FromJson(json);
+        return MyData.ToObject(myJson);
     }
     public static MyData AsMyJson(object x)
     {
@@ -419,7 +421,7 @@ public class Util
         else if (x is MyData)
         {
             var value = (MyData)x;
-            output = value.ToString(2);
+            output = MyData.ToJson(value, 2);
         }
         else if (x is System.DateTime)
         {
@@ -508,12 +510,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyData.FromString(json);
+        return MyData.FromJson(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyData.FromString(json);
+        return MyData.FromJson(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {

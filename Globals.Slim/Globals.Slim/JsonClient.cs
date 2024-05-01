@@ -81,16 +81,17 @@ public class JsonClient
         if (result.StartsWith("\""))
         {
             //string error = Util.FromJson<string>(result);
-            string error = MyData.FromString(result).Value;
+            string error = MyData.FromJson(result).Value;
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
             //object[] list = Util.FromJson<object[]>(result);
-            var array = MyData.FromString(result).AsArray;
-            var list = ((List<object>)array.ToObject()).ToArray();
-            if (list.Length == 0) return "null";
-            return Util.ToJson(list[0], true);
+            //ar array = MyData.FromJson(result).AsArray;
+            //var list = ((List<object>)array.ToObject()).ToArray();
+            var list = MyData.FromJson(result).AsArray;
+            if (list.Count == 0) return "null";
+            return MyData.ToJson(list[0], true);
         }
         else
         {

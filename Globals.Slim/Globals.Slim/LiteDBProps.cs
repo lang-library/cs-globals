@@ -65,7 +65,7 @@ public class LiteDBProps
     }
     public void Put(string name, dynamic? data)
     {
-        if (data is MyData) data = ((MyData)data).ToObject();
+        if (data is MyData) data = MyData.ToObject(((MyData)data));
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
             Connection = ConnectionType.Shared
