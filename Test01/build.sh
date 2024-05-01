@@ -1,12 +1,13 @@
 #! /usr/bin/env bash
 set -vx
 set -e
-#ownerName=`cat ./OWNER.txt`
-#appName=`cat ./NAME.txt`
+
+cd "$(dirname "$0")"
+
 slnName=Test01
 buildMode=Release
 cwd=`pwd`
-#cd $cwd/$slnName
+
 cd $cwd
 find . -name bin -exec rm -rvf {} +
 find . -name obj -exec rm -rvf {} +
