@@ -1,37 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{35230C3D-06C7-40B6-8D29-A7AE503B7014}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary1</RootNamespace>
-    <AssemblyName>ClassLibrary1</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Platforms>AnyCPU</Platforms>
+    <Prefer32Bit>false</Prefer32Bit>
+    <Version>0.0.0.0</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+  <PropertyGroup>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TieredCompilationQuickJit>false</TieredCompilationQuickJit>
   </PropertyGroup>
   <PropertyGroup>
-    <DllExportIdent>4EAF4361-DDB2-435E-A614-3772D4357E57</DllExportIdent>
+    <DllExportIdent>292B8FFE-EF03-4497-B56C-7FFA8972377D</DllExportIdent>
     <DllExportMetaLibName>DllExport.dll</DllExportMetaLibName>
     <DllExportNamespace>ClassLibrary1</DllExportNamespace>
     <DllExportDDNSCecil>true</DllExportDDNSCecil>
@@ -47,19 +29,26 @@
     <DllExportPreProcType>0</DllExportPreProcType>
     <DllExportPostProcType>0</DllExportPostProcType>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="assets\**">
+      <Link>assets\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+      <TargetPath>assets\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DllExport">
@@ -69,12 +58,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Globals0\Globals0.csproj">
-      <Project>{e6a79c4e-2f13-43e6-9e98-562b5327d7c6}</Project>
-      <Name>Globals0</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Globals0\Globals0.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets" Condition="Exists($([MSBuild]::Escape('$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets')))" Label="8337224c9ad9e356" />
   </ImportGroup>
