@@ -13,7 +13,7 @@
     <TieredCompilationQuickJit>false</TieredCompilationQuickJit>
   </PropertyGroup>
   <PropertyGroup>
-    <DllExportIdent>292B8FFE-EF03-4497-B56C-7FFA8972377D</DllExportIdent>
+    <DllExportIdent>685189DC-2C74-4217-82E9-5AD99B2F7057</DllExportIdent>
     <DllExportMetaLibName>DllExport.dll</DllExportMetaLibName>
     <DllExportNamespace>ClassLibrary1</DllExportNamespace>
     <DllExportDDNSCecil>true</DllExportDDNSCecil>
@@ -51,14 +51,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\../Globals\Globals.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="DllExport">
       <Version>1.7.4</Version>
       <Visible>false</Visible>
       <Wz>1</Wz>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Globals0\Globals0.csproj" />
   </ItemGroup>
   <ImportGroup Label=".NET DllExport">
     <Import Project="$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets" Condition="Exists($([MSBuild]::Escape('$(SolutionDir)packages\DllExport.1.7.4\tools\net.r_eg.DllExport.targets')))" Label="8337224c9ad9e356" />

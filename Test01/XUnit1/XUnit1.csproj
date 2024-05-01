@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
-    <ProjectReference Include="..\Globals0\Globals0.csproj" />
+    <ProjectReference Include="..\..\Globals\Globals.csproj" />
   </ItemGroup>
 
 </Project>
