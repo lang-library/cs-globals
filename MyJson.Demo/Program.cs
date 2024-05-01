@@ -19,7 +19,7 @@ static class Program
     [STAThread]
     static void Main(string[] originalArgs)
     {
-        MyTool tool = new MyTool().WithDebugFlag(true);
+        MyTool tool = new MyTool().SetDebugOutput(true);
         tool.Echo("welcom ようこそ!");
         {
             dynamic exp = new ExpandoObject();
@@ -33,7 +33,7 @@ static class Program
             }
             tool.Log(exp, "exp");
 #if true
-            MyJson.MyData.NumberAsDecimal = false;
+            //MyJson.MyData.NumberAsDecimal = false;
             MyJson.MyData objArray = MyJson.MyData.FromJson("""[11, 22, { a: 777}]""");
             tool.Echo(objArray, "objArray");
             var objArray2 = objArray.AsObjectArray;
@@ -100,7 +100,7 @@ static class Program
             tool.Echo(myjson, "myjson");
             decimal dec = myjson.AsDecimal;
             tool.Echo(dec, "dec");
-            MyJson.MyData.DecimalAsString = true;
+            //MyJson.MyData.DecimalAsString = true;
             myjson = MyJson.MyData.FromObject(1234567890123456789m);
             tool.Echo(myjson, "myjson");
             dec = myjson.AsDecimal;
@@ -162,18 +162,18 @@ static class Program
                 { a: [1, 2, 3, true, null] }
                 """);
             tool.Echo(myjson, "myjson");
-            MyJson.MyData.DecimalAsString = false;
+            //MyJson.MyData.DecimalAsString = false;
             myjson = MyJson.MyData.FromObject(12345678901234567890123456789m);
             tool.Echo(myjson, "myjson");
-            MyJson.MyData.DecimalAsString = true;
+            //MyJson.MyData.DecimalAsString = true;
             var o1 = MyData.ToObject(myjson);
             tool.Echo(o1, "o1");
             tool.Echo(tool.FullName(o1));
-            MyJson.MyData.DecimalAsString = false;
+            //MyJson.MyData.DecimalAsString = false;
             var o2 = MyData.ToObject(myjson);
             tool.Echo(o2, "o2");
             tool.Echo(tool.FullName(o2));
-            MyJson.MyData.DecimalAsString = true;
+            //MyJson.MyData.DecimalAsString = true;
             tool.Echo(o2, "o2");
             tool.Echo(tool.FullName(o2));
 #endif

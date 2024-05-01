@@ -77,10 +77,11 @@ public enum MyTextMode
 
 #region MyData
 public abstract partial class MyData
-
-
-
 {
+    public static bool ForceASCII = false; // Use Unicode by default
+    public static bool NumberAsDecimal = false;
+    public static bool DecimalAsString = false;
+
     #region Enumerators
     public struct Enumerator
     {
@@ -181,11 +182,7 @@ public abstract partial class MyData
 
     #endregion Enumerators
 
-    #region common interface
-
-    public static bool ForceASCII = false; // Use Unicode by default
-    public static bool NumberAsDecimal = false;
-    public static bool DecimalAsString = false;
+#region common interface
 
     public abstract MyNodeType Tag { get; }
 
@@ -273,24 +270,6 @@ public abstract partial class MyData
     internal abstract void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, MyTextMode aMode);
     #endregion ToString()
 
-    #region ToJson()
-    public static string ToJson(MyData x, int aIndent)
-    {
-        return new MyTool().ToJson(x, aIndent);
-    }
-    public static string ToJson(MyData x, bool indent)
-    {
-        return new MyTool().ToJson(x, indent);
-    }
-    #endregion ToJson()
-
-    #region ToObject()
-    public static dynamic ToObject(MyData x)
-    {
-        return new MyTool().ToObject(x);
-    }
-    #endregion ToObject()
-
     #region enumerator
     public abstract Enumerator GetEnumerator();
     public IEnumerable<KeyValuePair<string, MyData>> Linq { get { return new LinqEnumerator(this); } }
@@ -298,7 +277,7 @@ public abstract partial class MyData
     public ValueEnumerator Values { get { return new ValueEnumerator(GetEnumerator()); } }
     #endregion enumerator
 
-    #endregion common interface
+#endregion common interface
 
     #region typecasting properties
 
@@ -653,6 +632,60 @@ public abstract partial class MyData
     }
     #endregion Equals()/GetHashCode()
 
+#endregion operators
+
+    #region FromJson()
+    public static MyData FromJson(string aJSON)
+    {
+        return new MyTool()
+            .SetDecimalAsString(DecimalAsString)
+            .SetForceASCII(ForceASCII)
+            .SetNumberAsDecimal(NumberAsDecimal)
+            .FromJson(aJSON);
+    }
+    #endregion FromJson()
+
+    #region ToJson()
+    public static string ToJson(MyData x, int aIndent)
+    {
+        return new MyTool()
+            .SetDecimalAsString(DecimalAsString)
+            .SetForceASCII(ForceASCII)
+            .SetNumberAsDecimal(NumberAsDecimal)
+            .ToJson(x, aIndent);
+    }
+    public static string ToJson(MyData x, bool indent)
+    {
+        return new MyTool()
+            .SetDecimalAsString(DecimalAsString)
+            .SetForceASCII(ForceASCII)
+            .SetNumberAsDecimal(NumberAsDecimal)
+            .ToJson(x, indent);
+    }
+    #endregion ToJson()
+
+    #region FromObject()
+    public static MyData FromObject(object item)
+    {
+        return new MyTool()
+            .SetDecimalAsString(DecimalAsString)
+            .SetForceASCII(ForceASCII)
+            .SetNumberAsDecimal(NumberAsDecimal)
+            .FromObject(item);
+    }
+    #endregion FromObject()
+
+    #region ToObject()
+    public static dynamic ToObject(MyData x)
+    {
+        return new MyTool()
+            .SetDecimalAsString(DecimalAsString)
+            .SetForceASCII(ForceASCII)
+            .SetNumberAsDecimal(NumberAsDecimal)
+            .ToObject(x);
+    }
+    #endregion ToObject()
+
     #region Escape()
     [ThreadStatic]
     private StringBuilder m_EscapeBuilder;
@@ -712,430 +745,6 @@ public abstract partial class MyData
         return result;
     }
     #endregion Escape()
-
-#endregion operators
-
-    #region FromJson()
-    public static MyData FromJson(string aJSON)
-    {
-        if (String.IsNullOrEmpty(aJSON)) return null;
-        var inputStream = new AntlrInputStream(aJSON);
-        var lexer = new JSON5Lexer(inputStream);
-        var commonTokenStream = new CommonTokenStream(lexer);
-        var parser = new JSON5Parser(commonTokenStream);
-        var context = parser.json5();
-        var result = JSON5ToObject(context);
-        return result;
-    }
-
-    private static MyData ParseJsonString(string aJSON)
-    {
-        int i = 0;
-        StringBuilder Token = new StringBuilder();
-        bool QuoteMode = false;
-        while (i < aJSON.Length)
-        {
-            switch (aJSON[i])
-            {
-
-                case '"':
-                    QuoteMode ^= true;
-                    break;
-
-                case '\r':
-                case '\n':
-                    break;
-
-                case ' ':
-                case '\t':
-                    if (QuoteMode)
-                        Token.Append(aJSON[i]);
-                    break;
-
-                case '\\':
-                    ++i;
-                    if (QuoteMode)
-                    {
-                        char C = aJSON[i];
-                        switch (C)
-                        {
-                            case 't':
-                                Token.Append('\t');
-                                break;
-                            case 'r':
-                                Token.Append('\r');
-                                break;
-                            case 'n':
-                                Token.Append('\n');
-                                break;
-                            case 'b':
-                                Token.Append('\b');
-                                break;
-                            case 'f':
-                                Token.Append('\f');
-                                break;
-                            case 'u':
-                                {
-                                    string s = aJSON.Substring(i + 1, 4);
-                                    Token.Append((char)int.Parse(
-                                        s,
-                                        System.Globalization.NumberStyles.AllowHexSpecifier));
-                                    i += 4;
-                                    break;
-                                }
-                            default:
-                                Token.Append(C);
-                                break;
-                        }
-                    }
-                    break;
-
-                case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
-                    break;
-
-                default:
-                    Token.Append(aJSON[i]);
-                    break;
-            }
-            ++i;
-        }
-        if (QuoteMode)
-        {
-            throw new Exception("My Parse: Quotation marks seems to be messed up.");
-        }
-        return FromObject(Token.ToString());
-    }
-
-    private static MyData JSON5ToObject(ParserRuleContext x)
-    {
-        if (x is JSON5Parser.Json5Context)
-        {
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is Antlr4.Runtime.Tree.ErrorNodeImpl)
-                {
-                    return null;
-                }
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        else if (x is JSON5Parser.ValueContext)
-        {
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return ParseJsonString(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    return ParseJsonString(t);
-                }
-
-                switch (t)
-                {
-                    case "true":
-                        return FromObject(true);
-                    case "false":
-                        return FromObject(false);
-                    case "null":
-                        return null;
-                }
-
-                throw new Exception($"Unexpected JSON5Parser+ValueContext: {t}");
-                //return t;
-            }
-
-            return JSON5ToObject((ParserRuleContext)x.children[0]);
-        }
-        else if (x is JSON5Parser.ArrContext)
-        {
-            var result = new MyArray();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result.Add(JSON5ToObject(value));
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.ObjContext)
-        {
-            var result = new MyObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.PairContext pair)
-                {
-                    var pairObj = JSON5ToObject(pair);
-                    string key = pairObj!["key"].Value;
-                    result[key] = pairObj["value"];
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.PairContext)
-        {
-            var result = new MyObject();
-            for (int i = 0; i < x.children.Count; i++)
-            {
-                if (x.children[i] is JSON5Parser.KeyContext key)
-                {
-                    result["key"] = JSON5ToObject(key);
-                }
-
-                if (x.children[i] is JSON5Parser.ValueContext value)
-                {
-                    result["value"] = JSON5ToObject(value);
-                }
-            }
-
-            return result;
-        }
-        else if (x is JSON5Parser.KeyContext)
-        {
-            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
-            {
-                string t = JSON5Terminal(x.children[0])!;
-                if (t.StartsWith("\""))
-                {
-                    return ParseJsonString(t);
-                }
-
-                if (t.StartsWith("'"))
-                {
-                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
-                    t = "\"" + t + "\"";
-                    return ParseJsonString(t);
-                }
-
-                return FromObject(t);
-            }
-            else
-            {
-                return FromObject("?");
-            }
-        }
-        else if (x is JSON5Parser.NumberContext)
-        {
-            string n = JSON5Terminal(x.children[0]);
-            if (n == "-" || n == "+")
-            {
-                string sign = n;
-                n = sign + JSON5Terminal(x.children[1]);
-            }
-            decimal result;
-            if (!decimal.TryParse(n, out result))
-                result = 0;
-            if (NumberAsDecimal)
-                return new MyNumber(result);
-            return new MyNumber(Convert.ToDouble(result));
-        }
-        else
-        {
-            throw new Exception($"Unexpected: {x.GetType().FullName}");
-        }
-    }
-
-    private static string? JSON5Terminal(Antlr4.Runtime.Tree.IParseTree x)
-    {
-        if (x is Antlr4.Runtime.Tree.TerminalNodeImpl t)
-        {
-            return t.ToString();
-        }
-
-        return null;
-    }
-    #endregion FromJson()
-
-    #region FromObject()
-    //public static MyData FromObject(object item, bool display = false)
-    public static MyData FromObject(object item)
-    {
-        //Console.Error.WriteLine("FromObject(1)");
-        if (item == null)
-        {
-            //Console.Error.WriteLine("FromObject(2)");
-            return MyNull.CreateOrGet();
-        }
-        //Console.Error.WriteLine("FromObject(3)");
-
-#if false
-        var MyData = item as MyData;
-        if (MyData != null)
-        {
-            //Console.Error.WriteLine("FromObject(4)");
-            return MyData/*.Clone()*/;
-        }
-#endif
-
-        Type type = item.GetType();
-        if (type == typeof(MyArray)
-         || type == typeof(MyObject)
-         || type == typeof(MyString)
-         || type == typeof(MyNumber)
-         || type == typeof(MyBool)
-         || type == typeof(MyNull))
-        {
-            //Console.Error.WriteLine("FromObject(4.1)");
-            return (MyData)item;
-        }
-        if (type == typeof(string) || type == typeof(char))
-        {
-            //Console.Error.WriteLine("FromObject(5)");
-            string str = item.ToString();
-            return new MyString(str);
-        }
-        else if (type == typeof(byte) || type == typeof(sbyte))
-        {
-            //Console.Error.WriteLine("FromObject(6)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(short) || type == typeof(ushort))
-        {
-            //Console.Error.WriteLine("FromObject(7)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(int) || type == typeof(uint))
-        {
-            //Console.Error.WriteLine("FromObject(8)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(long) || type == typeof(ulong))
-        {
-            //Console.Error.WriteLine("FromObject(9)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(float))
-        {
-            //Console.Error.WriteLine("FromObject(10)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(double))
-        {
-            //Console.Error.WriteLine("FromObject(11)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(decimal))
-        {
-            //Console.Error.WriteLine("FromObject(12)");
-            return new MyNumber(item);
-        }
-        else if (type == typeof(bool))
-        {
-            //Console.Error.WriteLine("FromObject(13)");
-            return new MyBool((bool)item);
-        }
-        else if (type == typeof(DateTime))
-        {
-            //Console.Error.WriteLine("FromObject(14)");
-            return new MyString(((DateTime)item).ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"));
-        }
-        else if (type == typeof(TimeSpan))
-        {
-            //Console.Error.WriteLine("FromObject(15)");
-            return new MyString(item.ToString());
-        }
-        else if (type == typeof(Guid))
-        {
-            //Console.Error.WriteLine("FromObject(16)");
-            return new MyString(item.ToString());
-        }
-        else if (type.IsEnum)
-        {
-            //Console.Error.WriteLine("FromObject(17)");
-            return new MyString(item.ToString());
-        }
-        else if (item is ExpandoObject)
-        {
-            //Console.Error.WriteLine("FromObject(18)");
-            var dic = item as IDictionary<string, object>;
-            var result = new MyObject();
-            foreach (var key in dic.Keys)
-            {
-                result[key] = FromObject(dic[key]);
-            }
-            return result;
-        }
-        else if (item is IList)
-        {
-            //Console.Error.WriteLine("FromObject(19)");
-            IList list = item as IList;
-            //Console.Error.WriteLine($"list.Count: {list.Count}");
-            var result = new MyArray();
-            for (int i = 0; i < list.Count; i++)
-            {
-                //Console.Error.WriteLine($"i: {i}");
-                result.Add(FromObject(list[i]));
-            }
-            return result;
-        }
-        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-        {
-            //Console.Error.WriteLine("FromObject(20)");
-            Type keyType = type.GetGenericArguments()[0];
-            var result = new MyObject();
-            //Refuse to output dictionary keys that aren't of type string
-            if (keyType != typeof(string))
-            {
-                return result;
-            }
-            IDictionary dict = item as IDictionary;
-            foreach (object key in dict.Keys)
-            {
-                result[(string)key] = FromObject(dict[key]);
-            }
-            return result;
-        }
-        else
-        {
-            //Console.Error.WriteLine("FromObject(21)");
-            //Console.Error.WriteLine(type.FullName);
-            Type keyType = type.GetGenericArguments()[0];
-            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-            Console.Error.WriteLine("FromObject(21.1)");
-            var result = new MyObject();
-            for (int i = 0; i < fieldInfos.Length; i++)
-            {
-                if (fieldInfos[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
-                    continue;
-                object value = fieldInfos[i].GetValue(item);
-                result[GetMemberName(fieldInfos[i])] = FromObject(value);
-            }
-            //Console.Error.WriteLine("FromObject(21.2)");
-            PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-            for (int i = 0; i < propertyInfo.Length; i++)
-            {
-                if (!propertyInfo[i].CanRead || propertyInfo[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
-                    continue;
-                object value = propertyInfo[i].GetValue(item, null);
-                result[GetMemberName(propertyInfo[i])] = FromObject(value);
-            }
-            //Console.Error.WriteLine("FromObject(22)");
-            return result;
-        }
-    }
-
-    static string GetMemberName(MemberInfo member)
-    {
-        if (member.IsDefined(typeof(DataMemberAttribute), true))
-        {
-            DataMemberAttribute dataMemberAttribute = (DataMemberAttribute)Attribute.GetCustomAttribute(member, typeof(DataMemberAttribute), true);
-            if (!string.IsNullOrEmpty(dataMemberAttribute.Name))
-                return dataMemberAttribute.Name;
-        }
-
-        return member.Name;
-    }
-    #endregion FromObject()
-
 }
 // End of MyData
 #endregion MyData
@@ -1239,7 +848,6 @@ public partial class MyArray : MyData
                 yield return N;
         }
     }
-
 
     internal override void WriteToStringBuilder(StringBuilder aSB, int aIndent, int aIndentInc, MyTextMode aMode)
     {
@@ -1454,7 +1062,6 @@ public partial class MyString : MyData
 
     public override Enumerator GetEnumerator() { return new Enumerator(); }
 
-
     public override string Value
     {
         get { return m_Data; }
@@ -1518,18 +1125,9 @@ public partial class MyNumber : MyData
         }
         set
         {
-            if (!NumberAsDecimal)
-            {
-                double v;
-                if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
-                    m_Data = v;
-            }
-            else
-            {
-                decimal v;
-                if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
-                    m_Data = v;
-            }
+            decimal v;
+            if (decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out v))
+                m_Data = v;
         }
     }
 
@@ -1723,14 +1321,32 @@ public partial class MyNull : MyData
 #region MyTool
 public class MyTool
 {
-    bool DebugFlag = false;
-    //bool UsingNUnit = false;
+    bool DebugOutput = false;
+    bool ForceASCII = false; // Use Unicode by default
+    bool NumberAsDecimal = false;
+    bool DecimalAsString = false;
+
     public MyTool()
     {
     }
-    public MyTool WithDebugFlag(bool flag)
+    public MyTool SetDebugOutput(bool flag)
     {
-        DebugFlag = flag;
+        DebugOutput = flag;
+        return this;
+    }
+    public MyTool SetForceASCII(bool flag)
+    {
+        ForceASCII = flag;
+        return this;
+    }
+    public MyTool SetNumberAsDecimal(bool flag)
+    {
+        NumberAsDecimal = flag;
+        return this;
+    }
+    public MyTool SetDecimalAsString(bool flag)
+    {
+        DecimalAsString = flag;
         return this;
     }
     public void Echo(object x, string title = null)
@@ -1740,7 +1356,6 @@ public class MyTool
         s += ToDisplayString(x);
         Console.WriteLine(s);
         System.Diagnostics.Debug.WriteLine(s);
-        //if (UsingNUnit) TestContext.Out.WriteLine(s);
     }
     public void Log(dynamic x, string? title = null)
     {
@@ -1749,17 +1364,15 @@ public class MyTool
         s += ToDisplayString(x);
         Console.Error.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
-        //if (UsingNUnit) TestContext.Out.WriteLine("[Log] " + s);
     }
     public void Debug(dynamic x, string? title = null)
     {
-        if (!DebugFlag) return;
+        if (!DebugOutput) return;
         String s = "";
         if (title != null) s = title + ": ";
         s += ToDisplayString(x);
         Console.Error.WriteLine("[Debug] " + s);
         System.Diagnostics.Debug.WriteLine("[Debug] " + s);
-        //if (UsingNUnit) TestContext.Out.WriteLine("[Debug] " + s);
     }
     public string FullName(dynamic x)
     {
@@ -1857,5 +1470,452 @@ public class MyTool
         throw new Exception($"{x.GetType().FullName} is not supported");
     }
     #endregion ToObject()
+
+    #region FromJson()
+    public MyData FromJson(string aJSON)
+    {
+        if (String.IsNullOrEmpty(aJSON)) return null;
+        var inputStream = new AntlrInputStream(aJSON);
+        var lexer = new JSON5Lexer(inputStream);
+        var commonTokenStream = new CommonTokenStream(lexer);
+        var parser = new JSON5Parser(commonTokenStream);
+        var context = parser.json5();
+        var result = JSON5ToObject(context);
+        return result;
+    }
+
+    private MyData ParseJsonString(string aJSON)
+    {
+        int i = 0;
+        StringBuilder Token = new StringBuilder();
+        bool QuoteMode = false;
+        while (i < aJSON.Length)
+        {
+            switch (aJSON[i])
+            {
+
+                case '"':
+                    QuoteMode ^= true;
+                    break;
+
+                case '\r':
+                case '\n':
+                    break;
+
+                case ' ':
+                case '\t':
+                    if (QuoteMode)
+                        Token.Append(aJSON[i]);
+                    break;
+
+                case '\\':
+                    ++i;
+                    if (QuoteMode)
+                    {
+                        char C = aJSON[i];
+                        switch (C)
+                        {
+                            case 't':
+                                Token.Append('\t');
+                                break;
+                            case 'r':
+                                Token.Append('\r');
+                                break;
+                            case 'n':
+                                Token.Append('\n');
+                                break;
+                            case 'b':
+                                Token.Append('\b');
+                                break;
+                            case 'f':
+                                Token.Append('\f');
+                                break;
+                            case 'u':
+                                {
+                                    string s = aJSON.Substring(i + 1, 4);
+                                    Token.Append((char)int.Parse(
+                                        s,
+                                        System.Globalization.NumberStyles.AllowHexSpecifier));
+                                    i += 4;
+                                    break;
+                                }
+                            default:
+                                Token.Append(C);
+                                break;
+                        }
+                    }
+                    break;
+
+                case '\uFEFF': // remove / ignore BOM (Byte Order Mark)
+                    break;
+
+                default:
+                    Token.Append(aJSON[i]);
+                    break;
+            }
+            ++i;
+        }
+        if (QuoteMode)
+        {
+            throw new Exception("My Parse: Quotation marks seems to be messed up.");
+        }
+        return FromObject(Token.ToString());
+    }
+
+    private MyData JSON5ToObject(ParserRuleContext x)
+    {
+        if (x is JSON5Parser.Json5Context)
+        {
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is Antlr4.Runtime.Tree.ErrorNodeImpl)
+                {
+                    return null;
+                }
+            }
+
+            return JSON5ToObject((ParserRuleContext)x.children[0]);
+        }
+        else if (x is JSON5Parser.ValueContext)
+        {
+            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
+            {
+                string t = JSON5Terminal(x.children[0])!;
+                if (t.StartsWith("\""))
+                {
+                    return ParseJsonString(t);
+                }
+
+                if (t.StartsWith("'"))
+                {
+                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
+                    t = "\"" + t + "\"";
+                    return ParseJsonString(t);
+                }
+
+                switch (t)
+                {
+                    case "true":
+                        return FromObject(true);
+                    case "false":
+                        return FromObject(false);
+                    case "null":
+                        return null;
+                }
+
+                throw new Exception($"Unexpected JSON5Parser+ValueContext: {t}");
+                //return t;
+            }
+
+            return JSON5ToObject((ParserRuleContext)x.children[0]);
+        }
+        else if (x is JSON5Parser.ArrContext)
+        {
+            var result = new MyArray();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.ValueContext value)
+                {
+                    result.Add(JSON5ToObject(value));
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.ObjContext)
+        {
+            var result = new MyObject();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.PairContext pair)
+                {
+                    var pairObj = JSON5ToObject(pair);
+                    string key = pairObj!["key"].Value;
+                    result[key] = pairObj["value"];
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.PairContext)
+        {
+            var result = new MyObject();
+            for (int i = 0; i < x.children.Count; i++)
+            {
+                if (x.children[i] is JSON5Parser.KeyContext key)
+                {
+                    result["key"] = JSON5ToObject(key);
+                }
+
+                if (x.children[i] is JSON5Parser.ValueContext value)
+                {
+                    result["value"] = JSON5ToObject(value);
+                }
+            }
+
+            return result;
+        }
+        else if (x is JSON5Parser.KeyContext)
+        {
+            if (x.children[0] is Antlr4.Runtime.Tree.TerminalNodeImpl)
+            {
+                string t = JSON5Terminal(x.children[0])!;
+                if (t.StartsWith("\""))
+                {
+                    return ParseJsonString(t);
+                }
+
+                if (t.StartsWith("'"))
+                {
+                    t = t.Substring(1, t.Length - 2).Replace("\\'", ",").Replace("\"", "\\\"");
+                    t = "\"" + t + "\"";
+                    return ParseJsonString(t);
+                }
+
+                return FromObject(t);
+            }
+            else
+            {
+                return FromObject("?");
+            }
+        }
+        else if (x is JSON5Parser.NumberContext)
+        {
+            string n = JSON5Terminal(x.children[0]);
+            if (n == "-" || n == "+")
+            {
+                string sign = n;
+                n = sign + JSON5Terminal(x.children[1]);
+            }
+            decimal result;
+            if (!decimal.TryParse(n, out result))
+                result = 0;
+            if (NumberAsDecimal)
+                return new MyNumber(result);
+            return new MyNumber(Convert.ToDouble(result));
+        }
+        else
+        {
+            throw new Exception($"Unexpected: {x.GetType().FullName}");
+        }
+    }
+
+    private static string? JSON5Terminal(Antlr4.Runtime.Tree.IParseTree x)
+    {
+        if (x is Antlr4.Runtime.Tree.TerminalNodeImpl t)
+        {
+            return t.ToString();
+        }
+
+        return null;
+    }
+    #endregion FromJson()
+
+    #region FromObject()
+    public MyData FromObject(object item)
+    {
+        if (item == null)
+        {
+            //Console.Error.WriteLine("FromObject(2)");
+            return MyNull.CreateOrGet();
+        }
+
+        Type type = item.GetType();
+        if (type == typeof(MyArray)
+         || type == typeof(MyObject)
+         || type == typeof(MyString)
+         || type == typeof(MyNumber)
+         || type == typeof(MyBool)
+         || type == typeof(MyNull))
+        {
+            return (MyData)item;
+        }
+        if (type == typeof(string) || type == typeof(char))
+        {
+            string str = item.ToString();
+            return new MyString(str);
+        }
+        else if (type == typeof(byte) || type == typeof(sbyte))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(short) || type == typeof(ushort))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(int) || type == typeof(uint))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(long) || type == typeof(ulong))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(float))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(double))
+        {
+            return new MyNumber(item);
+        }
+        else if (type == typeof(decimal))
+        {
+            if (DecimalAsString)
+                return new MyString(item.ToString());
+            return new MyNumber(item);
+        }
+        else if (type == typeof(bool))
+        {
+            return new MyBool((bool)item);
+        }
+        else if (type == typeof(DateTime))
+        {
+            return new MyString(((DateTime)item).ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"));
+        }
+        else if (type == typeof(TimeSpan))
+        {
+            return new MyString(item.ToString());
+        }
+        else if (type == typeof(Guid))
+        {
+            return new MyString(item.ToString());
+        }
+        else if (type.IsEnum)
+        {
+            return new MyString(item.ToString());
+        }
+        else if (item is ExpandoObject)
+        {
+            var dic = item as IDictionary<string, object>;
+            var result = new MyObject();
+            foreach (var key in dic.Keys)
+            {
+                result[key] = FromObject(dic[key]);
+            }
+            return result;
+        }
+        else if (item is IList)
+        {
+            IList list = item as IList;
+            var result = new MyArray();
+            for (int i = 0; i < list.Count; i++)
+            {
+                result.Add(FromObject(list[i]));
+            }
+            return result;
+        }
+        else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            var result = new MyObject();
+            //Refuse to output dictionary keys that aren't of type string
+            if (keyType != typeof(string))
+            {
+                return result;
+            }
+            IDictionary dict = item as IDictionary;
+            foreach (object key in dict.Keys)
+            {
+                result[(string)key] = FromObject(dict[key]);
+            }
+            return result;
+        }
+        else
+        {
+            Type keyType = type.GetGenericArguments()[0];
+            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            var result = new MyObject();
+            for (int i = 0; i < fieldInfos.Length; i++)
+            {
+                if (fieldInfos[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = fieldInfos[i].GetValue(item);
+                result[GetMemberName(fieldInfos[i])] = FromObject(value);
+            }
+            PropertyInfo[] propertyInfo = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                if (!propertyInfo[i].CanRead || propertyInfo[i].IsDefined(typeof(IgnoreDataMemberAttribute), true))
+                    continue;
+                object value = propertyInfo[i].GetValue(item, null);
+                result[GetMemberName(propertyInfo[i])] = FromObject(value);
+            }
+            return result;
+        }
+    }
+
+    static string GetMemberName(MemberInfo member)
+    {
+        if (member.IsDefined(typeof(DataMemberAttribute), true))
+        {
+            DataMemberAttribute dataMemberAttribute = (DataMemberAttribute)Attribute.GetCustomAttribute(member, typeof(DataMemberAttribute), true);
+            if (!string.IsNullOrEmpty(dataMemberAttribute.Name))
+                return dataMemberAttribute.Name;
+        }
+
+        return member.Name;
+    }
+    #endregion FromObject()
+
+    #region Escape()
+    [ThreadStatic]
+    private StringBuilder m_EscapeBuilder;
+    internal StringBuilder EscapeBuilder
+    {
+        get
+        {
+            if (m_EscapeBuilder == null)
+                m_EscapeBuilder = new StringBuilder();
+            return m_EscapeBuilder;
+        }
+    }
+    internal string Escape(string aText)
+    {
+        var sb = EscapeBuilder;
+        sb.Length = 0;
+        if (sb.Capacity < aText.Length + aText.Length / 10)
+            sb.Capacity = aText.Length + aText.Length / 10;
+        foreach (char c in aText)
+        {
+            switch (c)
+            {
+                case '\\':
+                    sb.Append("\\\\");
+                    break;
+                case '\"':
+                    sb.Append("\\\"");
+                    break;
+                case '\n':
+                    sb.Append("\\n");
+                    break;
+                case '\r':
+                    sb.Append("\\r");
+                    break;
+                case '\t':
+                    sb.Append("\\t");
+                    break;
+                case '\b':
+                    sb.Append("\\b");
+                    break;
+                case '\f':
+                    sb.Append("\\f");
+                    break;
+                default:
+                    if (c < ' ' || (ForceASCII && c > 127))
+                    {
+                        ushort val = c;
+                        sb.Append("\\u").Append(val.ToString("X4"));
+                    }
+                    else
+                        sb.Append(c);
+                    break;
+            }
+        }
+        string result = sb.ToString();
+        sb.Length = 0;
+        return result;
+    }
+    #endregion Escape()
 }
 #endregion MyTool
