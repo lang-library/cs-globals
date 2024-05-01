@@ -12,9 +12,8 @@ using System.Media;
 using System.Threading;
 using System.Net.Sockets;
 using System.CodeDom;
-using MyJson;
 
-namespace Globals;
+namespace nuget_tools.Globals0_Native;
 public class Util
 {
     public static bool DebugFlag = false;
@@ -379,30 +378,28 @@ public class Util
     //public static string ToJson(object x, bool indent = false, bool display = false)
     public static string ToJson(object x, bool indent = false)
     {
-        if (x is MyData)
+        if (x is MyJson)
         {
-            return MyData.ToJson(((MyData)x), indent);
+            return ((MyJson)x).ToString(indent);
         }
         //var myJson = MyJson.FromObject(x, display);
-        var myJson = MyData.FromObject(x);
-        return MyData.ToJson(myJson, indent);
+        var myJson = MyJson.FromObject(x);
+        return myJson.ToString(indent);
     }
-#if false
     protected static string ReformatJson(string json, bool indent = false)
     {
-        MyData node = MyData.FromJson(json);
-        return MyData.ToJson(node, indent);
+        MyJson node = MyJson.FromString(json);
+        return node.ToString(indent);
     }
-#endif
     public static dynamic FromJson(string json)
     {
-        var myJson = MyData.FromJson(json);
-        return MyData.ToObject(myJson);
+        var myJson = MyJson.FromString(json);
+        return myJson.ToObject();
     }
-    public static MyData AsMyJson(object x)
+    public static MyJson AsMyJson(object x)
     {
-        if (x is MyData) return ((MyData)x).Clone();
-        return MyData.FromObject(x);
+        if (x is MyJson) return ((MyJson)x).Clone();
+        return MyJson.FromObject(x);
     }
     public static string ToString(dynamic x)
     {
@@ -418,10 +415,10 @@ public class Util
             output = "\"" + value.Value + "\"";
             //output = "'" + value.Value + "'";
         }
-        else if (x is MyData)
+        else if (x is MyJson)
         {
-            var value = (MyData)x;
-            output = MyData.ToJson(value, 2);
+            var value = (MyJson)x;
+            output = value.ToString(2);
         }
         else if (x is System.DateTime)
         {
@@ -443,47 +440,29 @@ public class Util
     }
     public static void Echo(object x, string title = null)
     {
-#if false
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.WriteLine(s);
         System.Diagnostics.Debug.WriteLine(s);
-#else
-        new MyTool()
-            .SetDebugOutput(DebugFlag)
-            .Echo(x, title);
-#endif
     }
     public static void Log(dynamic x, string? title = null)
     {
-#if false
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.Error.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
         System.Diagnostics.Debug.WriteLine("[Log] " + s);
-#else
-        new MyTool()
-            .SetDebugOutput(DebugFlag)
-            .Log(x, title);
-#endif
     }
     public static void Debug(dynamic x, string? title = null)
     {
-#if false
         if (!DebugFlag) return;
         String s = "";
         if (title != null) s = title + ": ";
         s += Util.ToString(x);
         Console.Error.WriteLine("[Debug] " + s);
         System.Diagnostics.Debug.WriteLine("[Debug] " + s);
-#else
-        new MyTool()
-            .SetDebugOutput(DebugFlag)
-            .Debug(x, title);
-#endif
     }
     public static string[] ResourceNames(Assembly assembly)
     {
@@ -528,12 +507,12 @@ public class Util
     public static dynamic? StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyData.FromJson(json);
+        return MyJson.FromString(json);
     }
     public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyData.FromJson(json);
+        return MyJson.FromString(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {

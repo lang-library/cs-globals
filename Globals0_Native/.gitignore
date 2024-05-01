@@ -1,0 +1,7 @@
+/Globals0_Native.v*.zip
+/Globals0_Native.xml
+/packages
+/nuget-tools.Globals0_Native.sln
+/Main.sln
+!/Main.Exe
+!/Logic.Exe

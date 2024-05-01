@@ -1,11 +1,10 @@
-using MyJson;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Globals;
+namespace nuget_tools.Globals0_Native;
 public class JsonClient
 {
 #if false
@@ -81,17 +80,16 @@ public class JsonClient
         if (result.StartsWith("\""))
         {
             //string error = Util.FromJson<string>(result);
-            string error = MyData.FromJson(result).Value;
+            string error = MyJson.FromString(result).Value;
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
             //object[] list = Util.FromJson<object[]>(result);
-            //ar array = MyData.FromJson(result).AsArray;
-            //var list = ((List<object>)array.ToObject()).ToArray();
-            var list = MyData.FromJson(result).AsArray;
-            if (list.Count == 0) return "null";
-            return MyData.ToJson(list[0], true);
+            var array = MyJson.FromString(result).AsArray;
+            var list = ((List<object>)array.ToObject()).ToArray();
+            if (list.Length == 0) return "null";
+            return Util.ToJson(list[0], true);
         }
         else
         {
@@ -104,7 +102,7 @@ public class JsonClient
         var result = Util.FromJson(CallAsJson(name, args));
         return result;
     }
-    public MyData CallAsMyJson(dynamic name, dynamic args)
+    public MyJson CallAsMyJson(dynamic name, dynamic args)
     {
         var result = Call(name, args);
         return Util.AsMyJson(result);

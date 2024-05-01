@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace Globals;
+namespace nuget_tools.Globals0_Native;
 public static class TextEmbedder
 {
     const long MinimumCheckLength = 8192;
