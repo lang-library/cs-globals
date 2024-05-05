@@ -8,7 +8,7 @@ using System.Text;
 using Global;
 //using MyJson;
 
-namespace Globals;
+namespace Global;
 
 public class Installer
 {

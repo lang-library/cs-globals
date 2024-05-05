@@ -7,7 +7,7 @@ using Jint.Native;
 using System;
 using System.IO;
 using System.Reflection;
-namespace Globals;
+namespace Global;
 public class JintScript
 {
     public static Jint.Engine CreateEngine(params Assembly[] list)
@@ -20,7 +20,7 @@ public class JintScript
                 cfg.AllowClr(list[i]);
             }
         });
-        engine.SetValue("_globals", new JintScriptGlobals());
+        engine.SetValue("_globals", new JintScriptGlobal());
         engine.Execute("""
             var print = _globals.print;
             var log = _globals.log;
@@ -39,7 +39,7 @@ public class JintScript
         return engine;
     }
 }
-internal class JintScriptGlobals
+internal class JintScriptGlobal
 {
     public void print(dynamic x, string? title = null)
     {

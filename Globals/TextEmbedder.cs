@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-namespace Globals;
+namespace Global;
 public static class TextEmbedder
 {
     const long MinimumCheckLength = 8192;

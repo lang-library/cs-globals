@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Linq;
 using Global;
 
-namespace Globals;
+namespace Global;
 
 internal class RunLib
 {

@@ -1,5 +1,5 @@
 ﻿using Global;
-using Globals;
+using Global;
 //using MyJson;
 using System;
 using System.Collections.Specialized;

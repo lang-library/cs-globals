@@ -1,11 +1,11 @@
 #if true
-using static Globals.Util;
+using static Global.Util;
 using LiteDB;
 using System.IO;
 using System.Linq;
 using Global;
 //using MyJson;
-namespace Globals;
+namespace Global;
 public class LiteDBProps
 {
     public class Prop

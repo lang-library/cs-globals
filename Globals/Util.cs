@@ -15,7 +15,7 @@ using System.CodeDom;
 using Global;
 //using MyJson;
 
-namespace Globals;
+namespace Global;
 public class Util
 {
     public static bool DebugFlag = false;

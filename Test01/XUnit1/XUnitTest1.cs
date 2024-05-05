@@ -1,5 +1,5 @@
-﻿using Globals;
-using static Globals.Util;
+﻿using Global;
+using static Global.Util;
 //using MyJson;
 //using static MyJson.MyData;
 using System;

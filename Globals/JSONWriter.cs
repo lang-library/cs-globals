@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Globals;
+namespace Global;
 
 //Really simple JSON writer
 //- Outputs JSON structures from an object

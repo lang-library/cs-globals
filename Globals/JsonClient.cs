@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Globals;
+namespace Global;
 public class JsonClient
 {
 #if false

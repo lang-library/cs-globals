@@ -14,11 +14,11 @@ cd $cwd
 dotnet test -p:Configuration=Release -p:Platform="Any CPU" Globals.sln
 
 cd $cwd/Globals
-sed -i -e "s/<Version>.*<\/Version>/<Version>${version}<\/Version>/g" Globals.csproj
+#sed -i -e "s/<Version>.*<\/Version>/<Version>${version}<\/Version>/g" Globals.csproj
 rm -rf *.nupkg
 dotnet pack -o . -p:Configuration=Release -p:Platform="Any CPU" Globals.csproj
 
-#exit 0
+exit 0
 
 tag="Globals-v$version"
 cd $cwd

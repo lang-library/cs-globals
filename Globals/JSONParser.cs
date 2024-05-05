@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Globals;
+namespace Global;
 
 // Really simple JSON parser in ~300 lines
 // - Attempts to parse JSON files with minimal GC allocation

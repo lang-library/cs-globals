@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-namespace Globals;
+namespace Global;
 public static class Extensions
 {
     public static dynamic? ToEasyObject(this JsValue x)

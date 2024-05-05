@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 #if NET45
 using System.Windows.Forms;
 #endif
-namespace Globals;
+namespace Global;
 public class Dirs
 {
     public static string RemoveTrailingSlashes(string path)
