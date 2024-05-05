@@ -5,6 +5,7 @@ using System.Net;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Global;
 
 namespace Globals;
 
@@ -37,7 +38,7 @@ internal class RunLib
             dllName = FindDllFromNugetTools(dllName);
         }
         JsonClient api = new JsonClient(dllName, Directory.GetCurrentDirectory());
-        api.Call("main", new { exe = exe, args = args });
+        api.Call("main", EasyObject.FromObject(new { exe = exe, args = args }));
         Environment.Exit(0);
     }
     public static string FindDllFromNugetTools(string appName)

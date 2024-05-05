@@ -3,7 +3,8 @@ using static Globals.Util;
 using LiteDB;
 using System.IO;
 using System.Linq;
-using MyJson;
+using Global;
+//using MyJson;
 namespace Globals;
 public class LiteDBProps
 {
@@ -48,7 +49,7 @@ public class LiteDBProps
     public LiteDBProps(string orgName, string appNam) : this(new DirectoryInfo(Dirs.ProfilePath(orgName, appNam)))
     {
     }
-    public dynamic? Get(string name)
+    public EasyObject Get(string name)
     {
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
@@ -60,12 +61,12 @@ public class LiteDBProps
             var result = collection.Find(x => x.Name == name).FirstOrDefault();
             connection.Commit();
             if (result == null) return null;
-            return AsMyJson(result.Data);
+            return EasyObject.FromObject(result.Data);
         }
     }
     public void Put(string name, dynamic? data)
     {
-        if (data is MyData) data = MyData.ToObject(((MyData)data));
+        if (data is EasyObject) data = ((EasyObject)data).ToObject();
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
             Connection = ConnectionType.Shared

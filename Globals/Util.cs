@@ -12,7 +12,8 @@ using System.Media;
 using System.Threading;
 using System.Net.Sockets;
 using System.CodeDom;
-using MyJson;
+using Global;
+//using MyJson;
 
 namespace Globals;
 public class Util
@@ -381,6 +382,7 @@ public class Util
         return fullName.Split('`')[0];
     }
     //public static string ToJson(object x, bool indent = false, bool display = false)
+#if false
     public static string ToJson(object x, bool indent = false)
     {
         if (x is MyData)
@@ -391,6 +393,7 @@ public class Util
         var myJson = MyData.FromObject(x);
         return MyData.ToJson(myJson, indent);
     }
+#endif
 #if false
     protected static string ReformatJson(string json, bool indent = false)
     {
@@ -398,6 +401,7 @@ public class Util
         return MyData.ToJson(node, indent);
     }
 #endif
+#if false
     public static dynamic FromJson(string json)
     {
         var myJson = MyData.FromJson(json);
@@ -445,6 +449,7 @@ public class Util
         }
         return $"<{Util.FullName(x)}> {output}";
     }
+#endif
 #if false
     public static void Echo(object x, string title = null)
     {
@@ -505,15 +510,15 @@ public class Util
         Stream stream = assembly.GetManifestResourceStream(resourceName);
         return StreamAsBytes(stream);
     }
-    public static dynamic? StreamAsJson(Stream stream)
+    public static EasyObject StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return MyData.FromJson(json);
+        return EasyObject.FromJson(json);
     }
-    public static dynamic? ResourceAsMyJson(Assembly assembly, string name)
+    public static EasyObject ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return MyData.FromJson(json);
+        return EasyObject.FromJson(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {

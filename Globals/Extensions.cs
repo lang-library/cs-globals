@@ -1,4 +1,5 @@
 //using Jint.Native;
+using Global;
 using Jint.Native;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ using System.Xml.Linq;
 namespace Globals;
 public static class Extensions
 {
-    public static dynamic? ToMyJson(this JsValue x)
+    public static dynamic? ToEasyObject(this JsValue x)
     {
         if (x == null) return null;
-        return Util.AsMyJson(x.ToObject());
+        return EasyObject.FromObject(x.ToObject());
     }
     public static void SetTypeReference(this Jint.Engine engine, string name, Type type)
     {

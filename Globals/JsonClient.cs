@@ -1,4 +1,5 @@
-using MyJson;
+//using MyJson;
+using Global;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -20,8 +21,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec);
         if (dllPath is null)
         {
-            MyData.Log(dllSpec, "dllSpec");
-            MyData.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -31,8 +32,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec, cwd);
         if (dllPath is null)
         {
-            MyData.Log(dllSpec, "dllSpec");
-            MyData.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -42,8 +43,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec, assembly);
         if (dllPath is null)
         {
-            MyData.Log(dllSpec, "dllSpec");
-            MyData.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -57,21 +58,21 @@ public class JsonClient
             );
         if (this.Handle == IntPtr.Zero)
         {
-            MyData.Log($"DLL not loaded: {dllPath}");
+            EasyObject.Log($"DLL not loaded: {dllPath}");
             Environment.Exit(1);
         }
         this.CallPtr = GetProcAddress(Handle, "Call");
         if (this.CallPtr == IntPtr.Zero)
         {
-            MyData.Log("Call() not found");
+            EasyObject.Log("Call() not found");
             Environment.Exit(1);
         }
     }
-    public string CallAsJson(dynamic name, dynamic args)
+    public EasyObject Call(dynamic name, EasyObject args)
     {
         IntPtr pName = Util.StringToUTF8Addr(name);
         proto_Call pCall = (proto_Call)Marshal.GetDelegateForFunctionPointer(this.CallPtr, typeof(proto_Call));
-        var argsJson = Util.ToJson(args);
+        var argsJson = args.ToJson();
         IntPtr pArgsJson = Util.StringToUTF8Addr(argsJson);
         IntPtr pResult = pCall(pName, pArgsJson);
         string result = Util.UTF8AddrToString(pResult);
@@ -80,18 +81,14 @@ public class JsonClient
         Marshal.FreeHGlobal(pArgsJson);
         if (result.StartsWith("\""))
         {
-            //string error = Util.FromJson<string>(result);
-            string error = MyData.FromJson(result).Value;
+            string error = EasyObject.FromJson(result).Cast<string>();
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
-            //object[] list = Util.FromJson<object[]>(result);
-            //ar array = MyData.FromJson(result).AsArray;
-            //var list = ((List<object>)array.ToObject()).ToArray();
-            var list = MyData.FromJson(result).AsArray;
-            if (list.Count == 0) return "null";
-            return MyData.ToJson(list[0], true);
+            var list = EasyObject.FromJson(result);
+            if (list.Count == 0) return EasyObject.FromObject(null);
+            return list[0];
         }
         else
         {
@@ -99,6 +96,7 @@ public class JsonClient
             throw new Exception(error);
         }
     }
+#if false
     public dynamic Call(dynamic name, dynamic args)
     {
         var result = Util.FromJson(CallAsJson(name, args));
@@ -109,8 +107,6 @@ public class JsonClient
         var result = Call(name, args);
         return Util.AsMyJson(result);
     }
-#if false
-    static ThreadLocal<IntPtr> HandleCallPtr = new ThreadLocal<IntPtr>();
 #endif
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
     internal static extern IntPtr LoadLibraryW(string lpFileName);

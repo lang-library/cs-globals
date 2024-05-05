@@ -5,7 +5,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Reflection;
 using System.Text;
-using MyJson;
+using Global;
+//using MyJson;
 
 namespace Globals;
 
@@ -50,7 +51,7 @@ public class Installer
     {
         if (File.Exists(filePath)) return;
         string guid = Util.GuidString();
-        MyData.Log($"Donloading to {filePath}...");
+        EasyObject.Log($"Donloading to {filePath}...");
         Util.DownloadBinaryFromUrl(url, $"{filePath}.{guid}");
         try
         {
@@ -84,7 +85,7 @@ public class Installer
     public static void SafeZipExtract(string zipPath, string dirPath)
     {
         if (Directory.Exists(dirPath)) return;
-        MyData.Log($"Extracting to {dirPath}...");
+        EasyObject.Log($"Extracting to {dirPath}...");
         string guid = Util.GuidString();
         ZipFile.ExtractToDirectory(zipPath, $"{dirPath}.{guid}");
         try

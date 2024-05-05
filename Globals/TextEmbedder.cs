@@ -1,4 +1,5 @@
-using MyJson;
+//using MyJson;
+using Global;
 using System;
 using System.IO;
 using System.Text;
@@ -140,7 +141,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            MyData.Log(e.ToString());
+            EasyObject.Log(e.ToString());
             return null;
         }
     }
@@ -169,7 +170,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            MyData.Log(e.ToString());
+            EasyObject.Log(e.ToString());
             return 0;
         }
     }
@@ -182,7 +183,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            MyData.Log(e.ToString());
+            EasyObject.Log(e.ToString());
             return null;
         }
     }

@@ -1,5 +1,6 @@
 ﻿//using Newtonsoft.Json.Linq;
-using MyJson;
+//using MyJson;
+using Global;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -59,15 +60,15 @@ public class MyJS
     }
     public void SetValue(string name, dynamic? value)
     {
-        engine.Execute($"globalThis.{name}=({Util.ToJson(value)})");
+        engine.Execute($"globalThis.{name}=({EasyObject.FromObject(value).ToJson()})");
     }
     public dynamic? GetValue(string name)
     {
         return engine.GetValue(name).ToObject();
     }
-    public MyData GetValueAsMyJson(string name)
+    public EasyObject GetValueAsEasyObject(string name)
     {
-        return Util.AsMyJson(GetValue(name));
+        return EasyObject.FromObject(GetValue(name));
     }
     public void Execute(string script, params object[] vars)
     {
@@ -96,9 +97,9 @@ public class MyJS
         }
         return result;
     }
-    public MyData EvaluateAsMyJson(string script, params object[] vars)
+    public EasyObject EvaluateAsEasyObject(string script, params object[] vars)
     {
-        return Util.AsMyJson(Evaluate(script, vars));
+        return EasyObject.FromObject(Evaluate(script, vars));
     }
     public dynamic? Call(string name, params object[] vars)
     {
@@ -117,8 +118,8 @@ public class MyJS
         }
         return result;
     }
-    public MyData CallAsMyJson(string name, params object[] vars)
+    public EasyObject CallAsEasyObject(string name, params object[] vars)
     {
-        return Util.AsMyJson(Call(name, vars));
+        return EasyObject.FromObject(Call(name, vars));
     }
 }

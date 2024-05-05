@@ -1,8 +1,9 @@
 #if true
 using Esprima.Ast;
+using Global;
 using Jint;
 using Jint.Native;
-using MyJson;
+//using MyJson;
 using System;
 using System.IO;
 using System.Reflection;
@@ -42,11 +43,11 @@ internal class JintScriptGlobals
 {
     public void print(dynamic x, string? title = null)
     {
-        MyData.Echo(x, title);
+        EasyObject.Echo(x, title);
     }
     public void log(dynamic x, string? title = null)
     {
-        MyData.Log(x, title);
+        EasyObject.Log(x, title);
     }
     public string getenv(string name)
     {
