@@ -13,6 +13,9 @@ find . -name obj -exec rm -rf {} +
 cd $cwd
 dotnet test -p:Configuration=Release -p:Platform="Any CPU" Globals.sln
 
+cd $cwd
+dotnet test -p:Configuration=Release -p:Platform="Any CPU" UTest01/Utest01.sln
+
 cd $cwd/Globals
 #sed -i -e "s/<Version>.*<\/Version>/<Version>${version}<\/Version>/g" Globals.csproj
 rm -rf *.nupkg

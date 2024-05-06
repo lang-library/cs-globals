@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Global;
+using static Global.EasyObject;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
-using System.Security.Authentication;
 using Global;
 
 public class ExceptionTest
@@ -20,6 +19,7 @@ public class ExceptionTest
     [Fact]
     public void Test01()
     {
+        Assert.Equal(Null.TypeValue, @null);
 #if false
         var exception1 = Assert.Throws<ArgumentException>(() => { new MyNumber(null); });
         Assert.Equal("Argument is null", exception1.Message);

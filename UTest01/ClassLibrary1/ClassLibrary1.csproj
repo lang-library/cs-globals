@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462</TargetFrameworks>
     <Nullable>disable</Nullable>

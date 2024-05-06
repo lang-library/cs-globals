@@ -1,13 +1,7 @@
 ﻿using Global;
-using static Global.Util;
-//using MyJson;
-//using static MyJson.MyData;
-using System;
+using static Global.EasyObject;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
-using Esprima.Ast;
-using Global;
 
 public class XUnitTest1
 {
@@ -24,6 +18,7 @@ public class XUnitTest1
     [Fact]
     public void Test01()
     {
+        Assert.Equal(Null.TypeValue, @null);
         int port = Util.FreeTcpPort();
         Assert.True(port != 0, "port != 0");
         JsonClient cli = new JsonClient(@"ClassLibrary1.dll", typeof(XUnitTest1).Assembly);

@@ -9,7 +9,7 @@ public static class Program
     {
         try
         {
-            var pr = DLL0.API.Call("parse", new EasyObject().Add("""
+            var pr = DLL0.API.Call("parse", Null.Add("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
