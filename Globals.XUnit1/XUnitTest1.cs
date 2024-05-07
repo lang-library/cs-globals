@@ -28,7 +28,7 @@ public class XUnitTest1
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
     """).Add(" (1 + 2) * 3 "));
-        //Print(pr, "pr");
+        Print(pr, "pr");
         Assert.Equal("Additive", (string)pr.Dynamic.name);
         Assert.Equal("Multiplicative", (string)pr.Dynamic.nodes[0].name);
     }
