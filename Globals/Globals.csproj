@@ -43,7 +43,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EasyObject" Version="2024.507.48.35" />
+    <PackageReference Include="EasyObject" Version="2024.507.623.21" />
     <!--
     <PackageReference Include="MyJson" Version="2024.505.1142.53" />
     -->

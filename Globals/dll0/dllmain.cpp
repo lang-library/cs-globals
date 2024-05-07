@@ -91,7 +91,7 @@ const char* Call(const char*namePtr, const char* inputPtr)
     }
     catch (std::exception& e)
     {
-        std::string err_msg = std::string("error: ") + e.what();
+        std::string err_msg = /*std::string("error: ") + */ e.what();
         //lastError = err_msg;
         result = err_msg;
     }
