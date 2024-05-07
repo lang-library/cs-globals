@@ -57,4 +57,12 @@ public class XUnitTest1
         });
         Assert.Equal("[grammar_error]", exception1.Message);
     }
+    [Fact]
+    public void Test04()
+    {
+        AST ast = new AST();
+        Print(ast, "ast");
+        ast.choice = 1;
+        Print(ast, "ast");
+    }
 }
