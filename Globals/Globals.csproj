@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462</TargetFrameworks>
-    <Version>2024.0507.2012.17</Version>
+    <Version>2024.0507.2013.55</Version>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <RootNamespace>Globals</RootNamespace>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EasyObject" Version="2024.507.1518.59" />
+    <PackageReference Include="EasyObject" Version="2024.507.1916.22" />
     <!--
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <PackageReference Include="Jint" Version="3.1.1" />
