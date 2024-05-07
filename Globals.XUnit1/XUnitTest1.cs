@@ -63,15 +63,8 @@ public class XUnitTest1
     [Fact]
     public void Test04()
     {
-        var cal = new IntCalculator("""
-    # Grammar for Calculator...
-    Additive    <- Multiplicative '+' Additive / Multiplicative
-    Multiplicative   <- Primary '*' Multiplicative / Primary
-    Primary     <- '(' Additive ')' / Number
-    Number      <- < [0-9]+ >
-    %whitespace <- [ \t]*
-    """);
+        var cal = new IntCalculator();
         var result = cal.Calculate("11 + 22");
-        Echo(result, "result");
+        Print(result, "result");
     }
 }

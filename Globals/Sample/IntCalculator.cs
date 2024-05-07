@@ -6,9 +6,17 @@ namespace Global.Sample;
 public class IntCalculator
 {
     protected string grammar;
-    public IntCalculator(string grammar)
+    public IntCalculator(/*string grammar*/)
     {
-        this.grammar = grammar;
+        //this.grammar = grammar;
+        this.grammar = """
+    # Grammar for Calculator...
+    Additive    <- Multiplicative '+' Additive / Multiplicative
+    Multiplicative   <- Primary '*' Multiplicative / Primary
+    Primary     <- '(' Additive ')' / Number
+    Number      <- < [0-9]+ >
+    %whitespace <- [ \t]*
+    """;
     }
     public int Calculate(string input)
     {
@@ -22,9 +30,9 @@ public class IntCalculator
             case "Additive/0":
                 {
                     Assert.That(ast.nodes.Count, Is.EqualTo(2));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("abc"));
-                    Assert.That(ast.nodes[1].name, Is.EqualTo("xyz"));
-                    return 0;
+                    Assert.That(ast.nodes[0].name, Is.EqualTo("Multiplicative"));
+                    Assert.That(ast.nodes[1].name, Is.EqualTo("Additive"));
+                    return DoCalculate(ast.nodes[0]) + DoCalculate(ast.nodes[1]);
                 }
             default:
                 Echo(ast);
