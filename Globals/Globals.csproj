@@ -45,13 +45,12 @@
   <ItemGroup>
     <PackageReference Include="EasyObject" Version="2024.507.623.21" />
     <!--
-    <PackageReference Include="MyJson" Version="2024.505.1142.53" />
-    -->
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <PackageReference Include="Jint" Version="3.1.1" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.4" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
+    -->
   </ItemGroup>
   <ItemGroup>
     <None Include="./README.md" Pack="true" PackagePath="" />

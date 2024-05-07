@@ -1,6 +1,3 @@
-//using Jint.Native;
-using Global;
-using Jint.Native;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,6 +8,7 @@ using System.Xml.Linq;
 namespace Global;
 public static class Extensions
 {
+#if false
     public static dynamic? ToEasyObject(this JsValue x)
     {
         if (x == null) return null;
@@ -19,12 +17,6 @@ public static class Extensions
     public static void SetTypeReference(this Jint.Engine engine, string name, Type type)
     {
         engine.SetValue(name, Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, type));
-    }
-#if false
-    public static dynamic? FromJson(this string x)
-    {
-        if (x == null) return null;
-        return Util.FromJson(x);
     }
 #endif
     public static XmlDocument ToXmlDocument(this XDocument xDocument)

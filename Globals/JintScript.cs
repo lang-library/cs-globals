@@ -1,4 +1,4 @@
-#if true
+#if false
 using Esprima.Ast;
 using Global;
 using Jint;

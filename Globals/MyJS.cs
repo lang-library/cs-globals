@@ -1,5 +1,4 @@
-﻿//using Newtonsoft.Json.Linq;
-//using MyJson;
+﻿#if false
 using Global;
 using System;
 using System.Collections.Generic;
@@ -123,3 +122,4 @@ public class MyJS
         return EasyObject.FromObject(Call(name, vars));
     }
 }
+#endif
