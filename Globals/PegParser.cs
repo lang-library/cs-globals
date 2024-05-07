@@ -29,6 +29,7 @@ public class PegParser
         if (!x["token"].IsNull)
         {
             ast.is_token = true;
+            ast.name_choice = ast.name;
             ast.token = x["token"].Cast<string>();
             return ast;
         }
