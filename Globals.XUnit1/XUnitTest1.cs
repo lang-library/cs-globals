@@ -4,6 +4,7 @@ using Xunit;
 using Xunit.Abstractions;
 using static System.Net.Mime.MediaTypeNames;
 using System;
+using Global.Sample;
 
 public class XUnitTest1
 {
@@ -62,9 +63,15 @@ public class XUnitTest1
     [Fact]
     public void Test04()
     {
-        AST ast = new AST();
-        Print(ast, "ast");
-        ast.choice = 1;
-        Print(ast, "ast");
+        var cal = new IntCalculator("""
+    # Grammar for Calculator...
+    Additive    <- Multiplicative '+' Additive / Multiplicative
+    Multiplicative   <- Primary '*' Multiplicative / Primary
+    Primary     <- '(' Additive ')' / Number
+    Number      <- < [0-9]+ >
+    %whitespace <- [ \t]*
+    """);
+        var result = cal.Calculate("11 + 22");
+        Echo(result, "result");
     }
 }
