@@ -20,7 +20,7 @@ public class XUnitTest1
     [Fact]
     public void Test01()
     {
-        EasyObject pr = PegParser.ParseToEasyObject("""
+        AST ast = PegParser.Parse("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
@@ -28,17 +28,17 @@ public class XUnitTest1
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
     """, " (1 + 2) * 3 ");
-        //Print(pr, "pr");
-        Assert.Equal("Additive", (string)pr.Dynamic.name);
-        Assert.Equal("Multiplicative", (string)pr.Dynamic.nodes[0].name);
-        AST ast = PegParser.EasyObjectToAST(pr);
         Print(ast, "ast");
+        Assert.Equal("Additive", ast.name);
+        Assert.Equal("Additive/1", ast.name_choice);
+        Assert.Equal("Multiplicative", ast.nodes[0].name);
+        Assert.Equal("Multiplicative/0", ast.nodes[0].name_choice);
     }
     [Fact]
     public void Test02()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            EasyObject pr = PegParser.ParseToEasyObject("""
+            AST ast = PegParser.Parse("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
@@ -53,7 +53,7 @@ public class XUnitTest1
     public void Test03()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            EasyObject pr = PegParser.ParseToEasyObject("""
+            AST ast = PegParser.Parse("""
     bad grammar!
     """, " xxx ");
         });

@@ -10,12 +10,18 @@ namespace Global;
 
 public class PegParser
 {
-    public static EasyObject ParseToEasyObject(string grammar, string input)
+    public static AST Parse(string grammar, string input)
+    {
+        EasyObject eo = ParseToEasyObject(grammar, input);
+        AST ast = EasyObjectToAST(eo);
+        return ast;
+    }
+    protected static EasyObject ParseToEasyObject(string grammar, string input)
     {
         EasyObject eo = DLL0.API.Call("parse", new EasyObject().Add(grammar).Add(input));
         return eo;
     }
-    public static AST EasyObjectToAST(EasyObject x)
+    protected static AST EasyObjectToAST(EasyObject x)
     {
         if (x.IsNull) return null;
         var ast = new AST();
