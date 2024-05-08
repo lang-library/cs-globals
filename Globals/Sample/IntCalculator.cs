@@ -40,11 +40,26 @@ public class IntCalculator
                     Assert.That(ast.nodes[0].name, Is.EqualTo("Multiplicative"));
                     return DoCalculate(ast.nodes[0]);
                 }
+            case "Multiplicative/0":
+                {
+                    Assert.That(ast.nodes.Count, Is.EqualTo(2));
+                    Assert.That(ast.nodes[0].name, Is.EqualTo("Primary"));
+                    Assert.That(ast.nodes[1].name, Is.EqualTo("Multiplicative"));
+                    return DoCalculate(ast.nodes[0]) * DoCalculate(ast.nodes[1]);
+                }
             case "Multiplicative/1":
                 {
                     Assert.That(ast.nodes.Count, Is.EqualTo(1));
                     Assert.That(ast.nodes[0].name, Is.EqualTo("Primary"));
                     return DoCalculate(ast.nodes[0]);
+                }
+            case "Primary/0":
+                {
+                    {
+                        Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                        Assert.That(ast.nodes[0].name, Is.EqualTo("Additive"));
+                        return DoCalculate(ast.nodes[0]);
+                    }
                 }
             case "Primary/1":
                 {

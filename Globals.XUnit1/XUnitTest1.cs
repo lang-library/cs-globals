@@ -66,5 +66,14 @@ public class XUnitTest1
         var cal = new IntCalculator();
         var result = cal.Calculate("11 + 22");
         Print(result, "result");
+        Assert.Equal(33, result);
+    }
+    [Fact]
+    public void Test05()
+    {
+        var cal = new IntCalculator();
+        var result = cal.Calculate(" (1 + 2) * 3 ");
+        Print(result, "result");
+        Assert.Equal(9, result);
     }
 }
