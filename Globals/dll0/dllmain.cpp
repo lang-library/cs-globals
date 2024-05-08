@@ -47,8 +47,8 @@ static nljson parse(const nljson &args)
     if (args.size() != 2) throw std::runtime_error(format("@arse() expects 2 arguments but %u passed", args.size()));
     std::string grammar = (std::string)args[0];
     std::string input = (std::string)args[1];
-    cout << "grammar: " << grammar << std::endl;
-    cout << "input: " << input << std::endl;
+    //cout << "grammar: " << grammar << std::endl;
+    //cout << "input: " << input << std::endl;
     return parse_to_nljson(grammar, input);
 }
 
