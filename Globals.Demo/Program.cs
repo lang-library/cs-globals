@@ -55,7 +55,7 @@ static class Program
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            var test = FromJson(bigJson);
+            //var test = FromJson(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■EasyObject");
@@ -66,7 +66,7 @@ static class Program
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            JObject jsonObject = JObject.Parse(bigJson);
+            //JObject jsonObject = JObject.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Newtonsoft.Json");
@@ -78,7 +78,7 @@ static class Program
         var w32parser = new Win32JsonParser();
         for (int c = 0; c < 5; c++)
         {
-            w32parser.Parse(bigJson);
+            //w32parser.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32JsonParser");
@@ -86,5 +86,11 @@ static class Program
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+
+        var nlp = new Win32NLJsonParser();
+        var nlr = nlp.Parse("""
+            { "a": 123, "b": [11, 22, 33], "c": null }
+            """);
+        Echo(nlr);
     }
 }
