@@ -72,7 +72,11 @@ std::shared_ptr<NLJsonResult> NLJsonParser::Parse(const std::wstring &input)
     try
     {
         result->error = false;
-        nljson nl = nljson::parse(utf8_input);
+        nljson nl = nljson::parse(
+            utf8_input,
+            /* callback */ nullptr,
+            /* allow exceptions */ false,
+            /* ignore_comments */ true);
         result->ast = convert_ast(nl);
     }
     catch (...)

@@ -9,7 +9,7 @@ using static Global.EasyObject;
 
 namespace Global.Sample;
 
-public class Win32NLJsonParser
+public class Win32NLJsonParser: Global.IJsonParser
 {
     static Win32NLJsonParser()
     {
@@ -23,13 +23,62 @@ public class Win32NLJsonParser
             LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH);
     }
     NLJsonParser parser = null;
-    public Win32NLJsonParser()
+    bool NumberAsDecima;
+    public Win32NLJsonParser(bool NumberAsDecimal)
     {
+        this.NumberAsDecima = NumberAsDecimal;
         this.parser = NLJsonParserDLL.CreateParser();
     }
-    public NLJsonResult Parse(string json)
+    public object ParseJson(string json)
     {
-        return this.parser.Parse(json);
+        NLJsonResult result = this.parser.Parse(json);
+        if (result.error)
+        {
+            throw new Exception(result.error_msg);
+        }
+        return AstToObject(result.ast, NumberAsDecima);
+    }
+    protected object AstToObject(NLJsonAST ast, bool NumberAsDecimal)
+    {
+        switch(ast.type)
+        {
+            case NLJsonType.nl_boolean:
+                {
+                    return (ast.token == "true") ? true : false;
+                }
+            case NLJsonType.nl_null:
+                {
+                    return null;
+                }
+            case NLJsonType.nl_number:
+                {
+                    return NumberAsDecimal ? decimal.Parse(ast.token) : double.Parse(ast.token);
+                }
+            case NLJsonType.nl_string:
+                {
+                    return ast.token;
+                }
+            case NLJsonType.nl_array:
+                {
+                    var result = new List<object>();
+                    foreach (var e in ast.vect)
+                    {
+                        result.Add(AstToObject(e, NumberAsDecimal));
+                    }
+                    return result;
+                }
+            case NLJsonType.nl_object:
+                {
+                    var result = new Dictionary<string, object>();
+                    foreach(string key in ast.dict.Keys)
+                    {
+                        result[key] = AstToObject(ast.dict[key], NumberAsDecimal);
+                    }
+                    return result;
+                }
+            default:
+                return null;
+        }
     }
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
     internal static extern IntPtr LoadLibraryW(string lpFileName);

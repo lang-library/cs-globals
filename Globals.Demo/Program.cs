@@ -89,15 +89,21 @@ static class Program
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
-        var nlp = new Win32NLJsonParser();
-        var nlr = nlp.Parse("""
-            { "a": 123, "b": [11, true, false, null], "c": "hello\nハロー©" }
+        var nlp = new Win32NLJsonParser(true);
+        var nlr = nlp.ParseJson("""
+            { "a": 123, "b": [11, true, false, null], //line comment
+              "c": /*comment*/ "hello\nハロー©" }
             """);
         Echo(nlr);
+        EasyObject.JsonParser = nlp;
+        Echo(FromJson("""
+            { "a": 123, "b": [11, true, false, null], //line comment
+              "c": /*comment*/ "hello\nハロー©" }
+            """));
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            nlp.Parse(bigJson);
+            nlp.ParseJson(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32NLJsonParser");
