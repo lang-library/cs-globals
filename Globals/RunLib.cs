@@ -38,7 +38,7 @@ internal class RunLib
             dllName = FindDllFromNugetTools(dllName);
         }
         JsonClient api = new JsonClient(dllName, Directory.GetCurrentDirectory());
-        api.Call("main", EasyObject.FromObject(new { exe = exe, args = args }));
+        api.Call("main", GObject.FromObject(new { exe = exe, args = args }));
         Environment.Exit(0);
     }
     public static string FindDllFromNugetTools(string appName)

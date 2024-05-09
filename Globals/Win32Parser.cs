@@ -7,7 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
-using static Global.EasyObject;
+using static Global.GObject;
 
 namespace Global;
 

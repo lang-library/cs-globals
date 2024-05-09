@@ -141,7 +141,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            EasyObject.Log(e.ToString());
+            GObject.Log(e.ToString());
             return null;
         }
     }
@@ -170,7 +170,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            EasyObject.Log(e.ToString());
+            GObject.Log(e.ToString());
             return 0;
         }
     }
@@ -183,7 +183,7 @@ public static class TextEmbedder
         }
         catch (Exception e)
         {
-            EasyObject.Log(e.ToString());
+            GObject.Log(e.ToString());
             return null;
         }
     }

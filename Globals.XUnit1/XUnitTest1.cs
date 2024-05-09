@@ -1,5 +1,5 @@
 ﻿using Global;
-using static Global.EasyObject;
+using static Global.GObject;
 using Xunit;
 using Xunit.Abstractions;
 using static System.Net.Mime.MediaTypeNames;
@@ -12,12 +12,12 @@ public class XUnitTest1
     private readonly ITestOutputHelper Out;
     void Print(object x, string title = null)
     {
-        Out.WriteLine(EasyObject.ToPrintable(x, title));
+        Out.WriteLine(GObject.ToPrintable(x, title));
     }
     public XUnitTest1(ITestOutputHelper testOutputHelper)
     {
         Out = testOutputHelper;
-        EasyObject.ClearSettings();
+        GObject.ClearSettings();
     }
     [Fact]
     public void Test01()

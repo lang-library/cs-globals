@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using static Global.EasyObject;
+using static Global.GObject;
 
 namespace Global.Sample;
 

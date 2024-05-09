@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Text;
 using System;
-using static Global.EasyObject;
+using static Global.GObject;
 using System.Collections.Generic;
 
 namespace Global.Sample;

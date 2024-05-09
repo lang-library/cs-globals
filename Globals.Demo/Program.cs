@@ -1,5 +1,5 @@
 ﻿using Global;
-using static Global.EasyObject;
+using static Global.GObject;
 using Global.Sample;
 using System;
 using Xunit;
@@ -95,7 +95,7 @@ static class Program
               "c": /*comment*/ "hello\nハロー©" }
             """);
         Echo(nlr);
-        EasyObject.JsonParser = nlp;
+        GObject.JsonParser = nlp;
         Echo(FromJson("""
             { "a": 123, "b": [11, true, false, null], //line comment
               "c": /*comment*/ "hello\nハロー©" }

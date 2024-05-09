@@ -25,23 +25,23 @@ public class JsonServer
         var name = Util.UTF8AddrToString(nameAddr);
         //Util.Log($"Calling {name}()");
         var input = Util.UTF8AddrToString(inputAddr);
-        var args = EasyObject.FromJson(input);
+        var args = GObject.FromJson(input);
         MethodInfo mi = this.apiType!.GetMethod(name);
-        EasyObject result = EasyObject.FromObject(null);
+        GObject result = GObject.FromObject(null);
         if (mi == null)
         {
-            result = EasyObject.FromObject($"API not found: {name}");
+            result = GObject.FromObject($"API not found: {name}");
         }
         else
         {
             try
             {
-                result = EasyObject.FromObject(mi.Invoke(null, new object[] { args }));
-                result = EasyObject.FromObject(new object[] { result });
+                result = GObject.FromObject(mi.Invoke(null, new object[] { args }));
+                result = GObject.FromObject(new object[] { result });
             }
             catch (TargetInvocationException ex)
             {
-                result = EasyObject.FromObject(ex.InnerException.ToString().Replace("\r\n", "\n"));
+                result = GObject.FromObject(ex.InnerException.ToString().Replace("\r\n", "\n"));
             }
         }
         string output = result.ToJson(true);
