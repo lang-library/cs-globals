@@ -6,6 +6,8 @@ using Xunit;
 using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Collections;
+using System.Linq;
 
 namespace Main;
 
@@ -92,5 +94,47 @@ static class Program
             { "a": 123, "b": [11, 22, 33], "c": null }
             """);
         Echo(nlr);
+        Echo(nlr.ast.dict as IDictionary);
+        Echo(nlr.ast.dict as System.Collections.Generic.IDictionary<string, object>);
+        Echo(nlr.ast.dict.GetType().IsGenericType);
+        var tp = nlr.ast.dict.GetType();
+        if (tp.GetInterfaces().Any(
+  i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IDictionary<,>)))
+        {
+            Console.WriteLine($"Do something");
+        }
+        var ifc = IsGenericIDictionaryType(tp);
+        Echo(ifc.FullName);
+        if (ifc != null)
+        {
+            ProcessGenericIDictionaryType(nlr.ast.dict);
+        }
+    }
+    public static void ProcessGenericIDictionaryType<T>(System.Collections.Generic.IDictionary<string, T> dict)
+    {
+        foreach(var key in dict.Keys)
+        {
+            Echo(key);
+        }
+
+    }
+    public static Type IsGenericIDictionaryType(Type type)
+    {
+        if (type == null) return null;
+        var ifs = type.GetInterfaces();
+        foreach(var i in ifs )
+        {
+            if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IDictionary<,>))
+            {
+                Type keyType = i.GetGenericArguments()[0];
+                Type valType = i.GetGenericArguments()[1];
+                //if (keyType == typeof(string))
+                {
+                    return valType;
+                }
+
+            }
+        }
+        return null;
     }
 }
