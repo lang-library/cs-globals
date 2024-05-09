@@ -30,13 +30,16 @@ public class Win32Parser
 
     public Win32Parser(string grammar)
     {
-        this.parser = new PegParser(grammar);
+        //this.parser = new PegParser(grammar);
+        this.parser = PegParserDLL.CreateParser(grammar);
     }
 
     public PegAST Parse(string input)
     {
+        //IntPtr inputPtr = Util.StringToWideAddr(input);
         using (PegResult result = this.parser.Parse(input))
         {
+            //Util.FreeHGlobal(inputPtr);
             if (result.error)
             {
                 throw new Exception(result.error_msg);

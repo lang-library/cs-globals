@@ -10,4 +10,11 @@
 
 
 public class PegParserDLL {
+  public static PegParser CreateParser(string grammar) {
+    global::System.IntPtr cPtr = PegParserDLLPINVOKE.CreateParser(grammar);
+    PegParser ret = (cPtr == global::System.IntPtr.Zero) ? null : new PegParser(cPtr, true);
+    if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }

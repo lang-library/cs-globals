@@ -410,4 +410,7 @@ class PegParserDLLPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_delete_PegParser")]
   public static extern void delete_PegParser(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_CreateParser")]
+  public static extern global::System.IntPtr CreateParser([global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg1);
 }

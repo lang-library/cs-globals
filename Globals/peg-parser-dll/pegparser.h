@@ -41,7 +41,10 @@ private:
 public:
     explicit PegParser(const std::wstring& grammar);
     std::shared_ptr<PegResult> Parse(const std::wstring& input);
+    //std::shared_ptr<PegResult> Parse(const void* input);
 };
 #endif
+
+extern std::shared_ptr<PegParser> CreateParser(const std::wstring& grammar);
 
 #endif // PEGPARSER_H
