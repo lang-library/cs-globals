@@ -14,7 +14,6 @@ public class Win32JsonParser
         this.parser = new Win32Parser("""
     # JSON grammar based on RFC 4627 (http://www.ietf.org/rfc/rfc4627.txt)
 
-    #json        <- object / array / boolean / number / string / null
     json        <- boolean / null / number / string / object / array
     
 
@@ -22,8 +21,6 @@ public class Win32JsonParser
     member      <- string ':' json
 
     array       <- '[' (json (',' json)*)? ']'
-
-    #value       <- boolean / null / number / string / object / array
 
     boolean     <- 'false' / 'true'
     null        <- 'null'
@@ -34,8 +31,9 @@ public class Win32JsonParser
     frac        <- ('.' [0-9]+)?
     exp         <- ([eE] [-+]? [0-9]+)?
 
-    string      <- '"' < char* > '"'
-    char        <- unescaped / escaped
+    #string      <- '"' < char* > '"'
+    string      <- < '"' char* '"' >
+        char        <- unescaped / escaped
     escaped     <- '\\' (["\\/bfnrt] / 'u' [a-fA-F0-9]{4})
     unescaped   <- [\u0020-\u0021\u0023-\u005b\u005d-\u10ffff]
 
