@@ -16,10 +16,7 @@ public class Win32Parser
     static Win32Parser()
     {
         string dir = Internal.InstallResourceZip("PegParserDLL");
-        //Echo(dir, "dir");
         string dll = @$"{dir}\PegParserDLL.dll";
-        //Echo(dll, "dll");
-        //Echo(File.Exists(dll));
         LoadLibraryExW(
             dll,
             IntPtr.Zero,
@@ -30,8 +27,12 @@ public class Win32Parser
 
     public Win32Parser(string grammar)
     {
-        //this.parser = new PegParser(grammar);
         this.parser = PegParserDLL.CreateParser(grammar);
+    }
+
+    ~Win32Parser()
+    {
+        this.parser.Dispose();
     }
 
     public PegAST Parse(string input)

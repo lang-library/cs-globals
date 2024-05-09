@@ -30,7 +30,7 @@ static class Program
         Echo(FromObject(Null));
         Echo(FromObject(DateTime.Now));
         Echo(FromObject(new { a = 123 }));
-#if false
+#if true
         var jp = new Win32JsonParser();
         object o;
         o = jp.Parse("null");
@@ -49,13 +49,13 @@ static class Program
         Echo(o, "o");
 #endif
         string bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
-        Echo(bigJson);
+        //Echo(bigJson);
         var sw = new System.Diagnostics.Stopwatch();
         TimeSpan ts;
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            //var test = FromJson(bigJson);
+            var test = FromJson(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■EasyObject");
@@ -66,7 +66,7 @@ static class Program
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            //JObject jsonObject = JObject.Parse(bigJson);
+            JObject jsonObject = JObject.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Newtonsoft.Json");
@@ -75,10 +75,9 @@ static class Program
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         sw.Start();
+        var w32parser = new Win32JsonParser();
         for (int c = 0; c < 5; c++)
         {
-            Console.WriteLine(c);
-            var w32parser = new Win32JsonParser();
             w32parser.Parse(bigJson);
         }
         sw.Stop();
