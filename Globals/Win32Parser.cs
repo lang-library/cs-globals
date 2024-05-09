@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 using static Global.EasyObject;
 
 namespace Global;
@@ -25,12 +26,19 @@ public class Win32Parser
             LoadLibraryFlags.LOAD_WITH_ALTERED_SEARCH_PATH);
     }
 
-    public static object Parse2(string grammar, string input)
+    public static PegAST Parse(string grammar, string input)
     {
         PegParser pegParser = new PegParser();
-        PegResult result = pegParser.Parse(grammar, input);
-        return result;
+        using (PegResult result = pegParser.Parse(grammar, input))
+        {
+            if (result.error)
+            {
+                throw new Exception(result.error_msg);
+            }
+            return result.ast;
+        }
     }
+#if false
     public static AST Parse(string grammar, string input)
     {
         EasyObject eo = ParseToEasyObject(grammar, input);
@@ -68,6 +76,7 @@ public class Win32Parser
             return ast;
         }
     }
+#endif
     [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
     internal static extern IntPtr LoadLibraryW(string lpFileName);
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]

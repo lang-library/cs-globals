@@ -21,7 +21,7 @@ public class XUnitTest1
     [Fact]
     public void Test01()
     {
-        AST ast = Win32Parser.Parse("""
+        PegAST ast = Win32Parser.Parse("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
@@ -39,7 +39,7 @@ public class XUnitTest1
     public void Test02()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            AST ast = Win32Parser.Parse("""
+            PegAST ast = Win32Parser.Parse("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
@@ -54,7 +54,7 @@ public class XUnitTest1
     public void Test03()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            AST ast = Win32Parser.Parse("""
+            PegAST ast = Win32Parser.Parse("""
     bad grammar!
     """, " xxx ");
         });

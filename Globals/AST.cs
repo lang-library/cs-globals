@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if false
+using System.Collections.Generic;
 
 namespace Global;
 
@@ -11,3 +12,4 @@ public class AST: RedundantObject
     public bool is_token = false;
     public List<AST> nodes = null;
 }
+#endif
