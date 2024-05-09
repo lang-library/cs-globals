@@ -65,7 +65,7 @@ public class XUnitTest1
     [Fact]
     public void Test04()
     {
-        var cal = new IntCalculator();
+        var cal = new Win32IntCalculator();
         var result = cal.Calculate("11 + 22");
         Print(result, "result");
         Assert.Equal(33, result);
@@ -73,7 +73,7 @@ public class XUnitTest1
     [Fact]
     public void Test05()
     {
-        var cal = new IntCalculator();
+        var cal = new Win32IntCalculator();
         var result = cal.Calculate(" (1 + 2) * 3 ");
         Print(result, "result");
         Assert.Equal(9, result);

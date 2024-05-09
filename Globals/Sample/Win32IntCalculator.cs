@@ -3,10 +3,10 @@ using static Global.EasyObject;
 
 namespace Global.Sample;
 
-public class IntCalculator
+public class Win32IntCalculator
 {
     protected Win32Parser parser = null;
-    public IntCalculator(/*string grammar*/)
+    public Win32IntCalculator(/*string grammar*/)
     {
         this.parser = new Win32Parser("""
     # Grammar for Calculator...

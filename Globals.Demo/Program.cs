@@ -14,7 +14,7 @@ static class Program
     {
         ShowDetail = true;
         Echo(new { args = args });
-        var cal = new IntCalculator();
+        var cal = new Win32IntCalculator();
         var result = cal.Calculate("11 + 22");
         Echo(result, "result(1)");
         Assert.Equal(33, result);
@@ -27,15 +27,9 @@ static class Program
         Echo(FromObject(Null));
         Echo(FromObject(DateTime.Now));
         Echo(FromObject(new { a = 123 }));
-#if false
-        var r = Win32Parser.Parse2("""
-    Additive    <- Multiplicative '+' Additive / Multiplicative
-    Multiplicative   <- Primary '*' Multiplicative / Primary
-    Primary     <- '(' Additive ')' / Number
-    Number      <- < [0-9]+ >
-    %whitespace <- [ \t]*
-    """, " (1 + 2) * 3 ");
-        Echo(r, "r");
-#endif
+        var jp = new Win32JsonParser();
+        object o;
+        o = jp.Parse("123");
+        Echo(o, "o");
     }
 }
