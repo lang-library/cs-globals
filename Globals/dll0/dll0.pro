@@ -10,13 +10,15 @@ TEMPLATE  = lib
 CONFIG += dll
 
 SOURCES += \
-    dllmain.cpp
+    dllmain.cpp \
+    pegparser.cpp
 
 #DESTDIR = $$PWD
 
 INCLUDEPATH += $$(HOME)/common/include
 
 HEADERS += \
-    dllmain.h
+    dllmain.h \
+    pegparser.h
 
 DEFINES += BUILDING_DLL1
