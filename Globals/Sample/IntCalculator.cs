@@ -20,7 +20,7 @@ public class IntCalculator
     }
     public int Calculate(string input)
     {
-        AST ast = PegParser.Parse(this.grammar, input);
+        AST ast = Win32Parser.Parse(this.grammar, input);
         return DoCalculate(ast);
     }
     int DoCalculate(AST ast)

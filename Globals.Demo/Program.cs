@@ -27,5 +27,14 @@ static class Program
         Echo(FromObject(Null));
         Echo(FromObject(DateTime.Now));
         Echo(FromObject(new { a = 123 }));
+        var r = Win32Parser.Parse2("""
+    # Grammar for Calculator...
+    Additive    <- Multiplicative '+' Additive / Multiplicative
+    Multiplicative   <- Primary '*' Multiplicative / Primary
+    Primary     <- '(' Additive ')' / Number
+    Number      <- < [0-9]+ >
+    %whitespace <- [ \t]*
+    """, " (1 + 2) * 3 ");
+        Echo(r, "r");
     }
 }
