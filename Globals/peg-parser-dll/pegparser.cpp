@@ -16,8 +16,9 @@ static inline std::shared_ptr<PegAST> convert_ast(std::shared_ptr<peg::Ast> ast_
     result->is_token = ast.is_token;
     if (ast.is_token)
     {
-        std::string token = std::string(ast.token);
-        result->token = utf8_to_wide(token);
+        std::wstring token = utf8_to_wide(std::string(ast.token));
+        result->token = token;
+        result->name_choice = result->name;
     }
     else
     {
