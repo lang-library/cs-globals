@@ -43,7 +43,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EasyObject" Version="2024.509.1258.38" />
+    <PackageReference Include="EasyObject" Version="2024.509.1447.27" />
     <!--
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <PackageReference Include="Jint" Version="3.1.1" />
