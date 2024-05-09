@@ -22,7 +22,8 @@ public class IntCalculator
     {
         //AST ast = Win32Parser.Parse(this.grammar, input);
         PegAST ast = Win32Parser.Parse(this.grammar, input);
-        return DoCalculate(ast);
+        using (ast) // Dispose ast
+            return DoCalculate(ast);
     }
     int DoCalculate(PegAST ast)
     {
