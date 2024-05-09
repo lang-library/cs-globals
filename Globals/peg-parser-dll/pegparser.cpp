@@ -31,9 +31,15 @@ static inline std::shared_ptr<PegAST> convert_ast(std::shared_ptr<peg::Ast> ast_
     return std::shared_ptr<PegAST>(result);
 }
 
-std::shared_ptr<PegResult> PegParser::Parse(const std::wstring &grammar, const std::wstring &input)
+PegParser::PegParser(const std::wstring& grammar)
 {
-    peg::parser parser(wide_to_utf8(grammar));
+    this->parser_ptr = std::shared_ptr<peg::parser>(new peg::parser(wide_to_utf8(grammar)));
+}
+
+std::shared_ptr<PegResult> PegParser::Parse(const std::wstring &input)
+{
+    //peg::parser parser(wide_to_utf8(grammar));
+    auto &parser = *(this->parser_ptr);
     PegResult *result = new PegResult();
     if (static_cast<bool>(parser) == false)
     {

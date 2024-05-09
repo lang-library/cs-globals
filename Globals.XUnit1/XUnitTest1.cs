@@ -5,6 +5,7 @@ using Xunit.Abstractions;
 using static System.Net.Mime.MediaTypeNames;
 using System;
 using Global.Sample;
+using System.Web.UI.WebControls;
 
 public class XUnitTest1
 {
@@ -21,14 +22,15 @@ public class XUnitTest1
     [Fact]
     public void Test01()
     {
-        PegAST ast = Win32Parser.Parse("""
+        var parser = new Win32Parser("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
     Primary     <- '(' Additive ')' / Number
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
-    """, " (1 + 2) * 3 ");
+    """);
+        var ast = parser.Parse(" (1 + 2) * 3 ");
         Print(ast, "ast");
         Assert.Equal("Additive", ast.name);
         Assert.Equal("Additive/1", ast.name_choice);
@@ -39,14 +41,15 @@ public class XUnitTest1
     public void Test02()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            PegAST ast = Win32Parser.Parse("""
+        var parser = new Win32Parser("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
     Primary     <- '(' Additive ')' / Number
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
-    """, " xxx ");
+    """);
+        var ast = parser.Parse("xyz");
         });
         Assert.Equal("[input_error]", exception1.Message);
     }
@@ -54,9 +57,8 @@ public class XUnitTest1
     public void Test03()
     {
         var exception1 = Assert.Throws<Exception>(() => {
-            PegAST ast = Win32Parser.Parse("""
-    bad grammar!
-    """, " xxx ");
+            var parser = new Win32Parser("bad grammar!");
+            var ast = parser.Parse("xyz");
         });
         Assert.Equal("[grammar_error]", exception1.Message);
     }

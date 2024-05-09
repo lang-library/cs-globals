@@ -5,23 +5,21 @@ namespace Global.Sample;
 
 public class IntCalculator
 {
-    protected string grammar;
+    protected Win32Parser parser = null;
     public IntCalculator(/*string grammar*/)
     {
-        //this.grammar = grammar;
-        this.grammar = """
+        this.parser = new Win32Parser("""
     # Grammar for Calculator...
     Additive    <- Multiplicative '+' Additive / Multiplicative
     Multiplicative   <- Primary '*' Multiplicative / Primary
     Primary     <- '(' Additive ')' / Number
     Number      <- < [0-9]+ >
     %whitespace <- [ \t]*
-    """;
+    """);
     }
     public int Calculate(string input)
     {
-        //AST ast = Win32Parser.Parse(this.grammar, input);
-        PegAST ast = Win32Parser.Parse(this.grammar, input);
+        PegAST ast = this.parser.Parse(input);
         using (ast) // Dispose ast
             return DoCalculate(ast);
     }

@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+#include "peglib.h"
+
 class PegAST
 {
 public:
@@ -24,11 +26,22 @@ public:
     std::shared_ptr<PegAST> ast;
 };
 
+#if 0x0
 class PegParser
 {
 public:
     //explicit PegParser();
     std::shared_ptr<PegResult> Parse(const std::wstring& grammar, const std::wstring& input);
 };
+#else
+class PegParser
+{
+private:
+    std::shared_ptr<peg::parser> parser_ptr;
+public:
+    explicit PegParser(const std::wstring& grammar);
+    std::shared_ptr<PegResult> Parse(const std::wstring& input);
+};
+#endif
 
 #endif // PEGPARSER_H

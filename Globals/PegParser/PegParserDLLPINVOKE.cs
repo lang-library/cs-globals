@@ -402,11 +402,11 @@ class PegParserDLLPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_delete_PegResult")]
   public static extern void delete_PegResult(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_PegParser_Parse")]
-  public static extern global::System.IntPtr PegParser_Parse(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg3);
-
   [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_new_PegParser")]
-  public static extern global::System.IntPtr new_PegParser();
+  public static extern global::System.IntPtr new_PegParser([global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_PegParser_Parse")]
+  public static extern global::System.IntPtr PegParser_Parse(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("PegParserDLL", EntryPoint="CSharp_delete_PegParser")]
   public static extern void delete_PegParser(global::System.Runtime.InteropServices.HandleRef jarg1);

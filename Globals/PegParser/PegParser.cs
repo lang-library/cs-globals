@@ -56,14 +56,15 @@ public class PegParser : global::System.IDisposable {
     }
   }
 
-  public PegResult Parse(string grammar, string input) {
-    global::System.IntPtr cPtr = PegParserDLLPINVOKE.PegParser_Parse(swigCPtr, grammar, input);
+  public PegParser(string grammar) : this(PegParserDLLPINVOKE.new_PegParser(grammar), true) {
+    if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PegResult Parse(string input) {
+    global::System.IntPtr cPtr = PegParserDLLPINVOKE.PegParser_Parse(swigCPtr, input);
     PegResult ret = (cPtr == global::System.IntPtr.Zero) ? null : new PegResult(cPtr, true);
     if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public PegParser() : this(PegParserDLLPINVOKE.new_PegParser(), true) {
   }
 
 }

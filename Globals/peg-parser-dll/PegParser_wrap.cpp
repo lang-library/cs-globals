@@ -1280,11 +1280,27 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_PegResult(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_PegParser_Parse(void * jarg1, unsigned short * jarg2, unsigned short * jarg3) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegParser(unsigned short * jarg1) {
+  void * jresult ;
+  std::wstring *arg1 = 0 ;
+  PegParser *result = 0 ;
+  
+  if (!jarg1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null wstring", 0);
+    return 0;
+  }
+  std::wstring arg1_str(Swig_csharp_UTF16ToWString(jarg1));
+  arg1 = &arg1_str; 
+  result = (PegParser *)new PegParser((std::wstring const &)*arg1);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_PegParser_Parse(void * jarg1, unsigned short * jarg2) {
   void * jresult ;
   PegParser *arg1 = (PegParser *) 0 ;
   std::wstring *arg2 = 0 ;
-  std::wstring *arg3 = 0 ;
   std::shared_ptr< PegResult > result;
   
   arg1 = (PegParser *)jarg1; 
@@ -1294,24 +1310,8 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_PegParser_Parse(void * jarg1, unsigned shor
   }
   std::wstring arg2_str(Swig_csharp_UTF16ToWString(jarg2));
   arg2 = &arg2_str; 
-  if (!jarg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null wstring", 0);
-    return 0;
-  }
-  std::wstring arg3_str(Swig_csharp_UTF16ToWString(jarg3));
-  arg3 = &arg3_str; 
-  result = (arg1)->Parse((std::wstring const &)*arg2,(std::wstring const &)*arg3);
+  result = (arg1)->Parse((std::wstring const &)*arg2);
   jresult = result ? new std::shared_ptr< PegResult >(result) : 0; 
-  return jresult;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegParser() {
-  void * jresult ;
-  PegParser *result = 0 ;
-  
-  result = (PegParser *)new PegParser();
-  jresult = (void *)result; 
   return jresult;
 }
 
