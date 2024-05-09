@@ -275,13 +275,15 @@ public class PegASTVector : global::System.IDisposable, global::System.Collectio
   }
 
   private PegAST getitemcopy(int index) {
-    PegAST ret = new PegAST(PegParserDLLPINVOKE.PegASTVector_getitemcopy(swigCPtr, index), true);
+    global::System.IntPtr cPtr = PegParserDLLPINVOKE.PegASTVector_getitemcopy(swigCPtr, index);
+    PegAST ret = (cPtr == global::System.IntPtr.Zero) ? null : new PegAST(cPtr, true);
     if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private PegAST getitem(int index) {
-    PegAST ret = new PegAST(PegParserDLLPINVOKE.PegASTVector_getitem(swigCPtr, index), true);
+    global::System.IntPtr cPtr = PegParserDLLPINVOKE.PegASTVector_getitem(swigCPtr, index);
+    PegAST ret = (cPtr == global::System.IntPtr.Zero) ? null : new PegAST(cPtr, true);
     if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

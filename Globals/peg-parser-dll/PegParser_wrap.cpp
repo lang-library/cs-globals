@@ -473,75 +473,65 @@ static void * SWIG_csharp_wstring_callback(const wchar_t *s) {
 #include <algorithm>
 #include <stdexcept>
 
-SWIGINTERN std::vector< PegAST > *new_std_vector_Sl_PegAST_Sg___SWIG_2(int capacity){
-        std::vector< PegAST >* pv = 0;
+SWIGINTERN std::vector< std::shared_ptr< PegAST > > *new_std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg___SWIG_2(int capacity){
+        std::vector< std::shared_ptr< PegAST > >* pv = 0;
         if (capacity >= 0) {
-          pv = new std::vector< PegAST >();
+          pv = new std::vector< std::shared_ptr< PegAST > >();
           pv->reserve(capacity);
        } else {
           throw std::out_of_range("capacity");
        }
        return pv;
       }
-SWIGINTERN PegAST std_vector_Sl_PegAST_Sg__getitemcopy(std::vector< PegAST > *self,int index){
+SWIGINTERN std::shared_ptr< PegAST > std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__getitemcopy(std::vector< std::shared_ptr< PegAST > > *self,int index){
         if (index>=0 && index<(int)self->size())
           return (*self)[index];
         else
           throw std::out_of_range("index");
       }
-SWIGINTERN std::vector< PegAST >::value_type const &std_vector_Sl_PegAST_Sg__getitem(std::vector< PegAST > *self,int index){
+SWIGINTERN std::vector< std::shared_ptr< PegAST > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__getitem(std::vector< std::shared_ptr< PegAST > > *self,int index){
         if (index>=0 && index<(int)self->size())
           return (*self)[index];
         else
           throw std::out_of_range("index");
       }
-
-struct SWIG_null_deleter {
-  void operator() (void const *) const {
-  }
-};
-#define SWIG_NO_NULL_DELETER_0 , SWIG_null_deleter()
-#define SWIG_NO_NULL_DELETER_1
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
-#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
-
-SWIGINTERN void std_vector_Sl_PegAST_Sg__setitem(std::vector< PegAST > *self,int index,PegAST const &val){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__setitem(std::vector< std::shared_ptr< PegAST > > *self,int index,std::shared_ptr< PegAST > const &val){
         if (index>=0 && index<(int)self->size())
           (*self)[index] = val;
         else
           throw std::out_of_range("index");
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__AddRange(std::vector< PegAST > *self,std::vector< PegAST > const &values){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__AddRange(std::vector< std::shared_ptr< PegAST > > *self,std::vector< std::shared_ptr< PegAST > > const &values){
         self->insert(self->end(), values.begin(), values.end());
       }
-SWIGINTERN std::vector< PegAST > *std_vector_Sl_PegAST_Sg__GetRange(std::vector< PegAST > *self,int index,int count){
+SWIGINTERN std::vector< std::shared_ptr< PegAST > > *std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__GetRange(std::vector< std::shared_ptr< PegAST > > *self,int index,int count){
         if (index < 0)
           throw std::out_of_range("index");
         if (count < 0)
           throw std::out_of_range("count");
         if (index >= (int)self->size()+1 || index+count > (int)self->size())
           throw std::invalid_argument("invalid range");
-        return new std::vector< PegAST >(self->begin()+index, self->begin()+index+count);
+        return new std::vector< std::shared_ptr< PegAST > >(self->begin()+index, self->begin()+index+count);
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__Insert(std::vector< PegAST > *self,int index,PegAST const &x){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Insert(std::vector< std::shared_ptr< PegAST > > *self,int index,std::shared_ptr< PegAST > const &x){
         if (index>=0 && index<(int)self->size()+1)
           self->insert(self->begin()+index, x);
         else
           throw std::out_of_range("index");
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__InsertRange(std::vector< PegAST > *self,int index,std::vector< PegAST > const &values){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__InsertRange(std::vector< std::shared_ptr< PegAST > > *self,int index,std::vector< std::shared_ptr< PegAST > > const &values){
         if (index>=0 && index<(int)self->size()+1)
           self->insert(self->begin()+index, values.begin(), values.end());
         else
           throw std::out_of_range("index");
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__RemoveAt(std::vector< PegAST > *self,int index){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__RemoveAt(std::vector< std::shared_ptr< PegAST > > *self,int index){
         if (index>=0 && index<(int)self->size())
           self->erase(self->begin() + index);
         else
           throw std::out_of_range("index");
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__RemoveRange(std::vector< PegAST > *self,int index,int count){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__RemoveRange(std::vector< std::shared_ptr< PegAST > > *self,int index,int count){
         if (index < 0)
           throw std::out_of_range("index");
         if (count < 0)
@@ -550,15 +540,15 @@ SWIGINTERN void std_vector_Sl_PegAST_Sg__RemoveRange(std::vector< PegAST > *self
           throw std::invalid_argument("invalid range");
         self->erase(self->begin()+index, self->begin()+index+count);
       }
-SWIGINTERN std::vector< PegAST > *std_vector_Sl_PegAST_Sg__Repeat(PegAST const &value,int count){
+SWIGINTERN std::vector< std::shared_ptr< PegAST > > *std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Repeat(std::shared_ptr< PegAST > const &value,int count){
         if (count < 0)
           throw std::out_of_range("count");
-        return new std::vector< PegAST >(count, value);
+        return new std::vector< std::shared_ptr< PegAST > >(count, value);
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__Reverse__SWIG_0(std::vector< PegAST > *self){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Reverse__SWIG_0(std::vector< std::shared_ptr< PegAST > > *self){
         std::reverse(self->begin(), self->end());
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__Reverse__SWIG_1(std::vector< PegAST > *self,int index,int count){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Reverse__SWIG_1(std::vector< std::shared_ptr< PegAST > > *self,int index,int count){
         if (index < 0)
           throw std::out_of_range("index");
         if (count < 0)
@@ -567,7 +557,7 @@ SWIGINTERN void std_vector_Sl_PegAST_Sg__Reverse__SWIG_1(std::vector< PegAST > *
           throw std::invalid_argument("invalid range");
         std::reverse(self->begin()+index, self->begin()+index+count);
       }
-SWIGINTERN void std_vector_Sl_PegAST_Sg__SetRange(std::vector< PegAST > *self,int index,std::vector< PegAST > const &values){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__SetRange(std::vector< std::shared_ptr< PegAST > > *self,int index,std::vector< std::shared_ptr< PegAST > > const &values){
         if (index < 0)
           throw std::out_of_range("index");
         if (index+values.size() > self->size())
@@ -596,6 +586,16 @@ static std::wstring Swig_csharp_UTF16ToWString(const unsigned short *str) {
 }
 
 
+struct SWIG_null_deleter {
+  void operator() (void const *) const {
+  }
+};
+#define SWIG_NO_NULL_DELETER_0 , SWIG_null_deleter()
+#define SWIG_NO_NULL_DELETER_1
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
+#define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
+
+
 
 /* ---------------------------------------------------
  * C++ director class methods
@@ -610,9 +610,9 @@ extern "C" {
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegASTVector__SWIG_0() {
   void * jresult ;
-  std::vector< PegAST > *result = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *result = 0 ;
   
-  result = (std::vector< PegAST > *)new std::vector< PegAST >();
+  result = (std::vector< std::shared_ptr< PegAST > > *)new std::vector< std::shared_ptr< PegAST > >();
   jresult = (void *)result; 
   return jresult;
 }
@@ -620,50 +620,46 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegASTVector__SWIG_0() {
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegASTVector__SWIG_1(void * jarg1) {
   void * jresult ;
-  std::vector< PegAST > *arg1 = 0 ;
-  std::vector< PegAST > *result = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *result = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1;
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1;
   if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< PegAST > const & is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::shared_ptr< PegAST > > const & is null", 0);
     return 0;
   } 
-  result = (std::vector< PegAST > *)new std::vector< PegAST >((std::vector< PegAST > const &)*arg1);
+  result = (std::vector< std::shared_ptr< PegAST > > *)new std::vector< std::shared_ptr< PegAST > >((std::vector< std::shared_ptr< PegAST > > const &)*arg1);
   jresult = (void *)result; 
   return jresult;
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Clear(void * jarg1) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   (arg1)->clear();
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Add(void * jarg1, void * jarg2) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
-  PegAST *arg2 = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
+  std::shared_ptr< PegAST > *arg2 = 0 ;
+  std::shared_ptr< PegAST > tempnull2 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  
-  arg2 = (PegAST *)(((std::shared_ptr< const PegAST > *)jarg2) ? ((std::shared_ptr< const PegAST > *)jarg2)->get() : 0);
-  if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "PegAST const & reference is null", 0);
-    return ;
-  } 
-  (arg1)->push_back((PegAST const &)*arg2);
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  arg2 = jarg2 ? (std::shared_ptr< PegAST > *)jarg2 : &tempnull2; 
+  (arg1)->push_back((std::shared_ptr< PegAST > const &)*arg2);
 }
 
 
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_PegASTVector_size(void * jarg1) {
   unsigned int jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
-  std::vector< PegAST >::size_type result;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > >::size_type result;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  result = ((std::vector< PegAST > const *)arg1)->size();
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  result = ((std::vector< std::shared_ptr< PegAST > > const *)arg1)->size();
   jresult = (unsigned int)result; 
   return jresult;
 }
@@ -671,11 +667,11 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_PegASTVector_size(void * jarg1) {
 
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_PegASTVector_empty(void * jarg1) {
   unsigned int jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   bool result;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  result = (bool)((std::vector< PegAST > const *)arg1)->empty();
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  result = (bool)((std::vector< std::shared_ptr< PegAST > > const *)arg1)->empty();
   jresult = result; 
   return jresult;
 }
@@ -683,22 +679,22 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_PegASTVector_empty(void * jarg1) {
 
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_PegASTVector_capacity(void * jarg1) {
   unsigned int jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
-  std::vector< PegAST >::size_type result;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > >::size_type result;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  result = ((std::vector< PegAST > const *)arg1)->capacity();
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  result = ((std::vector< std::shared_ptr< PegAST > > const *)arg1)->capacity();
   jresult = (unsigned int)result; 
   return jresult;
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_reserve(void * jarg1, unsigned int jarg2) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
-  std::vector< PegAST >::size_type arg2 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > >::size_type arg2 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  arg2 = (std::vector< PegAST >::size_type)jarg2; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  arg2 = (std::vector< std::shared_ptr< PegAST > >::size_type)jarg2; 
   (arg1)->reserve(arg2);
 }
 
@@ -706,11 +702,11 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_reserve(void * jarg1, unsigned i
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegASTVector__SWIG_2(int jarg1) {
   void * jresult ;
   int arg1 ;
-  std::vector< PegAST > *result = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *result = 0 ;
   
   arg1 = (int)jarg1; 
   try {
-    result = (std::vector< PegAST > *)new_std_vector_Sl_PegAST_Sg___SWIG_2(arg1);
+    result = (std::vector< std::shared_ptr< PegAST > > *)new_std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg___SWIG_2(arg1);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return 0;
@@ -722,57 +718,53 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_PegASTVector__SWIG_2(int jarg1) {
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_getitemcopy(void * jarg1, int jarg2) {
   void * jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  PegAST result;
+  std::shared_ptr< PegAST > result;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   try {
-    result = std_vector_Sl_PegAST_Sg__getitemcopy(arg1,arg2);
+    result = std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__getitemcopy(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return 0;
   }
-  jresult = new std::shared_ptr<  PegAST >(new PegAST(result)); 
+  jresult = result ? new std::shared_ptr< PegAST >(result) : 0; 
   return jresult;
 }
 
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_getitem(void * jarg1, int jarg2) {
   void * jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  std::vector< PegAST >::value_type *result = 0 ;
+  std::vector< std::shared_ptr< PegAST > >::value_type *result = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   try {
-    result = (std::vector< PegAST >::value_type *) &std_vector_Sl_PegAST_Sg__getitem(arg1,arg2);
+    result = (std::vector< std::shared_ptr< PegAST > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__getitem(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return 0;
   }
-  jresult = new std::shared_ptr< const PegAST >(result SWIG_NO_NULL_DELETER_0); 
+  jresult = *result ? new std::vector< std::shared_ptr< PegAST > >::value_type(*result) : 0; 
   return jresult;
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_setitem(void * jarg1, int jarg2, void * jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  PegAST *arg3 = 0 ;
+  std::shared_ptr< PegAST > *arg3 = 0 ;
+  std::shared_ptr< PegAST > tempnull3 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
-  
-  arg3 = (PegAST *)(((std::shared_ptr< const PegAST > *)jarg3) ? ((std::shared_ptr< const PegAST > *)jarg3)->get() : 0);
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "PegAST const & reference is null", 0);
-    return ;
-  } 
+  arg3 = jarg3 ? (std::shared_ptr< PegAST > *)jarg3 : &tempnull3; 
   try {
-    std_vector_Sl_PegAST_Sg__setitem(arg1,arg2,(PegAST const &)*arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__setitem(arg1,arg2,(std::shared_ptr< PegAST > const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -781,31 +773,31 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_setitem(void * jarg1, int jarg2,
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_AddRange(void * jarg1, void * jarg2) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
-  std::vector< PegAST > *arg2 = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg2 = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  arg2 = (std::vector< PegAST > *)jarg2;
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  arg2 = (std::vector< std::shared_ptr< PegAST > > *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< PegAST > const & is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::shared_ptr< PegAST > > const & is null", 0);
     return ;
   } 
-  std_vector_Sl_PegAST_Sg__AddRange(arg1,(std::vector< PegAST > const &)*arg2);
+  std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__AddRange(arg1,(std::vector< std::shared_ptr< PegAST > > const &)*arg2);
 }
 
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_GetRange(void * jarg1, int jarg2, int jarg3) {
   void * jresult ;
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
   int arg3 ;
-  std::vector< PegAST > *result = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *result = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   try {
-    result = (std::vector< PegAST > *)std_vector_Sl_PegAST_Sg__GetRange(arg1,arg2,arg3);
+    result = (std::vector< std::shared_ptr< PegAST > > *)std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__GetRange(arg1,arg2,arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return 0;
@@ -819,20 +811,16 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_GetRange(void * jarg1, int jar
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Insert(void * jarg1, int jarg2, void * jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  PegAST *arg3 = 0 ;
+  std::shared_ptr< PegAST > *arg3 = 0 ;
+  std::shared_ptr< PegAST > tempnull3 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
-  
-  arg3 = (PegAST *)(((std::shared_ptr< const PegAST > *)jarg3) ? ((std::shared_ptr< const PegAST > *)jarg3)->get() : 0);
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "PegAST const & reference is null", 0);
-    return ;
-  } 
+  arg3 = jarg3 ? (std::shared_ptr< PegAST > *)jarg3 : &tempnull3; 
   try {
-    std_vector_Sl_PegAST_Sg__Insert(arg1,arg2,(PegAST const &)*arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Insert(arg1,arg2,(std::shared_ptr< PegAST > const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -841,19 +829,19 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Insert(void * jarg1, int jarg2, 
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_InsertRange(void * jarg1, int jarg2, void * jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  std::vector< PegAST > *arg3 = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg3 = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
-  arg3 = (std::vector< PegAST > *)jarg3;
+  arg3 = (std::vector< std::shared_ptr< PegAST > > *)jarg3;
   if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< PegAST > const & is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::shared_ptr< PegAST > > const & is null", 0);
     return ;
   } 
   try {
-    std_vector_Sl_PegAST_Sg__InsertRange(arg1,arg2,(std::vector< PegAST > const &)*arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__InsertRange(arg1,arg2,(std::vector< std::shared_ptr< PegAST > > const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -862,13 +850,13 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_InsertRange(void * jarg1, int ja
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_RemoveAt(void * jarg1, int jarg2) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   try {
-    std_vector_Sl_PegAST_Sg__RemoveAt(arg1,arg2);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__RemoveAt(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -877,15 +865,15 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_RemoveAt(void * jarg1, int jarg2
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_RemoveRange(void * jarg1, int jarg2, int jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
   int arg3 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   try {
-    std_vector_Sl_PegAST_Sg__RemoveRange(arg1,arg2,arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__RemoveRange(arg1,arg2,arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -898,19 +886,15 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_RemoveRange(void * jarg1, int ja
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_Repeat(void * jarg1, int jarg2) {
   void * jresult ;
-  PegAST *arg1 = 0 ;
+  std::shared_ptr< PegAST > *arg1 = 0 ;
   int arg2 ;
-  std::vector< PegAST > *result = 0 ;
+  std::shared_ptr< PegAST > tempnull1 ;
+  std::vector< std::shared_ptr< PegAST > > *result = 0 ;
   
-  
-  arg1 = (PegAST *)(((std::shared_ptr< const PegAST > *)jarg1) ? ((std::shared_ptr< const PegAST > *)jarg1)->get() : 0);
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "PegAST const & reference is null", 0);
-    return 0;
-  } 
+  arg1 = jarg1 ? (std::shared_ptr< PegAST > *)jarg1 : &tempnull1; 
   arg2 = (int)jarg2; 
   try {
-    result = (std::vector< PegAST > *)std_vector_Sl_PegAST_Sg__Repeat((PegAST const &)*arg1,arg2);
+    result = (std::vector< std::shared_ptr< PegAST > > *)std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Repeat((std::shared_ptr< PegAST > const &)*arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return 0;
@@ -921,23 +905,23 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_PegASTVector_Repeat(void * jarg1, int jarg2
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Reverse__SWIG_0(void * jarg1) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
-  std_vector_Sl_PegAST_Sg__Reverse__SWIG_0(arg1);
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
+  std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Reverse__SWIG_0(arg1);
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Reverse__SWIG_1(void * jarg1, int jarg2, int jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
   int arg3 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   try {
-    std_vector_Sl_PegAST_Sg__Reverse__SWIG_1(arg1,arg2,arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__Reverse__SWIG_1(arg1,arg2,arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -949,19 +933,19 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_Reverse__SWIG_1(void * jarg1, in
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_SetRange(void * jarg1, int jarg2, void * jarg3) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   int arg2 ;
-  std::vector< PegAST > *arg3 = 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg3 = 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   arg2 = (int)jarg2; 
-  arg3 = (std::vector< PegAST > *)jarg3;
+  arg3 = (std::vector< std::shared_ptr< PegAST > > *)jarg3;
   if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< PegAST > const & is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "std::vector< std::shared_ptr< PegAST > > const & is null", 0);
     return ;
   } 
   try {
-    std_vector_Sl_PegAST_Sg__SetRange(arg1,arg2,(std::vector< PegAST > const &)*arg3);
+    std_vector_Sl_std_shared_ptr_Sl_PegAST_Sg__Sg__SetRange(arg1,arg2,(std::vector< std::shared_ptr< PegAST > > const &)*arg3);
   } catch(std::out_of_range &_e) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentOutOfRangeException, 0, (&_e)->what());
     return ;
@@ -970,9 +954,9 @@ SWIGEXPORT void SWIGSTDCALL CSharp_PegASTVector_SetRange(void * jarg1, int jarg2
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_delete_PegASTVector(void * jarg1) {
-  std::vector< PegAST > *arg1 = (std::vector< PegAST > *) 0 ;
+  std::vector< std::shared_ptr< PegAST > > *arg1 = (std::vector< std::shared_ptr< PegAST > > *) 0 ;
   
-  arg1 = (std::vector< PegAST > *)jarg1; 
+  arg1 = (std::vector< std::shared_ptr< PegAST > > *)jarg1; 
   delete arg1;
 }
 

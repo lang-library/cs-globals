@@ -103,14 +103,14 @@ public class PegAST : global::System.IDisposable {
     } 
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_PegAST_t_t nodes {
+  public PegASTVector nodes {
     set {
-      PegParserDLLPINVOKE.PegAST_nodes_set(swigCPtr, SWIGTYPE_p_std__vectorT_std__shared_ptrT_PegAST_t_t.getCPtr(value));
+      PegParserDLLPINVOKE.PegAST_nodes_set(swigCPtr, PegASTVector.getCPtr(value));
       if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
       global::System.IntPtr cPtr = PegParserDLLPINVOKE.PegAST_nodes_get(swigCPtr);
-      SWIGTYPE_p_std__vectorT_std__shared_ptrT_PegAST_t_t ret = (cPtr == global::System.IntPtr.Zero) ? null : new SWIGTYPE_p_std__vectorT_std__shared_ptrT_PegAST_t_t(cPtr, false);
+      PegASTVector ret = (cPtr == global::System.IntPtr.Zero) ? null : new PegASTVector(cPtr, false);
       if (PegParserDLLPINVOKE.SWIGPendingException.Pending) throw PegParserDLLPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

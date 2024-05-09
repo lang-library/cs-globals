@@ -14,7 +14,7 @@
 %shared_ptr(PegAST)
 %shared_ptr(PegResult)
 
-%template(PegASTVector) std::vector<PegAST>;
+%template(PegASTVector) std::vector<std::shared_ptr<PegAST>>;
 
 //%feature("director") CallbackBase;
 
