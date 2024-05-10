@@ -1,6 +1,6 @@
 using Global;
 using System;
-using static Global.EasyObject;
+using static Global.GObject;
 namespace Exe;
 public static class Program
 {

@@ -1,4 +1,5 @@
 ﻿using Global;
+using static Global.GObject;
 using Global;
 //using MyJson;
 using System;
@@ -10,9 +11,9 @@ namespace ClassLibrary1;
 
 public static class API
 {
-    public static EasyObject add2(EasyObject args)
+    public static GObject add2(GObject args)
     {
-        return EasyObject.FromObject(args[0].Cast<double>() + args[1].Cast<double>());
+        return GObject.FromObject(args[0].Cast<double>() + args[1].Cast<double>());
     }
 }
 
