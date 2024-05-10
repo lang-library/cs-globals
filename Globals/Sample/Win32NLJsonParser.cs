@@ -9,7 +9,7 @@ using static Global.GObject;
 
 namespace Global.Sample;
 
-public class Win32NLJsonParser: Global.IJsonParser
+public class Win32NLJsonParser
 {
     static Win32NLJsonParser()
     {
@@ -29,7 +29,7 @@ public class Win32NLJsonParser: Global.IJsonParser
         this.NumberAsDecima = NumberAsDecimal;
         this.parser = NLJsonParserDLL.CreateParser();
     }
-    public object ParseJson(string json)
+    public object Parse(string json)
     {
         NLJsonResult result = this.parser.Parse(json);
         if (result.error)

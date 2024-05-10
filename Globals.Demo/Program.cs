@@ -91,20 +91,15 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         var nlp = new Win32NLJsonParser(true);
-        object nlr = nlp.ParseJson("""
+        object nlr = nlp.Parse("""
             { "a": 123, "b": [11, true, false, null], //line comment
               "c": /*comment*/ "hello\nハロー©" }
             """);
         Echo(nlr);
-        GObject.JsonParser = nlp;
-        Echo(FromJson("""
-            { "a": 123, "b": [11, true, false, null], //line comment
-              "c": /*comment*/ "hello\nハロー©" }
-            """));
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            nlr = nlp.ParseJson(bigJson);
+            nlr = nlp.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32NLJsonParser(FromJson)");
@@ -119,7 +114,7 @@ static class Program
             using (var input = new StringReader(bigJson))
             {
                 /*var result = */
-                ObjectParser.Stringify(nlr, true);
+                new ObjectParser(false).Stringify(nlr, true);
             }
         }
         sw.Stop();

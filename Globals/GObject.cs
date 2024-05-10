@@ -17,15 +17,15 @@ public class GObject : DynamicObject, IObjectWrapper
 {
     internal object m_data = null;
 
-    public static IJsonParser DefaultJsonParser = new Win32NLJsonParser(true);
-    public static IJsonParser JsonParser = null;
+    public static IJsonHandler DefaultJsonHandler = new Win32NLJsonHandler(true, false);
+    public static IJsonHandler JsonHandler = null;
     public static bool DebugOutput = false;
     public static bool ShowDetail = false;
     public static bool ForceASCII = false;
 
     public static void ClearSettings()
     {
-        GObject.JsonParser = DefaultJsonParser;
+        GObject.JsonHandler = DefaultJsonHandler;
         GObject.DebugOutput = false;
         GObject.ShowDetail = false;
         GObject.ForceASCII = false;
@@ -43,7 +43,7 @@ public class GObject : DynamicObject, IObjectWrapper
 
     public GObject(object x)
     {
-        this.m_data = ObjectParser.Parse(x);
+        this.m_data = new ObjectParser(false).Parse(x);
     }
 
     public dynamic Dynamic {  get { return this; } }
@@ -307,17 +307,17 @@ public class GObject : DynamicObject, IObjectWrapper
 
     public static GObject FromJson(string json)
     {
-        return new GObject(JsonParser.ParseJson(json));
+        return new GObject(JsonHandler.Parse(json));
     }
 
     public dynamic ToObject()
     {
-        return ObjectParser.Parse(m_data);
+        return new ObjectParser(false).Parse(m_data);
     }
 
     public string ToJson(bool indent = false)
     {
-        return ObjectParser.Stringify(m_data, indent, ForceASCII);
+        return JsonHandler.Stringify(m_data, indent);
     }
 
     public static string ToPrintable(object x, string title = null)
