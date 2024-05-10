@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Collections;
 using System.Linq;
+using Jil;
 
 namespace Main;
 
@@ -90,7 +91,7 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         var nlp = new Win32NLJsonParser(true);
-        var nlr = nlp.ParseJson("""
+        object nlr = nlp.ParseJson("""
             { "a": 123, "b": [11, true, false, null], //line comment
               "c": /*comment*/ "hello\nハロー©" }
             """);
@@ -103,10 +104,57 @@ static class Program
         sw.Start();
         for (int c = 0; c < 5; c++)
         {
-            nlp.ParseJson(bigJson);
+            nlr = nlp.ParseJson(bigJson);
         }
         sw.Stop();
-        Console.WriteLine("■Win32NLJsonParser");
+        Console.WriteLine("■Win32NLJsonParser(FromJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+
+        sw.Start();
+        for (int c = 0; c < 5; c++)
+        {
+            using (var input = new StringReader(bigJson))
+            {
+                /*var result = */
+                ObjectParser.Stringify(nlr, true);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■Win32NLJsonParser(ToJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+
+        sw.Start();
+        for (int c = 0; c < 5; c++)
+        {
+            using (var input = new StringReader(bigJson))
+            {
+                /*var result = */
+                JSON.DeserializeDynamic(input);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■JIl(FromJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+
+        sw.Start();
+        for (int c = 0; c < 5; c++)
+        {
+            using (var output = new StringWriter())
+            {
+                JSON.Serialize(nlr);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■JIl(ToJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
