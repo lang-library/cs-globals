@@ -61,7 +61,7 @@ public class Win32NLJsonParser
             case NLJsonType.nl_array:
                 {
                     var result = new List<object>();
-                    foreach (var e in ast.vect)
+                    foreach (var e in ast.list)
                     {
                         result.Add(AstToObject(e, NumberAsDecimal));
                     }

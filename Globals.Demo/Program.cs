@@ -96,10 +96,13 @@ static class Program
               "c": /*comment*/ "hello\nハロー©" }
             """);
         Echo(nlr);
+
+        Win32NLJsonHandler handler;
         sw.Start();
+        handler = new Win32NLJsonHandler(true, false);
         for (int c = 0; c < 5; c++)
         {
-            nlr = nlp.Parse(bigJson);
+            handler.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32NLJsonParser(FromJson)");
@@ -109,12 +112,13 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         sw.Start();
+        handler = new Win32NLJsonHandler(true, false);
         for (int c = 0; c < 5; c++)
         {
             using (var input = new StringReader(bigJson))
             {
                 /*var result = */
-                new ObjectParser(false).Stringify(nlr, true);
+                handler.Stringify(nlr, true);
             }
         }
         sw.Stop();

@@ -15,9 +15,9 @@
 %shared_ptr(NLJsonResult)
 %shared_ptr(NLJsonParser)
 
-%template(map_string_nljson) std::map<std::wstring, std::shared_ptr<NLJsonAST>>;
+%template(NLJsonASTDictionary) std::map<std::wstring, std::shared_ptr<NLJsonAST>>;
 
-%template(NLJsonASTVector) std::vector<std::shared_ptr<NLJsonAST>>;
+%template(NLJsonASTList) std::vector<std::shared_ptr<NLJsonAST>>;
 
 //%feature("director") CallbackBase;
 

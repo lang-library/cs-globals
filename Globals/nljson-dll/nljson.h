@@ -24,7 +24,7 @@ public:
     std::wstring name;
     NLJsonType type;
     std::wstring token;
-    std::vector<std::shared_ptr<NLJsonAST>> vect;
+    std::vector<std::shared_ptr<NLJsonAST>> list;
     std::map<std::wstring, std::shared_ptr<NLJsonAST>> dict;
 };
 

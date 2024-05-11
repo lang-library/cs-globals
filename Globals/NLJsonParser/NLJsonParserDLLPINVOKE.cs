@@ -263,117 +263,117 @@ class NLJsonParserDLLPINVOKE {
   static protected SWIGWStringExceptionHelper swigWStringExceptionHelper = new SWIGWStringExceptionHelper();
 
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_map_string_nljson__SWIG_0")]
-  public static extern global::System.IntPtr new_map_string_nljson__SWIG_0();
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTDictionary__SWIG_0")]
+  public static extern global::System.IntPtr new_NLJsonASTDictionary__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_map_string_nljson__SWIG_1")]
-  public static extern global::System.IntPtr new_map_string_nljson__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTDictionary__SWIG_1")]
+  public static extern global::System.IntPtr new_NLJsonASTDictionary__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_size")]
-  public static extern uint map_string_nljson_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_size")]
+  public static extern uint NLJsonASTDictionary_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_empty")]
-  public static extern bool map_string_nljson_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_empty")]
+  public static extern bool NLJsonASTDictionary_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_Clear")]
-  public static extern void map_string_nljson_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_Clear")]
+  public static extern void NLJsonASTDictionary_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_getitem")]
-  public static extern global::System.IntPtr map_string_nljson_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_getitem")]
+  public static extern global::System.IntPtr NLJsonASTDictionary_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_setitem")]
-  public static extern void map_string_nljson_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_setitem")]
+  public static extern void NLJsonASTDictionary_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_ContainsKey")]
-  public static extern bool map_string_nljson_ContainsKey(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_ContainsKey")]
+  public static extern bool NLJsonASTDictionary_ContainsKey(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_Add")]
-  public static extern void map_string_nljson_Add(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_Add")]
+  public static extern void NLJsonASTDictionary_Add(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_Remove")]
-  public static extern bool map_string_nljson_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_Remove")]
+  public static extern bool NLJsonASTDictionary_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_create_iterator_begin")]
-  public static extern global::System.IntPtr map_string_nljson_create_iterator_begin(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_create_iterator_begin")]
+  public static extern global::System.IntPtr NLJsonASTDictionary_create_iterator_begin(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_get_next_key")]
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_get_next_key")]
   [return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]
-  public static extern string map_string_nljson_get_next_key(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+  public static extern string NLJsonASTDictionary_get_next_key(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_map_string_nljson_destroy_iterator")]
-  public static extern void map_string_nljson_destroy_iterator(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTDictionary_destroy_iterator")]
+  public static extern void NLJsonASTDictionary_destroy_iterator(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_delete_map_string_nljson")]
-  public static extern void delete_map_string_nljson(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_delete_NLJsonASTDictionary")]
+  public static extern void delete_NLJsonASTDictionary(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTVector__SWIG_0")]
-  public static extern global::System.IntPtr new_NLJsonASTVector__SWIG_0();
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTList__SWIG_0")]
+  public static extern global::System.IntPtr new_NLJsonASTList__SWIG_0();
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTVector__SWIG_1")]
-  public static extern global::System.IntPtr new_NLJsonASTVector__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTList__SWIG_1")]
+  public static extern global::System.IntPtr new_NLJsonASTList__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Clear")]
-  public static extern void NLJsonASTVector_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Clear")]
+  public static extern void NLJsonASTList_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Add")]
-  public static extern void NLJsonASTVector_Add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Add")]
+  public static extern void NLJsonASTList_Add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_size")]
-  public static extern uint NLJsonASTVector_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_size")]
+  public static extern uint NLJsonASTList_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_empty")]
-  public static extern bool NLJsonASTVector_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_empty")]
+  public static extern bool NLJsonASTList_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_capacity")]
-  public static extern uint NLJsonASTVector_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_capacity")]
+  public static extern uint NLJsonASTList_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_reserve")]
-  public static extern void NLJsonASTVector_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_reserve")]
+  public static extern void NLJsonASTList_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTVector__SWIG_2")]
-  public static extern global::System.IntPtr new_NLJsonASTVector__SWIG_2(int jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_new_NLJsonASTList__SWIG_2")]
+  public static extern global::System.IntPtr new_NLJsonASTList__SWIG_2(int jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_getitemcopy")]
-  public static extern global::System.IntPtr NLJsonASTVector_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_getitemcopy")]
+  public static extern global::System.IntPtr NLJsonASTList_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_getitem")]
-  public static extern global::System.IntPtr NLJsonASTVector_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_getitem")]
+  public static extern global::System.IntPtr NLJsonASTList_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_setitem")]
-  public static extern void NLJsonASTVector_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_setitem")]
+  public static extern void NLJsonASTList_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_AddRange")]
-  public static extern void NLJsonASTVector_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_AddRange")]
+  public static extern void NLJsonASTList_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_GetRange")]
-  public static extern global::System.IntPtr NLJsonASTVector_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_GetRange")]
+  public static extern global::System.IntPtr NLJsonASTList_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Insert")]
-  public static extern void NLJsonASTVector_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Insert")]
+  public static extern void NLJsonASTList_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_InsertRange")]
-  public static extern void NLJsonASTVector_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_InsertRange")]
+  public static extern void NLJsonASTList_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_RemoveAt")]
-  public static extern void NLJsonASTVector_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_RemoveAt")]
+  public static extern void NLJsonASTList_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_RemoveRange")]
-  public static extern void NLJsonASTVector_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_RemoveRange")]
+  public static extern void NLJsonASTList_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Repeat")]
-  public static extern global::System.IntPtr NLJsonASTVector_Repeat(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Repeat")]
+  public static extern global::System.IntPtr NLJsonASTList_Repeat(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Reverse__SWIG_0")]
-  public static extern void NLJsonASTVector_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Reverse__SWIG_0")]
+  public static extern void NLJsonASTList_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_Reverse__SWIG_1")]
-  public static extern void NLJsonASTVector_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_Reverse__SWIG_1")]
+  public static extern void NLJsonASTList_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTVector_SetRange")]
-  public static extern void NLJsonASTVector_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonASTList_SetRange")]
+  public static extern void NLJsonASTList_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_delete_NLJsonASTVector")]
-  public static extern void delete_NLJsonASTVector(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_delete_NLJsonASTList")]
+  public static extern void delete_NLJsonASTList(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_name_set")]
   public static extern void NLJsonAST_name_set(global::System.Runtime.InteropServices.HandleRef jarg1, [global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]string jarg2);
@@ -395,11 +395,11 @@ class NLJsonParserDLLPINVOKE {
   [return: global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPWStr)]
   public static extern string NLJsonAST_token_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_vect_set")]
-  public static extern void NLJsonAST_vect_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_list_set")]
+  public static extern void NLJsonAST_list_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_vect_get")]
-  public static extern global::System.IntPtr NLJsonAST_vect_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_list_get")]
+  public static extern global::System.IntPtr NLJsonAST_list_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("NLJsonParserDLL", EntryPoint="CSharp_NLJsonAST_dict_set")]
   public static extern void NLJsonAST_dict_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);

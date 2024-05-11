@@ -79,27 +79,27 @@ public class NLJsonAST : global::System.IDisposable {
     } 
   }
 
-  public NLJsonASTVector vect {
+  public NLJsonASTList list {
     set {
-      NLJsonParserDLLPINVOKE.NLJsonAST_vect_set(swigCPtr, NLJsonASTVector.getCPtr(value));
+      NLJsonParserDLLPINVOKE.NLJsonAST_list_set(swigCPtr, NLJsonASTList.getCPtr(value));
       if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonAST_vect_get(swigCPtr);
-      NLJsonASTVector ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTVector(cPtr, false);
+      global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonAST_list_get(swigCPtr);
+      NLJsonASTList ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTList(cPtr, false);
       if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public map_string_nljson dict {
+  public NLJsonASTDictionary dict {
     set {
-      NLJsonParserDLLPINVOKE.NLJsonAST_dict_set(swigCPtr, map_string_nljson.getCPtr(value));
+      NLJsonParserDLLPINVOKE.NLJsonAST_dict_set(swigCPtr, NLJsonASTDictionary.getCPtr(value));
       if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
       global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonAST_dict_get(swigCPtr);
-      map_string_nljson ret = (cPtr == global::System.IntPtr.Zero) ? null : new map_string_nljson(cPtr, false);
+      NLJsonASTDictionary ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTDictionary(cPtr, false);
       if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

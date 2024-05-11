@@ -658,7 +658,7 @@ struct SWIG_null_deleter {
 extern "C" {
 #endif
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_map_string_nljson__SWIG_0() {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTDictionary__SWIG_0() {
   void * jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *result = 0 ;
   
@@ -668,7 +668,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_map_string_nljson__SWIG_0() {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_map_string_nljson__SWIG_1(void * jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTDictionary__SWIG_1(void * jarg1) {
   void * jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *result = 0 ;
@@ -684,7 +684,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_map_string_nljson__SWIG_1(void * jarg1)
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_size(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTDictionary_size(void * jarg1) {
   unsigned int jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::size_type result;
@@ -696,7 +696,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_size(void * jarg1) 
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_empty(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTDictionary_empty(void * jarg1) {
   unsigned int jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   bool result;
@@ -708,7 +708,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_empty(void * jarg1)
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_Clear(void * jarg1) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTDictionary_Clear(void * jarg1) {
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   
   arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *)jarg1; 
@@ -716,7 +716,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_Clear(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_getitem(void * jarg1, unsigned short * jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTDictionary_getitem(void * jarg1, unsigned short * jarg2) {
   void * jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::key_type *arg2 = 0 ;
@@ -740,7 +740,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_getitem(void * jarg1, uns
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_setitem(void * jarg1, unsigned short * jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTDictionary_setitem(void * jarg1, unsigned short * jarg2, void * jarg3) {
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::key_type *arg2 = 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::mapped_type *arg3 = 0 ;
@@ -758,7 +758,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_setitem(void * jarg1, unsig
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_ContainsKey(void * jarg1, unsigned short * jarg2) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTDictionary_ContainsKey(void * jarg1, unsigned short * jarg2) {
   unsigned int jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::key_type *arg2 = 0 ;
@@ -777,7 +777,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_ContainsKey(void * 
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_Add(void * jarg1, unsigned short * jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTDictionary_Add(void * jarg1, unsigned short * jarg2, void * jarg3) {
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::key_type *arg2 = 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::mapped_type *arg3 = 0 ;
@@ -800,7 +800,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_Add(void * jarg1, unsigned 
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_Remove(void * jarg1, unsigned short * jarg2) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTDictionary_Remove(void * jarg1, unsigned short * jarg2) {
   unsigned int jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > >::key_type *arg2 = 0 ;
@@ -819,7 +819,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_map_string_nljson_Remove(void * jarg1
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_create_iterator_begin(void * jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTDictionary_create_iterator_begin(void * jarg1) {
   void * jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST >,std::less< std::wstring > >::iterator *result = 0 ;
@@ -831,7 +831,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_create_iterator_begin(voi
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_get_next_key(void * jarg1, void * jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTDictionary_get_next_key(void * jarg1, void * jarg2) {
   void * jresult ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST >,std::less< std::wstring > >::iterator *arg2 = (std::map< std::wstring,std::shared_ptr< NLJsonAST >,std::less< std::wstring > >::iterator *) 0 ;
@@ -845,7 +845,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_map_string_nljson_get_next_key(void * jarg1
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_destroy_iterator(void * jarg1, void * jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTDictionary_destroy_iterator(void * jarg1, void * jarg2) {
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   std::map< std::wstring,std::shared_ptr< NLJsonAST >,std::less< std::wstring > >::iterator *arg2 = (std::map< std::wstring,std::shared_ptr< NLJsonAST >,std::less< std::wstring > >::iterator *) 0 ;
   
@@ -855,7 +855,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_map_string_nljson_destroy_iterator(void * jar
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_delete_map_string_nljson(void * jarg1) {
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_NLJsonASTDictionary(void * jarg1) {
   std::map< std::wstring,std::shared_ptr< NLJsonAST > > *arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *) 0 ;
   
   arg1 = (std::map< std::wstring,std::shared_ptr< NLJsonAST > > *)jarg1; 
@@ -863,7 +863,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_map_string_nljson(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_0() {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTList__SWIG_0() {
   void * jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *result = 0 ;
   
@@ -873,7 +873,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_0() {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_1(void * jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTList__SWIG_1(void * jarg1) {
   void * jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = 0 ;
   std::vector< std::shared_ptr< NLJsonAST > > *result = 0 ;
@@ -889,7 +889,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_1(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Clear(void * jarg1) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_Clear(void * jarg1) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   
   arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *)jarg1; 
@@ -897,7 +897,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Clear(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Add(void * jarg1, void * jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_Add(void * jarg1, void * jarg2) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::shared_ptr< NLJsonAST > *arg2 = 0 ;
   std::shared_ptr< NLJsonAST > tempnull2 ;
@@ -908,7 +908,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Add(void * jarg1, void * jarg
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_size(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTList_size(void * jarg1) {
   unsigned int jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::vector< std::shared_ptr< NLJsonAST > >::size_type result;
@@ -920,7 +920,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_size(void * jarg1) {
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_empty(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTList_empty(void * jarg1) {
   unsigned int jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   bool result;
@@ -932,7 +932,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_empty(void * jarg1) {
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_capacity(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTList_capacity(void * jarg1) {
   unsigned int jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::vector< std::shared_ptr< NLJsonAST > >::size_type result;
@@ -944,7 +944,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_NLJsonASTVector_capacity(void * jarg1
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_reserve(void * jarg1, unsigned int jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_reserve(void * jarg1, unsigned int jarg2) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::vector< std::shared_ptr< NLJsonAST > >::size_type arg2 ;
   
@@ -954,7 +954,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_reserve(void * jarg1, unsigne
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_2(int jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTList__SWIG_2(int jarg1) {
   void * jresult ;
   int arg1 ;
   std::vector< std::shared_ptr< NLJsonAST > > *result = 0 ;
@@ -971,7 +971,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NLJsonASTVector__SWIG_2(int jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_getitemcopy(void * jarg1, int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTList_getitemcopy(void * jarg1, int jarg2) {
   void * jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
@@ -990,7 +990,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_getitemcopy(void * jarg1, i
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_getitem(void * jarg1, int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTList_getitem(void * jarg1, int jarg2) {
   void * jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
@@ -1009,7 +1009,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_getitem(void * jarg1, int j
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_setitem(void * jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_setitem(void * jarg1, int jarg2, void * jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   std::shared_ptr< NLJsonAST > *arg3 = 0 ;
@@ -1027,7 +1027,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_setitem(void * jarg1, int jar
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_AddRange(void * jarg1, void * jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_AddRange(void * jarg1, void * jarg2) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg2 = 0 ;
   
@@ -1041,7 +1041,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_AddRange(void * jarg1, void *
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_GetRange(void * jarg1, int jarg2, int jarg3) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTList_GetRange(void * jarg1, int jarg2, int jarg3) {
   void * jresult ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
@@ -1065,7 +1065,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_GetRange(void * jarg1, int 
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Insert(void * jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_Insert(void * jarg1, int jarg2, void * jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   std::shared_ptr< NLJsonAST > *arg3 = 0 ;
@@ -1083,7 +1083,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Insert(void * jarg1, int jarg
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_InsertRange(void * jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_InsertRange(void * jarg1, int jarg2, void * jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg3 = 0 ;
@@ -1104,7 +1104,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_InsertRange(void * jarg1, int
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_RemoveAt(void * jarg1, int jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_RemoveAt(void * jarg1, int jarg2) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   
@@ -1119,7 +1119,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_RemoveAt(void * jarg1, int ja
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_RemoveRange(void * jarg1, int jarg2, int jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_RemoveRange(void * jarg1, int jarg2, int jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -1139,7 +1139,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_RemoveRange(void * jarg1, int
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_Repeat(void * jarg1, int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTList_Repeat(void * jarg1, int jarg2) {
   void * jresult ;
   std::shared_ptr< NLJsonAST > *arg1 = 0 ;
   int arg2 ;
@@ -1159,7 +1159,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonASTVector_Repeat(void * jarg1, int ja
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Reverse__SWIG_0(void * jarg1) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_Reverse__SWIG_0(void * jarg1) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   
   arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *)jarg1; 
@@ -1167,7 +1167,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Reverse__SWIG_0(void * jarg1)
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Reverse__SWIG_1(void * jarg1, int jarg2, int jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_Reverse__SWIG_1(void * jarg1, int jarg2, int jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -1187,7 +1187,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_Reverse__SWIG_1(void * jarg1,
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_SetRange(void * jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTList_SetRange(void * jarg1, int jarg2, void * jarg3) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   int arg2 ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg3 = 0 ;
@@ -1208,7 +1208,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonASTVector_SetRange(void * jarg1, int ja
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_delete_NLJsonASTVector(void * jarg1) {
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_NLJsonASTList(void * jarg1) {
   std::vector< std::shared_ptr< NLJsonAST > > *arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   
   arg1 = (std::vector< std::shared_ptr< NLJsonAST > > *)jarg1; 
@@ -1310,7 +1310,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonAST_token_get(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonAST_vect_set(void * jarg1, void * jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonAST_list_set(void * jarg1, void * jarg2) {
   NLJsonAST *arg1 = (NLJsonAST *) 0 ;
   std::vector< std::shared_ptr< NLJsonAST > > *arg2 = (std::vector< std::shared_ptr< NLJsonAST > > *) 0 ;
   std::shared_ptr< NLJsonAST > *smartarg1 = 0 ;
@@ -1319,11 +1319,11 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NLJsonAST_vect_set(void * jarg1, void * jarg2
   smartarg1 = (std::shared_ptr<  NLJsonAST > *)jarg1;
   arg1 = (NLJsonAST *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (std::vector< std::shared_ptr< NLJsonAST > > *)jarg2; 
-  if (arg1) (arg1)->vect = *arg2;
+  if (arg1) (arg1)->list = *arg2;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonAST_vect_get(void * jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonAST_list_get(void * jarg1) {
   void * jresult ;
   NLJsonAST *arg1 = (NLJsonAST *) 0 ;
   std::shared_ptr< NLJsonAST > *smartarg1 = 0 ;
@@ -1332,7 +1332,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_NLJsonAST_vect_get(void * jarg1) {
   
   smartarg1 = (std::shared_ptr<  NLJsonAST > *)jarg1;
   arg1 = (NLJsonAST *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (std::vector< std::shared_ptr< NLJsonAST > > *)& ((arg1)->vect);
+  result = (std::vector< std::shared_ptr< NLJsonAST > > *)& ((arg1)->list);
   jresult = (void *)result; 
   return jresult;
 }

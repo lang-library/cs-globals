@@ -15,12 +15,12 @@ public class Win32NLJsonHandler : IJsonHandler
         this.jsonParser = new Win32NLJsonParser(NumberAsDecimal);
         this.objParser = new ObjectParser(ForceASCII);
     }
-    object IJsonHandler.Parse(string json)
+    public object Parse(string json)
     {
         return this.jsonParser.Parse(json);
     }
 
-    string IJsonHandler.Stringify(object x, bool indent)
+    public string Stringify(object x, bool indent)
     {
         return this.objParser.Stringify(x, indent);
     }

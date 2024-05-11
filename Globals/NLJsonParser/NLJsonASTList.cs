@@ -9,21 +9,21 @@
 //------------------------------------------------------------------------------
 
 
-public class NLJsonASTVector : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<NLJsonAST>
+public class NLJsonASTList : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<NLJsonAST>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal NLJsonASTVector(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal NLJsonASTList(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(NLJsonASTVector obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(NLJsonASTList obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(NLJsonASTVector obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(NLJsonASTList obj) {
     if (obj != null) {
       if (!obj.swigCMemOwn)
         throw new global::System.ApplicationException("Cannot release ownership as memory is not owned");
@@ -36,7 +36,7 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
     }
   }
 
-  ~NLJsonASTVector() {
+  ~NLJsonASTList() {
     Dispose(false);
   }
 
@@ -50,14 +50,14 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          NLJsonParserDLLPINVOKE.delete_NLJsonASTVector(swigCPtr);
+          NLJsonParserDLLPINVOKE.delete_NLJsonASTList(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public NLJsonASTVector(global::System.Collections.IEnumerable c) : this() {
+  public NLJsonASTList(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
     foreach (NLJsonAST element in c) {
@@ -65,7 +65,7 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
     }
   }
 
-  public NLJsonASTVector(global::System.Collections.Generic.IEnumerable<NLJsonAST> c) : this() {
+  public NLJsonASTList(global::System.Collections.Generic.IEnumerable<NLJsonAST> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
     foreach (NLJsonAST element in c) {
@@ -158,15 +158,15 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
   }
 
   global::System.Collections.Generic.IEnumerator<NLJsonAST> global::System.Collections.Generic.IEnumerable<NLJsonAST>.GetEnumerator() {
-    return new NLJsonASTVectorEnumerator(this);
+    return new NLJsonASTListEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new NLJsonASTVectorEnumerator(this);
+    return new NLJsonASTListEnumerator(this);
   }
 
-  public NLJsonASTVectorEnumerator GetEnumerator() {
-    return new NLJsonASTVectorEnumerator(this);
+  public NLJsonASTListEnumerator GetEnumerator() {
+    return new NLJsonASTListEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -174,15 +174,15 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class NLJsonASTVectorEnumerator : global::System.Collections.IEnumerator
+  public sealed class NLJsonASTListEnumerator : global::System.Collections.IEnumerator
     , global::System.Collections.Generic.IEnumerator<NLJsonAST>
   {
-    private NLJsonASTVector collectionRef;
+    private NLJsonASTList collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public NLJsonASTVectorEnumerator(NLJsonASTVector collection) {
+    public NLJsonASTListEnumerator(NLJsonASTList collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -235,114 +235,114 @@ public class NLJsonASTVector : global::System.IDisposable, global::System.Collec
     }
   }
 
-  public NLJsonASTVector() : this(NLJsonParserDLLPINVOKE.new_NLJsonASTVector__SWIG_0(), true) {
+  public NLJsonASTList() : this(NLJsonParserDLLPINVOKE.new_NLJsonASTList__SWIG_0(), true) {
   }
 
-  public NLJsonASTVector(NLJsonASTVector other) : this(NLJsonParserDLLPINVOKE.new_NLJsonASTVector__SWIG_1(NLJsonASTVector.getCPtr(other)), true) {
+  public NLJsonASTList(NLJsonASTList other) : this(NLJsonParserDLLPINVOKE.new_NLJsonASTList__SWIG_1(NLJsonASTList.getCPtr(other)), true) {
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Clear() {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_Clear(swigCPtr);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_Clear(swigCPtr);
   }
 
   public void Add(NLJsonAST x) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_Add(swigCPtr, NLJsonAST.getCPtr(x));
+    NLJsonParserDLLPINVOKE.NLJsonASTList_Add(swigCPtr, NLJsonAST.getCPtr(x));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = NLJsonParserDLLPINVOKE.NLJsonASTVector_size(swigCPtr);
+    uint ret = NLJsonParserDLLPINVOKE.NLJsonASTList_size(swigCPtr);
     return ret;
   }
 
   private bool empty() {
-    bool ret = NLJsonParserDLLPINVOKE.NLJsonASTVector_empty(swigCPtr);
+    bool ret = NLJsonParserDLLPINVOKE.NLJsonASTList_empty(swigCPtr);
     return ret;
   }
 
   private uint capacity() {
-    uint ret = NLJsonParserDLLPINVOKE.NLJsonASTVector_capacity(swigCPtr);
+    uint ret = NLJsonParserDLLPINVOKE.NLJsonASTList_capacity(swigCPtr);
     return ret;
   }
 
   private void reserve(uint n) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_reserve(swigCPtr, n);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_reserve(swigCPtr, n);
   }
 
-  public NLJsonASTVector(int capacity) : this(NLJsonParserDLLPINVOKE.new_NLJsonASTVector__SWIG_2(capacity), true) {
+  public NLJsonASTList(int capacity) : this(NLJsonParserDLLPINVOKE.new_NLJsonASTList__SWIG_2(capacity), true) {
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private NLJsonAST getitemcopy(int index) {
-    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTVector_getitemcopy(swigCPtr, index);
+    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTList_getitemcopy(swigCPtr, index);
     NLJsonAST ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonAST(cPtr, true);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private NLJsonAST getitem(int index) {
-    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTVector_getitem(swigCPtr, index);
+    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTList_getitem(swigCPtr, index);
     NLJsonAST ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonAST(cPtr, true);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void setitem(int index, NLJsonAST val) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_setitem(swigCPtr, index, NLJsonAST.getCPtr(val));
+    NLJsonParserDLLPINVOKE.NLJsonASTList_setitem(swigCPtr, index, NLJsonAST.getCPtr(val));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void AddRange(NLJsonASTVector values) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_AddRange(swigCPtr, NLJsonASTVector.getCPtr(values));
+  public void AddRange(NLJsonASTList values) {
+    NLJsonParserDLLPINVOKE.NLJsonASTList_AddRange(swigCPtr, NLJsonASTList.getCPtr(values));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NLJsonASTVector GetRange(int index, int count) {
-    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTVector_GetRange(swigCPtr, index, count);
-    NLJsonASTVector ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTVector(cPtr, true);
+  public NLJsonASTList GetRange(int index, int count) {
+    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTList_GetRange(swigCPtr, index, count);
+    NLJsonASTList ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTList(cPtr, true);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Insert(int index, NLJsonAST x) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_Insert(swigCPtr, index, NLJsonAST.getCPtr(x));
+    NLJsonParserDLLPINVOKE.NLJsonASTList_Insert(swigCPtr, index, NLJsonAST.getCPtr(x));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, NLJsonASTVector values) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_InsertRange(swigCPtr, index, NLJsonASTVector.getCPtr(values));
+  public void InsertRange(int index, NLJsonASTList values) {
+    NLJsonParserDLLPINVOKE.NLJsonASTList_InsertRange(swigCPtr, index, NLJsonASTList.getCPtr(values));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_RemoveAt(swigCPtr, index);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_RemoveAt(swigCPtr, index);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_RemoveRange(swigCPtr, index, count);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_RemoveRange(swigCPtr, index, count);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static NLJsonASTVector Repeat(NLJsonAST value, int count) {
-    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTVector_Repeat(NLJsonAST.getCPtr(value), count);
-    NLJsonASTVector ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTVector(cPtr, true);
+  public static NLJsonASTList Repeat(NLJsonAST value, int count) {
+    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTList_Repeat(NLJsonAST.getCPtr(value), count);
+    NLJsonASTList ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonASTList(cPtr, true);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_Reverse__SWIG_0(swigCPtr);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_Reverse__SWIG_0(swigCPtr);
   }
 
   public void Reverse(int index, int count) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_Reverse__SWIG_1(swigCPtr, index, count);
+    NLJsonParserDLLPINVOKE.NLJsonASTList_Reverse__SWIG_1(swigCPtr, index, count);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, NLJsonASTVector values) {
-    NLJsonParserDLLPINVOKE.NLJsonASTVector_SetRange(swigCPtr, index, NLJsonASTVector.getCPtr(values));
+  public void SetRange(int index, NLJsonASTList values) {
+    NLJsonParserDLLPINVOKE.NLJsonASTList_SetRange(swigCPtr, index, NLJsonASTList.getCPtr(values));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 

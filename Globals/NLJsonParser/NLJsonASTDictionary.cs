@@ -9,22 +9,22 @@
 //------------------------------------------------------------------------------
 
 
-public class map_string_nljson : global::System.IDisposable 
+public class NLJsonASTDictionary : global::System.IDisposable 
     , global::System.Collections.Generic.IDictionary<string, NLJsonAST>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal map_string_nljson(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal NLJsonASTDictionary(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(map_string_nljson obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(NLJsonASTDictionary obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(map_string_nljson obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef swigRelease(NLJsonASTDictionary obj) {
     if (obj != null) {
       if (!obj.swigCMemOwn)
         throw new global::System.ApplicationException("Cannot release ownership as memory is not owned");
@@ -37,7 +37,7 @@ public class map_string_nljson : global::System.IDisposable
     }
   }
 
-  ~map_string_nljson() {
+  ~NLJsonASTDictionary() {
     Dispose(false);
   }
 
@@ -51,7 +51,7 @@ public class map_string_nljson : global::System.IDisposable
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          NLJsonParserDLLPINVOKE.delete_map_string_nljson(swigCPtr);
+          NLJsonParserDLLPINVOKE.delete_NLJsonASTDictionary(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -163,15 +163,15 @@ public class map_string_nljson : global::System.IDisposable
   }
 
   global::System.Collections.Generic.IEnumerator<global::System.Collections.Generic.KeyValuePair<string, NLJsonAST>> global::System.Collections.Generic.IEnumerable<global::System.Collections.Generic.KeyValuePair<string, NLJsonAST>>.GetEnumerator() {
-    return new map_string_nljsonEnumerator(this);
+    return new NLJsonASTDictionaryEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new map_string_nljsonEnumerator(this);
+    return new NLJsonASTDictionaryEnumerator(this);
   }
 
-  public map_string_nljsonEnumerator GetEnumerator() {
-    return new map_string_nljsonEnumerator(this);
+  public NLJsonASTDictionaryEnumerator GetEnumerator() {
+    return new NLJsonASTDictionaryEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -179,16 +179,16 @@ public class map_string_nljson : global::System.IDisposable
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class map_string_nljsonEnumerator : global::System.Collections.IEnumerator,
+  public sealed class NLJsonASTDictionaryEnumerator : global::System.Collections.IEnumerator,
       global::System.Collections.Generic.IEnumerator<global::System.Collections.Generic.KeyValuePair<string, NLJsonAST>>
   {
-    private map_string_nljson collectionRef;
+    private NLJsonASTDictionary collectionRef;
     private global::System.Collections.Generic.IList<string> keyCollection;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public map_string_nljsonEnumerator(map_string_nljson collection) {
+    public NLJsonASTDictionaryEnumerator(NLJsonASTDictionary collection) {
       collectionRef = collection;
       keyCollection = new global::System.Collections.Generic.List<string>(collection.Keys);
       currentIndex = -1;
@@ -244,68 +244,68 @@ public class map_string_nljson : global::System.IDisposable
   }
 
 
-  public map_string_nljson() : this(NLJsonParserDLLPINVOKE.new_map_string_nljson__SWIG_0(), true) {
+  public NLJsonASTDictionary() : this(NLJsonParserDLLPINVOKE.new_NLJsonASTDictionary__SWIG_0(), true) {
   }
 
-  public map_string_nljson(map_string_nljson other) : this(NLJsonParserDLLPINVOKE.new_map_string_nljson__SWIG_1(map_string_nljson.getCPtr(other)), true) {
+  public NLJsonASTDictionary(NLJsonASTDictionary other) : this(NLJsonParserDLLPINVOKE.new_NLJsonASTDictionary__SWIG_1(NLJsonASTDictionary.getCPtr(other)), true) {
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = NLJsonParserDLLPINVOKE.map_string_nljson_size(swigCPtr);
+    uint ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_size(swigCPtr);
     return ret;
   }
 
   private bool empty() {
-    bool ret = NLJsonParserDLLPINVOKE.map_string_nljson_empty(swigCPtr);
+    bool ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_empty(swigCPtr);
     return ret;
   }
 
   public void Clear() {
-    NLJsonParserDLLPINVOKE.map_string_nljson_Clear(swigCPtr);
+    NLJsonParserDLLPINVOKE.NLJsonASTDictionary_Clear(swigCPtr);
   }
 
   private NLJsonAST getitem(string key) {
-    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.map_string_nljson_getitem(swigCPtr, key);
+    global::System.IntPtr cPtr = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_getitem(swigCPtr, key);
     NLJsonAST ret = (cPtr == global::System.IntPtr.Zero) ? null : new NLJsonAST(cPtr, true);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void setitem(string key, NLJsonAST x) {
-    NLJsonParserDLLPINVOKE.map_string_nljson_setitem(swigCPtr, key, NLJsonAST.getCPtr(x));
+    NLJsonParserDLLPINVOKE.NLJsonASTDictionary_setitem(swigCPtr, key, NLJsonAST.getCPtr(x));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public bool ContainsKey(string key) {
-    bool ret = NLJsonParserDLLPINVOKE.map_string_nljson_ContainsKey(swigCPtr, key);
+    bool ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_ContainsKey(swigCPtr, key);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Add(string key, NLJsonAST value) {
-    NLJsonParserDLLPINVOKE.map_string_nljson_Add(swigCPtr, key, NLJsonAST.getCPtr(value));
+    NLJsonParserDLLPINVOKE.NLJsonASTDictionary_Add(swigCPtr, key, NLJsonAST.getCPtr(value));
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public bool Remove(string key) {
-    bool ret = NLJsonParserDLLPINVOKE.map_string_nljson_Remove(swigCPtr, key);
+    bool ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_Remove(swigCPtr, key);
     if (NLJsonParserDLLPINVOKE.SWIGPendingException.Pending) throw NLJsonParserDLLPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private global::System.IntPtr create_iterator_begin() {
-    global::System.IntPtr ret = NLJsonParserDLLPINVOKE.map_string_nljson_create_iterator_begin(swigCPtr);
+    global::System.IntPtr ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_create_iterator_begin(swigCPtr);
     return ret;
   }
 
   private string get_next_key(global::System.IntPtr swigiterator) {
-    string ret = NLJsonParserDLLPINVOKE.map_string_nljson_get_next_key(swigCPtr, swigiterator);
+    string ret = NLJsonParserDLLPINVOKE.NLJsonASTDictionary_get_next_key(swigCPtr, swigiterator);
     return ret;
   }
 
   private void destroy_iterator(global::System.IntPtr swigiterator) {
-    NLJsonParserDLLPINVOKE.map_string_nljson_destroy_iterator(swigCPtr, swigiterator);
+    NLJsonParserDLLPINVOKE.NLJsonASTDictionary_destroy_iterator(swigCPtr, swigiterator);
   }
 
 }

@@ -19,7 +19,7 @@ static inline std::shared_ptr<NLJsonAST> convert_ast(nljson nl)
         result->token = L"[]";
         for (size_t i=0; i<nl.size(); i++)
         {
-            result->vect.push_back(convert_ast(nl[i]));
+            result->list.push_back(convert_ast(nl[i]));
         }
         return std::shared_ptr<NLJsonAST>(result);
     case nljson::value_t::boolean:
