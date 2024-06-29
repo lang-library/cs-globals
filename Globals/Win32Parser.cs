@@ -15,7 +15,7 @@ public class Win32Parser
 {
     static Win32Parser()
     {
-        string dir = Internal.InstallResourceZip("PegParserDLL");
+        string dir = Internal.InstallResourceZip(typeof(Win32Parser).Assembly, "PegParserDLL");
         string dll = @$"{dir}\PegParserDLL.dll";
         LoadLibraryExW(
             dll,

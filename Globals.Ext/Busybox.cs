@@ -4,7 +4,7 @@ using System.IO;
 namespace Global;
 public class Busybox
 {
-    static string resDir = Internal.InstallResourceZip("res");
+    static string resDir = Internal.InstallResourceZip(typeof(Busybox).Assembly, "res");
     static Busybox()
     {
     }

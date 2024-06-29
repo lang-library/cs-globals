@@ -13,7 +13,7 @@ public class Win32NLJsonParser
 {
     static Win32NLJsonParser()
     {
-        string dir = Internal.InstallResourceZip("NLJsonParserDLL");
+        string dir = Internal.InstallResourceZip(typeof(Win32NLJsonParser).Assembly, "NLJsonParserDLL");
         string dll = @$"{dir}\NLJsonParserDLL.dll";
         //Echo(dll, "dll");
         //Echo(File.Exists(dll));

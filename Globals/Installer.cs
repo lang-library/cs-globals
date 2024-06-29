@@ -35,6 +35,10 @@ public class Installer
     }
     public static string InstallResourceZip(Assembly assembly, string targetDir, string name)
     {
+        //EasyObject.Echo((assembly is null), "(assembly is null)");
+        //EasyObject.Echo(targetDir, "targetDir");
+        //EasyObject.Echo(name, "name");
+        //EasyObject.Echo(Util.ResourceNames(assembly));
         string guid = Util.GuidString();
         var zipBytes = Util.ResourceAsBytes(assembly, name);
         SHA256 crypto = new SHA256CryptoServiceProvider();

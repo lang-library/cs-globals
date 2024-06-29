@@ -1,5 +1,5 @@
 ﻿using Global;
-using static Global.GObject;
+using static Global.EasyObject;
 using Global.Sample;
 using System;
 using Xunit;
@@ -158,5 +158,7 @@ static class Program
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+
+        Busybox.Run("pwd");
     }
 }
