@@ -26,7 +26,7 @@ public class Busybox
         }
         else
         {
-            DLL1.API.Call("write_all_text_local8bit", new string[] { tempFile, script });
+            DLL1.API.Call("write_all_text_local8bit", EasyObject.EmptyArray.Add(tempFile).Add(script));
         }
         string PATH = Environment.GetEnvironmentVariable("PATH");
         PATH = resDir + ";" + PATH;
@@ -51,7 +51,7 @@ public class Busybox
         }
         else
         {
-            DLL1.API.Call("write_all_text_local8bit", new string[] { tempFile, script });
+            DLL1.API.Call("write_all_text_local8bit", EasyObject.EmptyArray.Add(tempFile).Add(script));
         }
         string PATH = Environment.GetEnvironmentVariable("PATH");
         PATH = resDir + ";" + PATH;
@@ -74,7 +74,7 @@ public class Busybox
         }
         else
         {
-            DLL1.API.Call("write_all_text_local8bit", new string[] { tempFile, script });
+            DLL1.API.Call("write_all_text_local8bit", EasyObject.EmptyArray.Add(tempFile).Add(script));
         }
         string PATH = Environment.GetEnvironmentVariable("PATH");
         PATH = resDir + ";" + PATH;

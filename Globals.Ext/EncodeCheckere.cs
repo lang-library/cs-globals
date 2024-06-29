@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace Globals;
+namespace Global;
 
 // C#で文字コードを判定する #C# - Qiita https://qiita.com/nekotadon/items/c1478b5655755018c67c
 public class EncodeChecker

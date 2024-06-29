@@ -5,17 +5,17 @@
     <Version>2024.0429.1936.15</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <RootNamespace>Globals</RootNamespace>
+    <RootNamespace>Globals.Ext</RootNamespace>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>3021,0618,8603,0168,8632,8600,8601,8604,8625,8618,8602</NoWarn>
     <Authors>JavaCommons</Authors>
     <Company>JavaCommons Technologies</Company>
-    <Product>Globals</Product>
+    <Product>Globals.Ext</Product>
     <Description>Globals Library</Description>
     <Copyright>Copyright © JavaCommons Technologies 2024</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Title>Globals Library</Title>
-    <PackageId>Globals</PackageId>
+    <Title>Globals.Ext Library</Title>
+    <PackageId>Globals.Ext</PackageId>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/lang-library/cs-globals</PackageProjectUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -44,7 +44,7 @@
     <!--
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     -->
-    <PackageReference Include="EasyObject" Version="2024.627.409.33" />
+    <!--<PackageReference Include="EasyObject" Version="2024.627.409.33" />-->
     <PackageReference Include="MyJson" Version="2024.501.1540.11" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <!--<PackageReference Include="LiteDB" Version="5.0.19" />-->

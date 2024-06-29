@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Globals;
+namespace Global;
 public class MSys2
 {
     public static string MSys2Bin;
