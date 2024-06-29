@@ -1,4 +1,4 @@
-namespace Globals;
+namespace Global;
 public class DLL1
 {
     public static JsonClient API = null;

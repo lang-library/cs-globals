@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-namespace Globals;
+namespace Global;
 public class Busybox
 {
     static string resDir = Internal.InstallResourceZip("res");

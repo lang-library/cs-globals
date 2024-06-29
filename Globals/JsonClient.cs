@@ -21,8 +21,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec);
         if (dllPath is null)
         {
-            GObject.Log(dllSpec, "dllSpec");
-            GObject.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -32,8 +32,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec, cwd);
         if (dllPath is null)
         {
-            GObject.Log(dllSpec, "dllSpec");
-            GObject.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -43,8 +43,8 @@ public class JsonClient
         string dllPath = Util.FindExePath(dllSpec, assembly);
         if (dllPath is null)
         {
-            GObject.Log(dllSpec, "dllSpec");
-            GObject.Log(dllPath, "dllPath");
+            EasyObject.Log(dllSpec, "dllSpec");
+            EasyObject.Log(dllPath, "dllPath");
             Environment.Exit(1);
         }
         this.LoadDll(dllPath);
@@ -58,17 +58,17 @@ public class JsonClient
             );
         if (this.Handle == IntPtr.Zero)
         {
-            GObject.Log($"DLL not loaded: {dllPath}");
+            EasyObject.Log($"DLL not loaded: {dllPath}");
             Environment.Exit(1);
         }
         this.CallPtr = GetProcAddress(Handle, "Call");
         if (this.CallPtr == IntPtr.Zero)
         {
-            GObject.Log("Call() not found");
+            EasyObject.Log("Call() not found");
             Environment.Exit(1);
         }
     }
-    public GObject Call(dynamic name, GObject args)
+    public EasyObject Call(dynamic name, EasyObject args)
     {
         IntPtr pName = Util.StringToUTF8Addr(name);
         proto_Call pCall = (proto_Call)Marshal.GetDelegateForFunctionPointer(this.CallPtr, typeof(proto_Call));
@@ -81,13 +81,13 @@ public class JsonClient
         Marshal.FreeHGlobal(pArgsJson);
         if (result.StartsWith("\""))
         {
-            string error = GObject.FromJson(result).Cast<string>();
+            string error = EasyObject.FromJson(result).Cast<string>();
             throw new Exception(error);
         }
         else if (result.StartsWith("["))
         {
-            var list = GObject.FromJson(result);
-            if (list.Count == 0) return GObject.FromObject(null);
+            var list = EasyObject.FromJson(result);
+            if (list.Count == 0) return EasyObject.FromObject(null);
             return list[0];
         }
         else

@@ -44,39 +44,24 @@
     <!--
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
     -->
+    <PackageReference Include="EasyObject" Version="2024.627.409.33" />
     <PackageReference Include="MyJson" Version="2024.501.1540.11" />
     <PackageReference Include="LiteDB" Version="5.0.17" />
     <!--<PackageReference Include="LiteDB" Version="5.0.19" />-->
-    <PackageReference Include="Jint" Version="3.1.0" />
+    <PackageReference Include="Jint" Version="3.1.4" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.4" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../README.md" Pack="true" PackagePath="" />
-    <None Include="..\..\Globals.Slim\Globals.Slim\Globals.Slim.csproj" Link="Globals.Slim.csproj" />
+    <None Include="..\..\Globals\Globals.Slim.csproj" Link="Globals.Slim.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="*.dll" />
     <EmbeddedResource Include="*.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\ApplicationIdleTimer.cs" Link="ApplicationIdleTimer.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\Dirs.cs" Link="Dirs.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\Extensions.cs" Link="Extensions.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\Installer.cs" Link="Installer.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\Internal.cs" Link="Internal.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\JintScript.cs" Link="JintScript.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\JsonClient.cs" Link="JsonClient.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\JSONParser.cs" Link="JSONParser.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\JsonServer.cs" Link="JsonServer.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\JSONWriter.cs" Link="JSONWriter.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\LiteDBProps.cs" Link="LiteDBProps.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\MyJS.cs" Link="MyJS.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\PartialHttpStream.cs" Link="PartialHttpStream.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\RunLib.cs" Link="RunLib.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\TextEmbedder.cs" Link="TextEmbedder.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\Util.cs" Link="Util.cs" />
-    <Compile Include="..\..\Globals.Slim\Globals.Slim\WinConsole.cs" Link="WinConsole.cs" />
+    <ProjectReference Include="..\Globals\Globals.csproj" />
   </ItemGroup>
 </Project>

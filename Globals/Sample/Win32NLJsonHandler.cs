@@ -20,8 +20,8 @@ public class Win32NLJsonHandler : IJsonHandler
         return this.jsonParser.Parse(json);
     }
 
-    public string Stringify(object x, bool indent)
+    public string Stringify(object x, bool indent, bool sort_keys = false)
     {
-        return this.objParser.Stringify(x, indent);
+        return this.objParser.Stringify(x, indent, sort_keys);
     }
 }

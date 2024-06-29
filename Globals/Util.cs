@@ -510,15 +510,15 @@ public class Util
         Stream stream = assembly.GetManifestResourceStream(resourceName);
         return StreamAsBytes(stream);
     }
-    public static GObject StreamAsJson(Stream stream)
+    public static EasyObject StreamAsJson(Stream stream)
     {
         string json = StreamAsText(stream);
-        return GObject.FromJson(json);
+        return EasyObject.FromJson(json);
     }
-    public static GObject ResourceAsMyJson(Assembly assembly, string name)
+    public static EasyObject ResourceAsMyJson(Assembly assembly, string name)
     {
         string json = ResourceAsText(assembly, name);
-        return GObject.FromJson(json);
+        return EasyObject.FromJson(json);
     }
     public static byte[]? ToUtf8Bytes(string? s)
     {
