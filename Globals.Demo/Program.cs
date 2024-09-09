@@ -1,5 +1,5 @@
 ﻿using Global;
-using static Global.GObject;
+using static Global.EasyObject;
 using Global.Sample;
 using System;
 using Xunit;
@@ -51,14 +51,15 @@ static class Program
         o = jp.Parse(@"{ ""a"": 11, ""b"": 22, ""c"": ""helloハロー©""}");
         Echo(o, "o");
 #endif
+        const int maxTrial = 1;
         string bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
         //Echo(bigJson);
         var sw = new System.Diagnostics.Stopwatch();
         TimeSpan ts;
         sw.Start();
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
-            //var test = FromJson(bigJson);
+            var test = FromJson(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■EasyObject");
@@ -67,9 +68,9 @@ static class Program
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         sw.Start();
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
-            //JObject jsonObject = JObject.Parse(bigJson);
+            JObject jsonObject = JObject.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Newtonsoft.Json");
@@ -79,9 +80,9 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         sw.Start();
         var w32parser = new Win32JsonParser();
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
-            //w32parser.Parse(bigJson);
+            w32parser.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32JsonParser");
@@ -100,7 +101,7 @@ static class Program
         Win32NLJsonHandler handler;
         sw.Start();
         handler = new Win32NLJsonHandler(true, false);
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
             handler.Parse(bigJson);
         }
@@ -113,7 +114,7 @@ static class Program
 
         sw.Start();
         handler = new Win32NLJsonHandler(true, false);
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
             using (var input = new StringReader(bigJson))
             {
@@ -129,7 +130,7 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         sw.Start();
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
             using (var input = new StringReader(bigJson))
             {
@@ -145,7 +146,7 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         sw.Start();
-        for (int c = 0; c < 5; c++)
+        for (int c = 0; c < maxTrial; c++)
         {
             using (var output = new StringWriter())
             {

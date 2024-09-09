@@ -1,5 +1,5 @@
 ﻿using Global;
-using static Global.GObject;
+using static Global.EasyObject;
 using Xunit;
 using Xunit.Abstractions;
 using Global;
@@ -9,7 +9,7 @@ public class ExceptionTest
     private readonly ITestOutputHelper Out;
     void Print(object x, string title = null)
     {
-        Out.WriteLine(GObject.ToPrintable(x, title));
+        Out.WriteLine(EasyObject.ToPrintable(x, title));
     }
     public ExceptionTest(ITestOutputHelper testOutputHelper)
     {
