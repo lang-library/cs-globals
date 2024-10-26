@@ -23,6 +23,7 @@ public class Util
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
     }
+#if false
     public static void AllocConsole()
     {
         WinConsole.Initialize();
@@ -36,6 +37,7 @@ public class Util
         FreeConsole();
         AllocConsole();
     }
+#endif
     public static string FindExePath(string exe)
     {
         string cwd = "";
