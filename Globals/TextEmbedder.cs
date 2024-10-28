@@ -7,8 +7,8 @@ using System.Text.RegularExpressions;
 namespace Global;
 public static class TextEmbedder
 {
-    const long MinimumCheckLength = 8192;
-    //const long MinimumCheckLength = 256;
+    //const long MinimumCheckLength = 8192;
+    const long MinimumCheckLength = 256;
     internal class SearchResult
     {
         public long Length {
