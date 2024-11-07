@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462</TargetFrameworks>
-    <Version>2024.1108.0733.23</Version>
+    <Version>2024.1108.0759.29</Version>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <RootNamespace>Globals</RootNamespace>
@@ -50,7 +50,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     -->
-    <PackageReference Include="EasyObject" Version="2024.1108.726.7" />
+    <PackageReference Include="EasyObject" Version="2024.1108.752.49" />
     <!--
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit" Version="4.1.0" />
