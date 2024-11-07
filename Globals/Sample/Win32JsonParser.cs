@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿//using NUnit.Framework;
 using System.Text;
 using System;
 using static Global.EasyObject;
@@ -52,43 +52,43 @@ public class Win32JsonParser
         {
             case "json/0": // booolean
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("boolean"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("boolean"));
                     return DoParse(ast.nodes[0]);
                 }
             case "json/1": // null
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("null"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("null"));
                     return null;
                 }
             case "json/2": // number
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("number"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("number"));
                     return DoParse(ast.nodes[0]);
                 }
             case "json/3": // string
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("string"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("string"));
                     return DoParse(ast.nodes[0]);
                 }
             case "json/4": // object
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("object"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("object"));
                     return DoParse(ast.nodes[0]);
                 }
             case "json/5": // array
                 {
-                    Assert.That(ast.nodes.Count, Is.EqualTo(1));
-                    Assert.That(ast.nodes[0].name, Is.EqualTo("array"));
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(1));
+                    //Assert.That(ast.nodes[0].name, Is.EqualTo("array"));
                     return DoParse(ast.nodes[0]);
                 }
             case "array/0":
                 {
-                    Assert.That(ast.is_token, Is.False);
+                    //Assert.That(ast.is_token, Is.False);
                     var result = new List<object>();
                     foreach (var node in ast.nodes)
                     {
@@ -98,7 +98,7 @@ public class Win32JsonParser
                 }
             case "object/0":
                 {
-                    Assert.That(ast.is_token, Is.False);
+                    //Assert.That(ast.is_token, Is.False);
                     var result = new Dictionary<string, object>();
                     foreach (var node in ast.nodes)
                     {
@@ -112,25 +112,25 @@ public class Win32JsonParser
                 }
             case "member/0":
                 {
-                    Assert.That(ast.is_token, Is.False);
-                    Assert.That(ast.nodes.Count, Is.EqualTo(2));
+                    //Assert.That(ast.is_token, Is.False);
+                    //Assert.That(ast.nodes.Count, Is.EqualTo(2));
                     return new KeyValuePair<string, object>(
                         (string)DoParse(ast.nodes[0]),
                         DoParse(ast.nodes[1]));
                 }
             case "boolean":
                 {
-                    Assert.That(ast.is_token, Is.True);
+                    //Assert.That(ast.is_token, Is.True);
                     return (ast.token == "true") ? true : false;
                 }
             case "number":
                 {
-                    Assert.That(ast.is_token, Is.True);
+                    //Assert.That(ast.is_token, Is.True);
                     return decimal.Parse(ast.token);
                 }
             case "string":
                 {
-                    Assert.That(ast.is_token, Is.True);
+                    //Assert.That(ast.is_token, Is.True);
                     return ParseJsonString(ast.token);
                 }
             default:
