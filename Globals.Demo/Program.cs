@@ -3,23 +3,22 @@ using static Global.EasyObject;
 using Global.Sample;
 using System;
 using Xunit;
-using System.Xml.Linq;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Collections;
-using System.Linq;
 using Jil;
+using System.Windows.Forms.VisualStyles;
 
 namespace Main;
 
 
 static class Program
 {
-    [STAThread]
-    static void Main(string[] args)
+    const int maxTrial = 1;
+    static System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+    static TimeSpan ts;
+    static string bigJson;
+    static void Demo00()
     {
-        ShowDetail = true;
-        Echo(new { args = args });
         var cal = new Win32IntCalculator();
         var result = cal.Calculate("11 + 22");
         Echo(result, "result(1)");
@@ -27,35 +26,9 @@ static class Program
         result = cal.Calculate(" (1 + 2) * 3 ");
         Echo(result, "result(2)");
         Assert.Equal(9, result);
-        Echo(Null);
-        Echo(DateTime.Now);
-        Echo(new { a = 123 });
-        Echo(FromObject(Null));
-        Echo(FromObject(DateTime.Now));
-        Echo(FromObject(new { a = 123 }));
-#if true
-        var jp = new Win32JsonParser();
-        object o;
-        o = jp.Parse("null");
-        Echo(o, "o");
-        o = jp.Parse("true");
-        Echo(o, "o");
-        o = jp.Parse("false");
-        Echo(o, "o");
-        o = jp.Parse("123");
-        Echo(o, "o");
-        o = jp.Parse(@"""helloハロー©""");
-        Echo(o, "o");
-        o = jp.Parse(@"[11, 22, ""helloハロー©""]");
-        Echo(o, "o");
-        o = jp.Parse(@"{ ""a"": 11, ""b"": 22, ""c"": ""helloハロー©""}");
-        Echo(o, "o");
-#endif
-        const int maxTrial = 1;
-        string bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
-        //Echo(bigJson);
-        var sw = new System.Diagnostics.Stopwatch();
-        TimeSpan ts;
+    }
+    static void Demo01()
+    {
         GC.Collect();
         GC.WaitForPendingFinalizers(); sw.Start();
         sw.Start();
@@ -85,6 +58,76 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         eo = null;
         eoJson = null;
+    }
+    static void Demo02()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        sw.Start();
+        for (int c = 0; c < maxTrial; c++)
+        {
+            using (var input = new StringReader(bigJson))
+            {
+                /*var result = */
+                JSON.DeserializeDynamic(input);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■JIl(FromJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        sw.Start();
+        for (int c = 0; c < maxTrial; c++)
+        {
+            using (var output = new StringWriter())
+            {
+                JSON.Serialize(output);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■JIl(ToJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+    }
+    [STAThread]
+    static void Main(string[] args)
+    {
+        ShowDetail = true;
+        Echo(new { args = args });
+
+        if (args.Length == 0) return;
+
+        int n = int.Parse(args[0]);
+        Echo(n, "n");
+
+
+        if (n == 0)
+        {
+            Demo00();
+            return;
+        }
+
+        bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
+
+        switch (n)
+        {
+            case 1:
+                Demo01();
+                break;
+            case 2:
+                Demo02();
+                break;
+        }
+
+        return;
+
+        //Echo(bigJson);
         GC.Collect();
         GC.WaitForPendingFinalizers(); sw.Start();
         for (int c = 0; c < maxTrial; c++)
@@ -149,39 +192,6 @@ static class Program
         }
         sw.Stop();
         Console.WriteLine("■Win32NLJsonParser(ToJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        sw.Start();
-        for (int c = 0; c < maxTrial; c++)
-        {
-            using (var input = new StringReader(bigJson))
-            {
-                /*var result = */
-                JSON.DeserializeDynamic(input);
-            }
-        }
-        sw.Stop();
-        Console.WriteLine("■JIl(FromJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        sw.Start();
-        for (int c = 0; c < maxTrial; c++)
-        {
-            using (var output = new StringWriter())
-            {
-                JSON.Serialize(output);
-            }
-        }
-        sw.Stop();
-        Console.WriteLine("■JIl(ToJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
