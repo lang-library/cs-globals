@@ -150,12 +150,9 @@ static class Program
     {
         ShowDetail = true;
         Echo(new { args = args });
-
         if (args.Length == 0) return;
-
         int n = int.Parse(args[0]);
         Echo(n, "n");
-
 
         if (n == 0)
         {
@@ -164,7 +161,6 @@ static class Program
         }
 
         bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
-
         switch (n)
         {
             case 1:
@@ -180,62 +176,5 @@ static class Program
                 Demo04();
                 break;
         }
-
-        return;
-
-        //Echo(bigJson);
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-#if false
-        sw.Start();
-        var w32parser = new Win32JsonParser();
-        for (int c = 0; c < maxTrial; c++)
-        {
-            w32parser.Parse(bigJson);
-        }
-        sw.Stop();
-        Console.WriteLine("■Win32JsonParser");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-#endif
-
-#if false
-        var nlp = new Win32NLJsonParser(true);
-        object nlr = nlp.Parse("""
-            { "a": 123, "b": [11, true, false, null], //line comment
-              "c": /*comment*/ "hello\nハロー©" }
-            """);
-        Echo(nlr);
-#endif
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        sw.Start();
-        sw.Start();
-        EasyObject eo2 = null;
-        for (int c = 0; c < maxTrial; c++)
-        {
-            eo2 = FromJson(bigJson);
-        }
-        sw.Stop();
-        Console.WriteLine("■EasyObject(FromJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        sw.Start();
-        for (int c = 0; c < maxTrial; c++)
-        {
-            var eoJson2 = eo2.ToJson(true);
-        }
-        sw.Stop();
-        Console.WriteLine("■EasyObject(ToJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
     }
 }
