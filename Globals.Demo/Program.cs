@@ -38,7 +38,7 @@ static class Program
             eo = FromJson(bigJson);
         }
         sw.Stop();
-        Console.WriteLine("■EasyObject(FromJson)");
+        Console.WriteLine("■  EasyObject(FromJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
@@ -51,7 +51,7 @@ static class Program
             eoJson = eo.ToJson(true);
         }
         sw.Stop();
-        Console.WriteLine("■EasyObject(ToJson)");
+        Console.WriteLine("■  EasyObject(ToJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
@@ -73,7 +73,7 @@ static class Program
             }
         }
         sw.Stop();
-        Console.WriteLine("■JIl(FromJson)");
+        Console.WriteLine("■  JIl(FromJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
@@ -89,7 +89,57 @@ static class Program
             }
         }
         sw.Stop();
-        Console.WriteLine("■JIl(ToJson)");
+        Console.WriteLine("■  JIl(ToJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+    }
+    static void Demo03()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers(); Win32NLJsonHandler handler;
+        sw.Start();
+        handler = new Win32NLJsonHandler(true, false);
+        object nlhobj = null;
+        for (int c = 0; c < maxTrial; c++)
+        {
+            nlhobj = handler.Parse(bigJson);
+        }
+        sw.Stop();
+        Console.WriteLine("■  Win32NLJsonParser(FromJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+        sw.Start();
+        handler = new Win32NLJsonHandler(true, false);
+        for (int c = 0; c < maxTrial; c++)
+        {
+            //using (var input = new StringReader(bigJson))
+            {
+                /*var result = */
+                handler.Stringify(nlhobj, true);
+            }
+        }
+        sw.Stop();
+        Console.WriteLine("■  Win32NLJsonParser(ToJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+    }
+    static void Demo04()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        sw.Start();
+        for (int c = 0; c < maxTrial; c++)
+        {
+            JObject jsonObject = JObject.Parse(bigJson);
+        }
+        sw.Stop();
+        Console.WriteLine("■  Newtonsoft.Json");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
@@ -123,23 +173,17 @@ static class Program
             case 2:
                 Demo02();
                 break;
+            case 3:
+                Demo03();
+                break;
+            case 4:
+                Demo04();
+                break;
         }
 
         return;
 
         //Echo(bigJson);
-        GC.Collect();
-        GC.WaitForPendingFinalizers(); sw.Start();
-        for (int c = 0; c < maxTrial; c++)
-        {
-            JObject jsonObject = JObject.Parse(bigJson);
-        }
-        sw.Stop();
-        Console.WriteLine("■Newtonsoft.Json");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         GC.Collect();
         GC.WaitForPendingFinalizers();
 #if false
@@ -165,37 +209,6 @@ static class Program
             """);
         Echo(nlr);
 #endif
-        GC.Collect();
-        GC.WaitForPendingFinalizers(); Win32NLJsonHandler handler;
-        sw.Start();
-        handler = new Win32NLJsonHandler(true, false);
-        object nlhobj = null;
-        for (int c = 0; c < maxTrial; c++)
-        {
-            nlhobj = handler.Parse(bigJson);
-        }
-        sw.Stop();
-        Console.WriteLine("■Win32NLJsonParser(FromJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-        sw.Start();
-        handler = new Win32NLJsonHandler(true, false);
-        for (int c = 0; c < maxTrial; c++)
-        {
-            //using (var input = new StringReader(bigJson))
-            {
-                /*var result = */
-                handler.Stringify(nlhobj, true);
-            }
-        }
-        sw.Stop();
-        Console.WriteLine("■Win32NLJsonParser(ToJson)");
-        ts = sw.Elapsed;
-        Console.WriteLine($"　{ts}");
-        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
-        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
         GC.Collect();
         GC.WaitForPendingFinalizers();
         sw.Start();

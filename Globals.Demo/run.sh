@@ -17,3 +17,5 @@ cd $cwd/../Globals.Demo
 bin/Release/net462/Globals.Demo.exe 0
 bin/Release/net462/Globals.Demo.exe 1
 bin/Release/net462/Globals.Demo.exe 2
+bin/Release/net462/Globals.Demo.exe 3
+bin/Release/net462/Globals.Demo.exe 4
