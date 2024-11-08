@@ -51,18 +51,30 @@ static class Program
         o = jp.Parse(@"{ ""a"": 11, ""b"": 22, ""c"": ""helloハロー©""}");
         Echo(o, "o");
 #endif
-        const int maxTrial = 1;
+        const int maxTrial = 5;
         string bigJson = File.ReadAllText("assets/qiita-9ea0c8fd43b61b01a8da.json");
         //Echo(bigJson);
         var sw = new System.Diagnostics.Stopwatch();
         TimeSpan ts;
         sw.Start();
+        EasyObject eo = null;
         for (int c = 0; c < maxTrial; c++)
         {
-            var test = FromJson(bigJson);
+            eo = FromJson(bigJson);
         }
         sw.Stop();
-        Console.WriteLine("■EasyObject");
+        Console.WriteLine("■EasyObject(FromJson)");
+        ts = sw.Elapsed;
+        Console.WriteLine($"　{ts}");
+        Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
+        Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
+        sw.Start();
+        for (int c = 0; c < maxTrial; c++)
+        {
+            var eoJson = eo.ToJson(true);
+        }
+        sw.Stop();
+        Console.WriteLine("■EasyObject(ToJson)");
         ts = sw.Elapsed;
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
@@ -92,12 +104,13 @@ static class Program
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
         var nlp = new Win32NLJsonParser(true);
+#if false
         object nlr = nlp.Parse("""
             { "a": 123, "b": [11, true, false, null], //line comment
               "c": /*comment*/ "hello\nハロー©" }
             """);
         Echo(nlr);
-
+#endif
         Win32NLJsonHandler handler;
         sw.Start();
         handler = new Win32NLJsonHandler(true, false);
@@ -119,7 +132,7 @@ static class Program
             using (var input = new StringReader(bigJson))
             {
                 /*var result = */
-                handler.Stringify(nlr, true);
+                //handler.Stringify(nlr, true);
             }
         }
         sw.Stop();
@@ -150,7 +163,7 @@ static class Program
         {
             using (var output = new StringWriter())
             {
-                JSON.Serialize(nlr);
+                //JSON.Serialize(nlr);
             }
         }
         sw.Stop();
