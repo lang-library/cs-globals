@@ -103,8 +103,8 @@ static class Program
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
 
-        var nlp = new Win32NLJsonParser(true);
 #if false
+        var nlp = new Win32NLJsonParser(true);
         object nlr = nlp.Parse("""
             { "a": 123, "b": [11, true, false, null], //line comment
               "c": /*comment*/ "hello\nハロー©" }
@@ -114,9 +114,10 @@ static class Program
         Win32NLJsonHandler handler;
         sw.Start();
         handler = new Win32NLJsonHandler(true, false);
+        object nlhobj = null;
         for (int c = 0; c < maxTrial; c++)
         {
-            handler.Parse(bigJson);
+            nlhobj = handler.Parse(bigJson);
         }
         sw.Stop();
         Console.WriteLine("■Win32NLJsonParser(FromJson)");
@@ -124,15 +125,14 @@ static class Program
         Console.WriteLine($"　{ts}");
         Console.WriteLine($"　{ts.Hours}時間 {ts.Minutes}分 {ts.Seconds}秒 {ts.Milliseconds}ミリ秒");
         Console.WriteLine($"　{sw.ElapsedMilliseconds}ミリ秒");
-
         sw.Start();
         handler = new Win32NLJsonHandler(true, false);
         for (int c = 0; c < maxTrial; c++)
         {
-            using (var input = new StringReader(bigJson))
+            //using (var input = new StringReader(bigJson))
             {
                 /*var result = */
-                //handler.Stringify(nlr, true);
+                handler.Stringify(nlhobj, true);
             }
         }
         sw.Stop();
@@ -163,7 +163,7 @@ static class Program
         {
             using (var output = new StringWriter())
             {
-                //JSON.Serialize(nlr);
+                JSON.Serialize(output);
             }
         }
         sw.Stop();
