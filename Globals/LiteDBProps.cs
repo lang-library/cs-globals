@@ -1,10 +1,7 @@
-#if false
-using static Global.Util;
 using LiteDB;
 using System.IO;
 using System.Linq;
-using Global;
-//using MyJson;
+
 namespace Global;
 public class LiteDBProps
 {
@@ -21,21 +18,10 @@ public class LiteDBProps
         }
     }
     private string filePath = null;
-    //private LiteDatabase connection = null;
-    //ILiteCollection<Prop> collection = null;
     public LiteDBProps(DirectoryInfo di)
     {
         this.filePath = Path.Combine(di.FullName, "properties.litedb");
         Dirs.PrepareForFile(this.filePath);
-#if false
-        this.connection = new LiteDatabase(new ConnectionString(this.filePath)
-        {
-            Connection = ConnectionType.Shared
-        });
-        this.collection = this.connection.GetCollection<Prop>("properties");
-        // Nameをユニークインデックスにする
-        this.collection.EnsureIndex(x => x.Name, true);
-#endif
         using (var connection = new LiteDatabase(new ConnectionString(this.filePath)
         {
             Connection = ConnectionType.Shared
@@ -122,4 +108,3 @@ public class LiteDBProps
         }
     }
 }
-#endif
